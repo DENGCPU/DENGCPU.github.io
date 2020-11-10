@@ -4,6 +4,45 @@
   
   
   <entry>
+    <title>04-react的生命周期</title>
+    <link href="/2020/11/10/04-react%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/"/>
+    <url>/2020/11/10/04-react%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/</url>
+    
+    <content type="html"><![CDATA[<h3 id="React的生命周期图"><a href="#React的生命周期图" class="headerlink" title="React的生命周期图"></a>React的生命周期图</h3><p><img src="https://i.bmp.ovh/imgs/2020/11/32b8163f9eadfd47.png"></p><p><strong>1.constructor:</strong></p><ul><li>用于初始化内部状态，很少使用</li><li>唯一可以直接修改state的地方</li></ul><p><strong>2.getDerivedStateFromProps:</strong></p><ul><li>当state需要从props初始化时使用。</li><li>尽量不要使用：维护两者状态一致性会增加复杂度。</li><li>每次render都会调用。</li><li>典型场景：表单控件获取默认值。</li></ul><p><strong>3.componentDidMount:</strong></p><ul><li>UI渲染完成后调用</li><li>只执行一次</li><li>典型场景：获取外部资源</li></ul><p><strong>4.componeWillUnmout:</strong></p><ul><li>组件移除时被调用</li><li>典型场景：资源释放</li></ul><p><strong>5.getSnapshotBeforeUpdate:</strong></p><ul><li>在页面render之前调用，state已经更新</li><li>典型场景：获取render之前的DOM状态</li></ul><p><strong>6.componentDidUpdate:</strong></p><ul><li>每次UI更新时被调用</li><li>典型场景：页面需要根据props变化重新获取数据</li></ul><p><strong>7.shouldComponentUpdate:</strong></p><ul><li>决定Vitual DOM是否重绘</li><li>一般由PureComponent自动实现</li><li>典型场景：性能优化</li></ul>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>03-JSX的本质是语法糖</title>
+    <link href="/2020/11/10/03-JSX%E7%9A%84%E6%9C%AC%E8%B4%A8%E6%98%AF%E8%AF%AD%E6%B3%95%E7%B3%96/"/>
+    <url>/2020/11/10/03-JSX%E7%9A%84%E6%9C%AC%E8%B4%A8%E6%98%AF%E8%AF%AD%E6%B3%95%E7%B3%96/</url>
+    
+    <content type="html"><![CDATA[<p>###理解JSX</p><p><em>JSX：在javaScript代码中直接写HTML标记。</em></p><pre><code class="hljs js"><span class="hljs-keyword">const</span> name=<span class="hljs-string">&#x27;jane&#x27;</span><span class="hljs-keyword">const</span> element=<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>hello,&#123;name&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span></code></pre><p><strong>1.JSX的本质</strong><br><img src="https://i.bmp.ovh/imgs/2020/11/5e744edbbade47d2.png"></p><p><strong>2.在JSX中使用表达式</strong><br><img src="https://i.bmp.ovh/imgs/2020/11/87d92de0fdbd6f36.png"></p><p><strong>3.JSX的优点</strong></p><ul><li>声明创建界面的直观</li><li>代码动态创建界面的灵活</li><li>无需学习新的模板语言</li></ul><p><strong>约定：自定义组件首字母大写</strong><br>1.react认为小写的tag是原生DOM节点，如div<br>2.大写字母开头的组件是自定义节点<br>3.JSX标记可以直接使用属性语法，如&lt;menu.Item /&gt;</p>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>02-react以组件方式考虑UI的构建</title>
+    <link href="/2020/11/10/02-react%E4%BB%A5%E7%BB%84%E4%BB%B6%E6%96%B9%E5%BC%8F%E8%80%83%E8%99%91UI%E7%9A%84%E6%9E%84%E5%BB%BA/"/>
+    <url>/2020/11/10/02-react%E4%BB%A5%E7%BB%84%E4%BB%B6%E6%96%B9%E5%BC%8F%E8%80%83%E8%99%91UI%E7%9A%84%E6%9E%84%E5%BB%BA/</url>
+    
+    <content type="html"><![CDATA[<p><img src="https://i.bmp.ovh/imgs/2020/11/b28d10e0a2054aec.png"></p><p><strong>一、构建一个组件需要考虑的三件事情：</strong></p><p>1、组件的UI( 一些外在的表现形式 )<br>2、组件的状态管理（放在哪？）<br>3、组件的交互</p><p><img src="https://i.bmp.ovh/imgs/2020/11/f878479d2f41ffb4.png"></p><p><strong>二、何时创建组件：单一职责原则</strong></p><p>1、一个组件只负责一个功能<br>2、复杂的组件应该进行拆分</p><p><strong>三、数据状态管理原则：DRY原则</strong></p><p>1.能计算得到的状态不应该单独存储<br>2.组件尽量无状态，尽量通过props获取.</p>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>React的历史背景及特点</title>
     <link href="/2020/11/10/01-React%E7%9A%84%E5%8E%86%E5%8F%B2%E8%83%8C%E6%99%AF/"/>
     <url>/2020/11/10/01-React%E7%9A%84%E5%8E%86%E5%8F%B2%E8%83%8C%E6%99%AF/</url>
@@ -18,23 +57,10 @@
   
   <entry>
     <title>my-first-blog</title>
-    <link href="/2020/11/09/my-first-blog/"/>
-    <url>/2020/11/09/my-first-blog/</url>
+    <link href="/2020/11/09/%E5%89%8D%E7%AB%AF%E8%B5%84%E6%BA%90%E6%B1%87%E6%80%BB/"/>
+    <url>/2020/11/09/%E5%89%8D%E7%AB%AF%E8%B5%84%E6%BA%90%E6%B1%87%E6%80%BB/</url>
     
     <content type="html"><![CDATA[<h2 id="前端学习路线及资源"><a href="#前端学习路线及资源" class="headerlink" title=" 前端学习路线及资源"></a><center> 前端学习路线及资源</h2><p align='right'>——————左耳听风<p>&nbsp;&emsp;对于前端的学习和提高，我的基本思路是这样的。首先，前端的三个最基本的东西 HTML 5、CSS 3 和 JavaScript（ES6）是必须要学好的。这其中有很多很多的技术，比如，CSS 3 引申出来的 Canvas（位图）、SVG（矢量图） 和 WebGL（3D 图），以及 CSS 的各种图形变换可以让你做出非常丰富的渲染效果和动画效果。<br>&nbsp;&emsp; ES6 简直就是把 JavaScript 带到了一个新的台阶，JavaScript 语言的强大，大大释放了前端开发人员的生产力，让前端得以开发更为复杂的代码和程序，于是像 React 和 Vue 这样的框架开始成为前端编程的不二之选。<br>&nbsp;&nbsp; 我一直认为学习任何知识都要从基础出发，所以这篇文章我会着重介绍基础知识和基本原理，尤其是如下的这些知识，都是前端程序员需要花力气啃下来的硬骨头。JavaScript 的核心原理。这里我会给出好些网上很不错的讲 JavaScript </p><ul><li><p><strong>JavaScript 的核心原理</strong>。这里我会给出好些网上很不错的讲 JavaScript 的原理的文章或图书，你一定要学好语言的特性，并且详细了解其中的各种坑。</p></li><li><p><strong>浏览器的工作原理</strong>。这也是一块硬骨头，我觉得这是前端程序员需要了解和明白的关键知识点，不然，你将无法深入下去。</p></li><li><p><strong>网络协议 HTTP</strong>。也是要着重了解的，尤其是 HTTP/2，还有 HTTP 的几种请求方式：短连接、长连接、Stream 连接、WebSocket 连接。</p></li><li><p><strong>前端性能调优</strong>。有了以上的这些基础后，你就可以进入前端性能调优的主题了，我相信你可以很容易上手各种性能调优技术的。</p></li><li><p><strong>框架学习</strong>。我只给了 React 和 Vue 两个框架。就这两个框架来说，Virtual DOM 技术是其底层技术，组件化是其思想，管理组件的状态是其重点。而对于 React 来说，函数式编程又是其编程思想，所以，这些基础技术都是你需要好好研究和学习的。</p></li><li><p><strong>UI 设计</strong>。设计也是前端需要做的一个事，比如像 Google 的 Material UI，或是比较流行的 Atomic Design 等应该是前端工程师需要学习的。</p><p>&nbsp;而对于工具类的东西，这里我基本没怎么涉及，因为本文主要还是从原理和基础入手。那些工具我觉得都很简单，就像学习 Java 我没有让你去学习 Maven 一样，因为只要你去动手了，这种知识你自然就会获得，我们还是把精力重点放在更重要的地方。  </p><p>下面我们从前端基础和底层原理开始讲起。先来讲讲 HTML5 相关的内容。</p><h3 id="HTML-5"><a href="#HTML-5" class="headerlink" title="HTML 5"></a>HTML 5</h3><p>HTML 5 主要有以下几本书推荐。</p><ul><li><a href="https://book.douban.com/subject/25786074/">HTML 5 权威指南</a>，本书面向初学者和中等水平 Web 开发人员，是牢固掌握 HTML 5、CSS 3 和 JavaScript 的必读之作。书看起来比较厚，是因为里面的代码很多。</li><li><a href="https://book.douban.com/subject/24533314/">HTML 5 Canvas 核心技术 </a>，如果你要做 HTML 5 游戏的话，这本书必读。</li><li>对于 SVG、Canvas 和 WebGL 这三个对应于矢量图、位图和 3D 图的渲染来说，给前端开发带来了重武器，很多 HTML5 小游戏也因此蓬勃发展。所以，你可以学习一下。学习这三个技术，我个人觉得最好的地方是 MDN。</li><li><a href="https://developer.mozilla.org/en-US/docs/Web/SVG">SVG: Scalable Vector Graphics</a></li><li><a href="https://developer.mozilla.org/kab/docs/Web/API/Canvas_API">Canvas API</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API">The WebGL API: 2D and 3D graphics for the web</a></li></ul></li></ul><p>  最后是几个资源列表。</p><ul><li><a href="https://github.com/diegocard/awesome-html5">Awesome HTML5</a> 。GitHub 上的 Awesome HTML5，其中有大量的资源和技术文章。</li><li><a href="https://github.com/willianjusten/awesome-svg">Awesome SVG</a></li><li><a href="https://github.com/raphamorim/awesome-canvas">Awesome Canvas</a></li><li><a href="https://github.com/sjfricke/awesome-webgl">Awesome WebGL</a></li></ul><h3 id="CSS"><a href="#CSS" class="headerlink" title="CSS"></a>CSS</h3><p>在《程序员练级攻略》系列文章最开始，我们就推荐过 CSS 的在线学习文档，这里再推荐一下 <a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS">MDN Web Doc - CSS </a>。我个人觉得只要你仔细读一下文档，CSS 并不难学。绝大多数觉得难的，一方面是文档没读透，另一方面是浏览器支持的标准不一致。所以，学好 CSS 最关键的还是要仔细地读文档。之后，在写 CSS 的时候，你会发现，你的 CSS 中有很多看起来相似的东西。你的 DRY - Don’t Repeat Yourself 洁癖告诉你，这是不对的。所以，你需要学会使用 <a href="http://lesscss.org/">LESS</a> 和 <a href="http://sass-lang.com/">SaSS</a> 这两个 CSS 预处理工具，其可以帮你提高很多效率。然后，你需要学习一下 CSS 的书写规范，前面的《程序员修养》一文中提到过一些，这里再补充几个:</p><ul><li><p><a href="https://github.com/necolas/idiomatic-css">Principles of writing consistent, idiomatic CSS</a></p></li><li><p><a href="https://github.com/grvcoelho/css-styleguide">Opinionated CSS styleguide for scalable applications</a></p></li><li><p><a href="https://google.github.io/styleguide/htmlcssguide.html">Google HTML/CSS Style Guide</a></p><p>&emsp;如果你需要更有效率，那么你还需要使用一些 CSS Framework，其中最著名的就是 Twitter 公司的 Bootstrap，其有很多不错的 UI 组件，页面布局方案，可以让你非常方便也非常快速地开发页面。除此之外，还有，主打清新 UI 的 Semantic UI 、主打响应式界面的 Foundation 和基于 Flexbox 的 Bulma。<br>&emsp;当然，在使用 CSS 之前，你需要把你浏览器中的一些 HTML 标签给标准化掉。所以，推荐几个 Reset 或标准化的 CSS 库：Normalize、MiniRest.css、sanitize.css 和 unstyle.css。关于更多的 CSS 框架，你可以参看<a href="https://github.com/troxler/awesome-css-frameworks">Awesome CSS Frameworks</a> 上的列表。接下来，是几个公司的 CSS 相关实践，供你参考:</p></li><li><p><a href="https://codepen.io/chriscoyier/post/codepens-css"> CodePen’s CSS</a></p></li><li><p><a href="https://markdotto.com/2014/07/23/githubs-css/">Github 的 CSS</a></p></li><li><p>Medium’s CSS is actually pretty f***ing good()</p></li><li><p>CSS at BBC Sport</p></li><li><p><a href="https://blog.trello.com/refining-the-way-we-structure-our-css-at-trello">Refining The Way We Structure Our CSS At Trello</a></p><p>&emsp; 最后是一个可以写出可扩展的 CSS 的阅读列表 <a href="https://github.com/davidtheclark/scalable-css-readin">A Scalable CSS Reading List</a> 。</p><h3 id="JavaScript"><a href="#JavaScript" class="headerlink" title="JavaScript"></a>JavaScript</h3><p>下面是学习 JavaScript 的一些图书和文章。</p></li><li><p><a href="">JavaScript: The Good Parts</a> ，中文翻译版为《JavaScript 语言精粹》。这是一本介绍 JavaScript 语言本质的权威图书，值得任何正在或准备从事 JavaScript 开发的人阅读，并且需要反复阅读。学习、理解、实践大师的思想，我们才可能站在巨人的肩上，才有机会超越大师，这本书就是开始。</p></li><li><p><a href="">Secrets of the JavaScript Ninja</a> ，中文翻译版为《JavaScript 忍者秘籍》，本书是 jQuery 库创始人编写的一本深入剖析 JavaScript 语言的书。适合具备一定 JavaScript 基础知识的读者阅读，</p></li></ul>]]></content>
-    
-    
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>Hello World</title>
-    <link href="/2020/11/09/hello-world/"/>
-    <url>/2020/11/09/hello-world/</url>
-    
-    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
     
     
     
