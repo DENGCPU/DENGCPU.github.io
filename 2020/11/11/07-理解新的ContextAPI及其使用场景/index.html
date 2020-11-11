@@ -17,7 +17,7 @@
   <meta name="description" content="前端小白，升级打怪">
   <meta name="author" content="dorothy">
   <meta name="keywords" content="前端，js,h5,css,react">
-  <title>04-react的生命周期 - Dorothy的博客</title>
+  <title>07-理解新的ContextAPI及其使用场景 - Dorothy的博客</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.5.3/css/bootstrap.min.css" />
 
@@ -162,7 +162,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="04-react的生命周期">
+            <span class="h2" id="subtitle" title="07-理解新的ContextAPI及其使用场景">
               
             </span>
 
@@ -172,8 +172,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2020-11-10 15:47" pubdate>
-        2020年11月10日 下午
+      <time datetime="2020-11-11 16:28" pubdate>
+        2020年11月11日 下午
       </time>
     </span>
   
@@ -184,7 +184,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      214 字
+      52 字
     </span>
   
 
@@ -194,7 +194,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      2
+      1
        分钟
     </span>
   
@@ -224,50 +224,13 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">04-react的生命周期</h1>
+            <h1 style="display: none">07-理解新的ContextAPI及其使用场景</h1>
             
             <div class="markdown-body">
-              <h3 id="React的生命周期图"><a href="#React的生命周期图" class="headerlink" title="React的生命周期图"></a>React的生命周期图</h3><p><img src="https://i.bmp.ovh/imgs/2020/11/32b8163f9eadfd47.png" srcset="/img/loading.gif"></p>
-<p><strong>1.constructor:</strong></p>
-<ul>
-<li>用于初始化内部状态，很少使用</li>
-<li>唯一可以直接修改state的地方</li>
-</ul>
-<p><strong>2.getDerivedStateFromProps:</strong></p>
-<ul>
-<li>当state需要从props初始化时使用。</li>
-<li>尽量不要使用：维护两者状态一致性会增加复杂度。</li>
-<li>每次render都会调用。</li>
-<li>典型场景：表单控件获取默认值。</li>
-</ul>
-<p><strong>3.componentDidMount:</strong></p>
-<ul>
-<li>UI渲染完成后调用</li>
-<li>只执行一次</li>
-<li>典型场景：获取外部资源</li>
-</ul>
-<p><strong>4.componeWillUnmout:</strong></p>
-<ul>
-<li>组件移除时被调用</li>
-<li>典型场景：资源释放</li>
-</ul>
-<p><strong>5.getSnapshotBeforeUpdate:</strong></p>
-<ul>
-<li>在页面render之前调用，state已经更新</li>
-<li>典型场景：获取render之前的DOM状态</li>
-</ul>
-<p><strong>6.componentDidUpdate:</strong></p>
-<ul>
-<li>每次UI更新时被调用</li>
-<li>典型场景：页面需要根据props变化重新获取数据</li>
-</ul>
-<p><strong>7.shouldComponentUpdate:</strong></p>
-<ul>
-<li>决定Vitual DOM是否重绘</li>
-<li>一般由PureComponent自动实现</li>
-<li>典型场景：性能优化</li>
-</ul>
-
+              <p><strong>Context解决的是：组件之间的通信问题</strong></p>
+<p>Context提供了一个无需为每层组件手动添加props,就能在组件树间进行数据传递的方法。</p>
+<p><img src="https://i.bmp.ovh/imgs/2020/11/c51c0b02a804b0fb.png" srcset="/img/loading.gif"></p>
+<h4 id="1-设计目的"><a href="#1-设计目的" class="headerlink" title="1.设计目的"></a>1.设计目的</h4>
             </div>
             <hr>
             <div>
@@ -283,18 +246,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/11/11/05-%E7%90%86%E8%A7%A3VirtualDOM%E5%8F%8Akey%E5%B1%9E%E6%80%A7%E7%9A%84%E4%BD%9C%E7%94%A8/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">05-理解VirtualDOM及key属性的作用</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/11/10/03-JSX%E7%9A%84%E6%9C%AC%E8%B4%A8%E6%98%AF%E8%AF%AD%E6%B3%95%E7%B3%96/">
-                        <span class="hidden-mobile">03-JSX的本质是语法糖</span>
+                      <a href="/2020/11/11/06-%E7%BB%84%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">
+                        <span class="hidden-mobile">06-组件设计模式</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

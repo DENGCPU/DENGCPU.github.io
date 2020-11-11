@@ -4,6 +4,45 @@
   
   
   <entry>
+    <title>07-理解新的ContextAPI及其使用场景</title>
+    <link href="/2020/11/11/07-%E7%90%86%E8%A7%A3%E6%96%B0%E7%9A%84ContextAPI%E5%8F%8A%E5%85%B6%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/"/>
+    <url>/2020/11/11/07-%E7%90%86%E8%A7%A3%E6%96%B0%E7%9A%84ContextAPI%E5%8F%8A%E5%85%B6%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/</url>
+    
+    <content type="html"><![CDATA[<p><strong>Context解决的是：组件之间的通信问题</strong></p><p>Context提供了一个无需为每层组件手动添加props,就能在组件树间进行数据传递的方法。</p><p><img src="https://i.bmp.ovh/imgs/2020/11/c51c0b02a804b0fb.png"></p><h4 id="1-设计目的"><a href="#1-设计目的" class="headerlink" title="1.设计目的"></a>1.设计目的</h4>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>06-组件设计模式</title>
+    <link href="/2020/11/11/06-%E7%BB%84%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+    <url>/2020/11/11/06-%E7%BB%84%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</url>
+    
+    <content type="html"><![CDATA[<h4 id="组件复用的另外两种形式："><a href="#组件复用的另外两种形式：" class="headerlink" title="组件复用的另外两种形式："></a>组件复用的另外两种形式：</h4><p>（除了常规的组件复用之外）</p><ul><li><strong>高阶组件</strong></li><li><strong>函数作为子组件</strong></li></ul><h5 id="1-高阶组件"><a href="#1-高阶组件" class="headerlink" title="1.高阶组件"></a>1.高阶组件</h5><p><img src="https://i.bmp.ovh/imgs/2020/11/f50691752374e779.png"></p><p>具体参见：<a href="https://zh-hans.reactjs.org/docs/higher-order-components.html">React官方文档–高阶组件</a></p><h5 id="2-函数作为子组件"><a href="#2-函数作为子组件" class="headerlink" title="2.函数作为子组件"></a>2.函数作为子组件</h5><p><img src="https://i.bmp.ovh/imgs/2020/11/17246cbcf6e05f4d.png"></p><p><strong>总结：</strong></p><p>1、高阶组件和函数作为子组件都是设计模式（并不是新的组件类型）</p><p>2、可以实现更多场景的组件复用</p>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>05-理解VirtualDOM及key属性的作用</title>
+    <link href="/2020/11/11/05-%E7%90%86%E8%A7%A3VirtualDOM%E5%8F%8Akey%E5%B1%9E%E6%80%A7%E7%9A%84%E4%BD%9C%E7%94%A8/"/>
+    <url>/2020/11/11/05-%E7%90%86%E8%A7%A3VirtualDOM%E5%8F%8Akey%E5%B1%9E%E6%80%A7%E7%9A%84%E4%BD%9C%E7%94%A8/</url>
+    
+    <content type="html"><![CDATA[<p>JSX的基础：虚拟DOM</p><p><img src="https://i.bmp.ovh/imgs/2020/11/6244a9607b4da0d0.png"></p><p><img src="https://i.bmp.ovh/imgs/2020/11/314414dd61ae46e0.png"></p><p>从根节点开始比较，针对不同情况，diff算法有不同的处理方式：</p><p><strong>1. 属性变化及顺序：</strong><br>   <img src="https://i.bmp.ovh/imgs/2020/11/231a0e379e4ef3a4.png"></p><p>==处理方式==：根据key属性，交换A与B的位置</p><p><strong>2. 节点类型发生变化：</strong><br>   <img src="https://i.bmp.ovh/imgs/2020/11/c65c14d031817b7e.png"></p><p>==处理方式==：暴力删除F节点（不管他是否在其他地方用到），创建一个新的G节点，append到A节点上。</p><p><strong>3. 节点跨层级移动：</strong><br>    <img src="https://i.bmp.ovh/imgs/2020/11/06f09ef16c9da001.png"></p><p>==处理方式==：diff算法直接删除左边B下面的D节点（以及其子树），到了右边，React直接创建一个新的D节点。</p><h4 id="虚拟DOM的两个假设："><a href="#虚拟DOM的两个假设：" class="headerlink" title="虚拟DOM的两个假设："></a>虚拟DOM的两个假设：</h4><p><strong>1、组件的DOM结构是相对稳定的（一般很少出现跨层级移动的情况）</strong></p><p>&emsp;&emsp;跨层级的节点移动，react的diff算法是直接删除。</p><p><strong>2、类型相同的兄弟节点可以被唯一标识（key属性）。</strong></p><hr><h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><ul><li>算法复杂度为O(n)</li><li>虚拟DOM如何计算diff</li><li>key属性的作用</li></ul>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>04-react的生命周期</title>
     <link href="/2020/11/10/04-react%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/"/>
     <url>/2020/11/10/04-react%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/</url>

@@ -17,7 +17,7 @@
   <meta name="description" content="前端小白，升级打怪">
   <meta name="author" content="dorothy">
   <meta name="keywords" content="前端，js,h5,css,react">
-  <title>04-react的生命周期 - Dorothy的博客</title>
+  <title>06-组件设计模式 - Dorothy的博客</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.5.3/css/bootstrap.min.css" />
 
@@ -162,7 +162,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="04-react的生命周期">
+            <span class="h2" id="subtitle" title="06-组件设计模式">
               
             </span>
 
@@ -172,8 +172,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2020-11-10 15:47" pubdate>
-        2020年11月10日 下午
+      <time datetime="2020-11-11 10:36" pubdate>
+        2020年11月11日 上午
       </time>
     </span>
   
@@ -184,7 +184,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      214 字
+      103 字
     </span>
   
 
@@ -194,7 +194,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      2
+      1
        分钟
     </span>
   
@@ -224,49 +224,20 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">04-react的生命周期</h1>
+            <h1 style="display: none">06-组件设计模式</h1>
             
             <div class="markdown-body">
-              <h3 id="React的生命周期图"><a href="#React的生命周期图" class="headerlink" title="React的生命周期图"></a>React的生命周期图</h3><p><img src="https://i.bmp.ovh/imgs/2020/11/32b8163f9eadfd47.png" srcset="/img/loading.gif"></p>
-<p><strong>1.constructor:</strong></p>
+              <h4 id="组件复用的另外两种形式："><a href="#组件复用的另外两种形式：" class="headerlink" title="组件复用的另外两种形式："></a>组件复用的另外两种形式：</h4><p>（除了常规的组件复用之外）</p>
 <ul>
-<li>用于初始化内部状态，很少使用</li>
-<li>唯一可以直接修改state的地方</li>
+<li><strong>高阶组件</strong></li>
+<li><strong>函数作为子组件</strong></li>
 </ul>
-<p><strong>2.getDerivedStateFromProps:</strong></p>
-<ul>
-<li>当state需要从props初始化时使用。</li>
-<li>尽量不要使用：维护两者状态一致性会增加复杂度。</li>
-<li>每次render都会调用。</li>
-<li>典型场景：表单控件获取默认值。</li>
-</ul>
-<p><strong>3.componentDidMount:</strong></p>
-<ul>
-<li>UI渲染完成后调用</li>
-<li>只执行一次</li>
-<li>典型场景：获取外部资源</li>
-</ul>
-<p><strong>4.componeWillUnmout:</strong></p>
-<ul>
-<li>组件移除时被调用</li>
-<li>典型场景：资源释放</li>
-</ul>
-<p><strong>5.getSnapshotBeforeUpdate:</strong></p>
-<ul>
-<li>在页面render之前调用，state已经更新</li>
-<li>典型场景：获取render之前的DOM状态</li>
-</ul>
-<p><strong>6.componentDidUpdate:</strong></p>
-<ul>
-<li>每次UI更新时被调用</li>
-<li>典型场景：页面需要根据props变化重新获取数据</li>
-</ul>
-<p><strong>7.shouldComponentUpdate:</strong></p>
-<ul>
-<li>决定Vitual DOM是否重绘</li>
-<li>一般由PureComponent自动实现</li>
-<li>典型场景：性能优化</li>
-</ul>
+<h5 id="1-高阶组件"><a href="#1-高阶组件" class="headerlink" title="1.高阶组件"></a>1.高阶组件</h5><p><img src="https://i.bmp.ovh/imgs/2020/11/f50691752374e779.png" srcset="/img/loading.gif"></p>
+<p>具体参见：<a target="_blank" rel="noopener" href="https://zh-hans.reactjs.org/docs/higher-order-components.html">React官方文档–高阶组件</a></p>
+<h5 id="2-函数作为子组件"><a href="#2-函数作为子组件" class="headerlink" title="2.函数作为子组件"></a>2.函数作为子组件</h5><p><img src="https://i.bmp.ovh/imgs/2020/11/17246cbcf6e05f4d.png" srcset="/img/loading.gif"></p>
+<p><strong>总结：</strong></p>
+<p>1、高阶组件和函数作为子组件都是设计模式（并不是新的组件类型）</p>
+<p>2、可以实现更多场景的组件复用</p>
 
             </div>
             <hr>
@@ -283,9 +254,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/11/11/05-%E7%90%86%E8%A7%A3VirtualDOM%E5%8F%8Akey%E5%B1%9E%E6%80%A7%E7%9A%84%E4%BD%9C%E7%94%A8/">
+                      <a href="/2020/11/11/07-%E7%90%86%E8%A7%A3%E6%96%B0%E7%9A%84ContextAPI%E5%8F%8A%E5%85%B6%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">05-理解VirtualDOM及key属性的作用</span>
+                        <span class="hidden-mobile">07-理解新的ContextAPI及其使用场景</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -293,8 +264,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/11/10/03-JSX%E7%9A%84%E6%9C%AC%E8%B4%A8%E6%98%AF%E8%AF%AD%E6%B3%95%E7%B3%96/">
-                        <span class="hidden-mobile">03-JSX的本质是语法糖</span>
+                      <a href="/2020/11/11/05-%E7%90%86%E8%A7%A3VirtualDOM%E5%8F%8Akey%E5%B1%9E%E6%80%A7%E7%9A%84%E4%BD%9C%E7%94%A8/">
+                        <span class="hidden-mobile">05-理解VirtualDOM及key属性的作用</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
