@@ -17,7 +17,7 @@
   <meta name="description" content="前端小白，升级打怪">
   <meta name="author" content="dorothy">
   <meta name="keywords" content="前端，js,h5,css,react">
-  <title>07-理解新的ContextAPI及其使用场景 - Dorothy的博客</title>
+  <title>09-打包和部署 - Dorothy的博客</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.5.3/css/bootstrap.min.css" />
 
@@ -162,7 +162,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="07-理解新的ContextAPI及其使用场景">
+            <span class="h2" id="subtitle" title="09-打包和部署">
               
             </span>
 
@@ -172,8 +172,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2020-11-11 16:28" pubdate>
-        2020年11月11日 下午
+      <time datetime="2020-11-12 16:35" pubdate>
+        2020年11月12日 下午
       </time>
     </span>
   
@@ -184,7 +184,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      991 字
+      84 字
     </span>
   
 
@@ -194,7 +194,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      11
+      1
        分钟
     </span>
   
@@ -224,79 +224,17 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">07-理解新的ContextAPI及其使用场景</h1>
+            <h1 style="display: none">09-打包和部署</h1>
             
             <div class="markdown-body">
-              <p><strong>Context解决的是：组件之间的通信问题</strong></p>
-<p>Context提供了一个无需为每层组件手动添加props,就能在组件树间进行数据传递的方法。</p>
-<p><img src="https://i.bmp.ovh/imgs/2020/11/c51c0b02a804b0fb.png" srcset="/img/loading.gif"></p>
-<h4 id="1-设计目的"><a href="#1-设计目的" class="headerlink" title="1.设计目的"></a>1.设计目的</h4><p>&emsp;Context设计的目的：为了共享那些对于一个组件树而言是“全局”的数据，例如当前认证的用户、主题或者首选语言。<br>&emsp;在一个典型的React应用中，数据是通过props属性自上而下（由父亲到儿子）进行传递的，但是这种做法对于某些属性是及其繁琐的（比如上文说的UI主题，），这些属性是应用程序中许多组件都需要的。</p>
-<p><strong>==&gt;</strong> 所以，Context被设计出来，提供了一种在组件间共享“全局”数据的方式，从而不必显示地通过组件树逐层地传递props.</p>
-<h4 id="2-使用Context前的考虑"><a href="#2-使用Context前的考虑" class="headerlink" title="2.使用Context前的考虑"></a>2.使用Context前的考虑</h4><p><strong>Context主要应用场景</strong>：很多不同层级之间的组件需要访问同样的一些数据。(但是需要谨慎使用，因为这会让组件的复用性变差。)<br>如果只是想避免层层传递一些属性，<a target="_blank" rel="noopener" href="https://zh-hans.reactjs.org/docs/composition-vs-inheritance.html">组件组合（component composition）</a>有时是一个比Context更好的解决方案。</p>
-<h4 id="3-相关的API"><a href="#3-相关的API" class="headerlink" title="3.相关的API"></a>3.相关的API</h4><p> <strong><em>(1) React.createContext</em></strong><br>  <pre><code class="hljs js"><span class="hljs-keyword">const</span> MyContext = React.createContext(defaultValue);</code></pre></p>
-<ul>
-<li>createContext函数创建一个Context对象，当React渲染一个订阅了这个Context对象的组件时，这个组件会从组件树中离自身最近的匹配到的Provider中读取当前的context值。<br>…</li>
-<li><em>defaultValue</em>: 只有当组件所处的组件树中没有匹配到Provider时，其defaultValue参数才起作用。即使Provider中的value值是”undefined”，消费组件的defaultValue也不会生效。<br>（defaultValue有助于在不使用Provider包装组件的情况下，对组件进行测试）</li>
+              <h4 id="一-为什么需要打包"><a href="#一-为什么需要打包" class="headerlink" title="一.为什么需要打包?"></a>一.为什么需要打包?</h4><ul>
+<li>1.编译ES6语法特性，编译JSX</li>
+<li>2.整合资源，例如图片svg,Less/Sass</li>
+<li>3.优化代码体积</li>
 </ul>
-<p><strong><em>(2)Context.Provider</em></strong></p>
-<pre><code class="hljs js">&lt;MyContext.Provider value=&#123;<span class="hljs-comment">/*某个值*/</span>&#125;&gt;</code></pre>
-<ul>
-<li><p>每个Context对象都会返回一个Provider React组件，它允许消费组件订阅context的变化。</p>
-</li>
-<li><p>一个Provider可以和多个消费组件有对应关系。多个Provider也可以嵌套使用，里面的会覆盖外层的数据。</p>
-</li>
-<li><p>Provider有一个value属性，传递给消费组件。当value值发生变化时，Provider内部的所有消费组件都会重新渲染。<br>（Provider及其内部的消费组件都不受制于shouldComponentUpdate函数，所以当消费组件在其祖先组件推出更新的情况下也能更新）</p>
-</li>
-<li><p>通过新旧值检测确定变化，使用了和 Object.is相同的算法。</p>
-</li>
-</ul>
-<p><strong><em>(3) Class.contextType</em></strong></p>
-<pre><code class="hljs js"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyClass</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>&#123;
-  <span class="hljs-function"><span class="hljs-title">componentDidMount</span>(<span class="hljs-params"></span>)</span> &#123;
-    <span class="hljs-keyword">let</span> value = <span class="hljs-built_in">this</span>.context;
-    <span class="hljs-comment">/* 在组件挂载完成后，使用 MyContext 组件的值来执行一些有副作用的操作 */</span>
-  &#125;
-  <span class="hljs-function"><span class="hljs-title">componentDidUpdate</span>(<span class="hljs-params"></span>)</span> &#123;
-    <span class="hljs-keyword">let</span> value = <span class="hljs-built_in">this</span>.context;
-    <span class="hljs-comment">/* ... */</span>
-  &#125;
-  <span class="hljs-function"><span class="hljs-title">componentWillUnmount</span>(<span class="hljs-params"></span>)</span> &#123;
-    <span class="hljs-keyword">let</span> value = <span class="hljs-built_in">this</span>.context;
-    <span class="hljs-comment">/* ... */</span>
-  &#125;
-  <span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params"></span>)</span> &#123;
-    <span class="hljs-keyword">let</span> value = <span class="hljs-built_in">this</span>.context;
-    <span class="hljs-comment">/* 基于 MyContext 组件的值进行渲染 */</span>
-  &#125;
-&#125;
-MyClass.contextType = MyContext;</code></pre>
-<ul>
-<li>挂载在class上的contextType属性会被重新赋值为一个由React.createContext()创建的Context对象。所以使用this.context可以消费最近Context上的那个值，我们可以任何生命周期访问到this.context，包括render函数。</li>
-<li>通过class.contextType只能订阅一个context</li>
-</ul>
-<p><strong><em>(4) Context.Consumer</em></strong></p>
-<pre><code class="hljs js">&lt;MyContext.Consumer&gt;
-    &#123;<span class="hljs-function"><span class="hljs-params">value</span>=&gt;</span><span class="hljs-comment">/*基于context值进行渲染*/</span>&#125;
-&lt;/MyContext.Consumer&gt;</code></pre>
-
-<ul>
-<li><p>这是一个可以订阅context的变更的React组件，它在函数式组件中可以订阅一个context。</p>
-</li>
-<li><p>这种方法需要一个<a target="_blank" rel="noopener" href="https://zh-hans.reactjs.org/docs/render-props.html#using-props-other-than-render">函数作为子元素（function as a child)</a>,这个函数接收当前的context值，并返回一个React节点。</p>
-</li>
-<li><p> 传递给Consumer的value值也就是组件树上方离context最近的Provider提供的value值，如果没有对应的Provider,就用createContext()中的defaultValue.</p>
-</li>
-</ul>
-<p><strong><em>(5) Context.displayName</em></strong></p>
-<p>示例，下述组件在DevTools中将是显示MyDisplayName:</p>
-<pre><code class="hljs js"><span class="hljs-keyword">const</span> MyContext = React.createContext(<span class="hljs-comment">/*some value*/</span>);
-MyContext.displayName = <span class="hljs-string">&#x27;MyDisplayName&#x27;</span>;
-&lt;MyContext.Provider&gt; <span class="hljs-comment">// &quot;MyDisplayName.Provider&quot; 在 DevTools 中</span>
-&lt;MyContext.Consumer&gt; <span class="hljs-comment">// &quot;MyDisplayName.Consumer&quot; 在 DevTools 中</span></code></pre>
-
-<ul>
-<li>context对象接受一个名为displayName的属性，类型为字符串。React DevTools使用该字符串来确定context要显示的内容。</li>
-</ul>
+<p><img src="https://i.bmp.ovh/imgs/2020/11/ef5409f73d9ca563.png" srcset="/img/loading.gif"></p>
+<h4 id="二-打包注意事项"><a href="#二-打包注意事项" class="headerlink" title="二.打包注意事项:"></a>二.打包注意事项:</h4><p>1.设置node.js环境为production<br>2.禁止开发时专用代码，比如logger<br>3.设置应用根路径</p>
+<p>npm run build 执行的就是打包过程。</p>
 
             </div>
             <hr>
@@ -313,18 +251,12 @@ MyContext.displayName = <span class="hljs-string">&#x27;MyDisplayName&#x27;</spa
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/11/12/08-%E4%BD%BF%E7%94%A8%E8%84%9A%E6%89%8B%E6%9E%B6%E5%B7%A5%E5%85%B7%E5%88%9B%E5%BB%BAReact%E9%A1%B9%E7%9B%AE/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">08-使用脚手架工具创建React项目</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/11/11/06-%E7%BB%84%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">
-                        <span class="hidden-mobile">06-组件设计模式</span>
+                      <a href="/2020/11/12/08-%E4%BD%BF%E7%94%A8%E8%84%9A%E6%89%8B%E6%9E%B6%E5%B7%A5%E5%85%B7%E5%88%9B%E5%BB%BAReact%E9%A1%B9%E7%9B%AE/">
+                        <span class="hidden-mobile">08-使用脚手架工具创建React项目</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
