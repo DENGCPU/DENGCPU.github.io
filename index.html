@@ -181,6 +181,41 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2020/11/16/11-redux%E4%B9%8B%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%B8%8E%E5%BC%82%E6%AD%A5%E6%93%8D%E4%BD%9C/">11-redux之中间件与异步操作</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/11/16/11-redux%E4%B9%8B%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%B8%8E%E5%BC%82%E6%AD%A5%E6%93%8D%E4%BD%9C/">
+          
+          
+            
+          
+          第10篇文章里，介绍了redux的基本做法：用户发出Action, Reducer函数算出新的State，View重新渲染。但是异步操作应该怎么处理呢？Action发出以后，Reducer立即算出新的State, 这就叫做同步；Action发出后，过一段时间再执行Reducer,这就叫做异步。怎么才能让reducer在异步操作结束后自动执行呢？这就要用到新的工具： 中间件（middleware）
+
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-11-16 20:26" pubdate>
+              2020-11-16
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2020/11/16/010-%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E5%BA%93Redux/">010-状态管理库Redux</a>
       </h1>
 
@@ -554,46 +589,6 @@ const element=&lt;h1&gt;hello,&#123;name&#125;&lt;/h1&gt;
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
             <time datetime="2020-11-10 15:03" pubdate>
-              2020-11-10
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2020/11/10/01-React%E7%9A%84%E5%8E%86%E5%8F%B2%E8%83%8C%E6%99%AF/">React的历史背景及特点</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/11/10/01-React%E7%9A%84%E5%8E%86%E5%8F%B2%E8%83%8C%E6%99%AF/">
-          
-          
-            
-          
-          1. React 出现的历史背景A.UI方面的——传统WebUI存在的问题：
-
-传统UI关注太多的细节
-应用程序的状态分散在各处，难以追踪和维护
-
-=&gt; React的解决方案：react 始终整体”刷新”页面，无需关心细节。它只判断前后两个状态是否变化，并不关注背后的哪个细节发生了变化。
-B.数据方面的——传统的MVC难以扩展和维护，太多的model和view，关系错综复杂且双向绑定，当出现
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-11-10 09:52" pubdate>
               2020-11-10
             </time>
           </div>
