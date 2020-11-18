@@ -17,7 +17,7 @@
   <meta name="description" content="前端小白，升级打怪">
   <meta name="author" content="dorothy">
   <meta name="keywords" content="前端，js,h5,css,react">
-  <title>02-react以组件方式考虑UI的构建 - Dorothy的博客</title>
+  <title>13-React-Router:路由不只是页面切换，更是代码组织方式 - Dorothy的博客</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.5.3/css/bootstrap.min.css" />
 
@@ -162,7 +162,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="02-react以组件方式考虑UI的构建">
+            <span class="h2" id="subtitle" title="13-React-Router:路由不只是页面切换，更是代码组织方式">
               
             </span>
 
@@ -172,8 +172,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2020-11-10 15:03" pubdate>
-        2020年11月10日 下午
+      <time datetime="2020-11-17 15:34" pubdate>
+        2020年11月17日 下午
       </time>
     </span>
   
@@ -184,7 +184,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      127 字
+      165 字
     </span>
   
 
@@ -224,17 +224,28 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">02-react以组件方式考虑UI的构建</h1>
+            <h1 style="display: none">13-React-Router:路由不只是页面切换，更是代码组织方式</h1>
             
             <div class="markdown-body">
-              <p><img src="https://i.bmp.ovh/imgs/2020/11/b28d10e0a2054aec.png" srcset="/img/loading.gif"></p>
-<p><strong>一、构建一个组件需要考虑的三件事情：</strong></p>
-<p>1、组件的UI( 一些外在的表现形式 )<br>2、组件的状态管理（放在哪？）<br>3、组件的交互</p>
-<p><img src="https://i.bmp.ovh/imgs/2020/11/f878479d2f41ffb4.png" srcset="/img/loading.gif"></p>
-<p><strong>二、何时创建组件：单一职责原则</strong></p>
-<p>1、一个组件只负责一个功能<br>2、复杂的组件应该进行拆分</p>
-<p><strong>三、数据状态管理原则：DRY原则</strong></p>
-<p>1.能计算得到的状态不应该单独存储<br>2.组件尽量无状态，尽量通过props获取.</p>
+              <h3 id="一、为什么需要路由？"><a href="#一、为什么需要路由？" class="headerlink" title="一、为什么需要路由？"></a>一、为什么需要路由？</h3><ul>
+<li>1.单页应用需要进行页面切换</li>
+<li>2.通过URL可以定位到页面</li>
+<li>3.更有语义的组织资源</li>
+</ul>
+<p><img src="https://pic.downk.cc/item/5fb37daab18d62711306e930.jpg" srcset="/img/loading.gif"></p>
+<p><img src="https://pic.downk.cc/item/5fb37e3cb18d6271130703a8.jpg" srcset="/img/loading.gif"></p>
+<h3 id="二、React-Router的特性："><a href="#二、React-Router的特性：" class="headerlink" title="二、React-Router的特性："></a>二、React-Router的特性：</h3><p>1、声明式路由定义<br>2、动态路由：页面render时，path才会被解析</p>
+<h3 id="三、实现路由的三种方式"><a href="#三、实现路由的三种方式" class="headerlink" title="三、实现路由的三种方式"></a>三、实现路由的三种方式</h3><p>1、URL路由<br>2、Hash路由： #+ 路径，支持低版本<br>3、内存路由：MemoryRouter，服务器端渲染</p>
+<h3 id="四、基于路由配置进行资源组织"><a href="#四、基于路由配置进行资源组织" class="headerlink" title="四、基于路由配置进行资源组织"></a>四、基于路由配置进行资源组织</h3><p>1、实现业务逻辑的松耦合<br>2、易于扩展，重构和维护<br>3、路由层面实现Lazy Load</p>
+<h3 id="五、React-Router-的几个API"><a href="#五、React-Router-的几个API" class="headerlink" title="五、React-Router 的几个API"></a>五、React-Router 的几个API</h3><p><img src="https://pic.downk.cc/item/5fb37fdab18d627113075987.jpg" srcset="/img/loading.gif"></p>
+<p><img src="https://pic.downk.cc/item/5fb37feeb18d627113075f96.jpg" srcset="/img/loading.gif"></p>
+<p><img src="https://pic.downk.cc/item/5fb38003b18d627113076520.jpg" srcset="/img/loading.gif"></p>
+<p><img src="https://pic.downk.cc/item/5fb38032b18d627113076f40.jpg" srcset="/img/loading.gif"></p>
+<p><img src="https://pic.downk.cc/item/5fb38056b18d627113077657.jpg" srcset="/img/loading.gif"></p>
+<p><img src="https://pic.downk.cc/item/5fb380a8b18d627113078667.jpg" srcset="/img/loading.gif"></p>
+<h3 id="六、通过URL传递参数"><a href="#六、通过URL传递参数" class="headerlink" title="六、通过URL传递参数"></a>六、通过URL传递参数</h3><p><img src="https://pic.downk.cc/item/5fb3827bb18d62711307e56e.jpg" srcset="/img/loading.gif"></p>
+<p><img src="https://pic.downk.cc/item/5fb3834eb18d627113081472.jpg" srcset="/img/loading.gif"></p>
+<p><img src="https://pic.downk.cc/item/5fb3842ab18d627113084eaf.jpg" srcset="/img/loading.gif"></p>
 
             </div>
             <hr>
@@ -251,18 +262,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/11/10/03-JSX%E7%9A%84%E6%9C%AC%E8%B4%A8%E6%98%AF%E8%AF%AD%E6%B3%95%E7%B3%96/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">03-JSX的本质是语法糖</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/11/10/01-React%E7%9A%84%E5%8E%86%E5%8F%B2%E8%83%8C%E6%99%AF/">
-                        <span class="hidden-mobile">01-React的历史背景及特点</span>
+                      <a href="/2020/11/17/12-Redux%E5%9C%A8Rect%E4%B8%AD%E7%9A%84%E7%94%A8%E6%B3%95/">
+                        <span class="hidden-mobile">12-Redux在Rect中的用法</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
