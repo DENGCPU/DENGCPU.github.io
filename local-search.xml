@@ -4,6 +4,76 @@
   
   
   <entry>
+    <title>16-使用Jest和Enzyme等工具进行单元测试</title>
+    <link href="/2020/11/18/16-%E4%BD%BF%E7%94%A8Jest%E5%92%8CEnzyme%E7%AD%89%E5%B7%A5%E5%85%B7%E8%BF%9B%E8%A1%8C%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/"/>
+    <url>/2020/11/18/16-%E4%BD%BF%E7%94%A8Jest%E5%92%8CEnzyme%E7%AD%89%E5%B7%A5%E5%85%B7%E8%BF%9B%E8%A1%8C%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/</url>
+    
+    <content type="html"><![CDATA[<h3 id="一、React让前端单元测试变得容易："><a href="#一、React让前端单元测试变得容易：" class="headerlink" title="一、React让前端单元测试变得容易："></a>一、React让前端单元测试变得容易：</h3><p>1、React应用很少需要访问浏览器API<br>2、虚拟DOM可以在NodeJS环境运行和测试<br>3、Redux隔离了状态管理，纯数据层单元测试</p><h3 id="二、单元测试涉及的工具"><a href="#二、单元测试涉及的工具" class="headerlink" title="二、单元测试涉及的工具"></a>二、单元测试涉及的工具</h3><p>1、Jest: FaceBook开源的JS单元测试框架<br>2、JS DOM： 浏览器环境的NodeJS模拟<br>3、Enzyme： react组件渲染和测试<br>4、nock： 模拟HTTP请求<br>5、sinon： 函数模拟和调用跟踪<br>6、istanbul: 单元测试覆盖率（对已有方法修改和埋点）</p><p><img src="https://pic.downk.cc/item/5fb4bc4cb18d62711351ecbc.jpg"></p><p><img src="https://pic.downk.cc/item/5fb4bc5fb18d62711351f09e.jpg"></p><p><img src="https://pic.downk.cc/item/5fb4bc9db18d62711351fc16.jpg"></p><p><img src="https://pic.downk.cc/item/5fb4bdf1b18d6271135241c2.jpg"></p><p><img src="https://pic.downk.cc/item/5fb4be5eb18d627113525540.jpg"></p><p><img src="https://pic.downk.cc/item/5fb4bef6b18d627113527125.jpg"></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>极客时间React教程</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>单元测试工具</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>15-使用Next.js</title>
+    <link href="/2020/11/18/15-%E4%BD%BF%E7%94%A8Next-js/"/>
+    <url>/2020/11/18/15-%E4%BD%BF%E7%94%A8Next-js/</url>
+    
+    <content type="html"><![CDATA[<p>使用next.js开发React项目的同构应用。</p><h3 id="一、什么是同构应用？"><a href="#一、什么是同构应用？" class="headerlink" title="一、什么是同构应用？"></a>一、什么是同构应用？</h3><p><img src="https://pic.downk.cc/item/5fb4b6adb18d62711350daf9.jpg"></p><p>next.js可以自动配置好同构应用的webpack配置等细节。</p><h3 id="二、next的基本用法"><a href="#二、next的基本用法" class="headerlink" title="二、next的基本用法"></a>二、next的基本用法</h3><p><img src="https://pic.downk.cc/item/5fb4b787b18d62711350fce5.jpg"></p><p><strong>在页面中使用其他的React组件：</strong></p><p>1、页面也是标准的node模块，可使用其他的React组件 （放在components目录下面）<br>2、页面会针对性打包， 仅包含起引入的组件。</p><p><img src="https://pic.downk.cc/item/5fb4b95bb18d627113515a13.jpg"></p><p>🐖：prefetch并不会预加载服务器端的数据</p><p><strong>关于lazy load:</strong><br><img src="https://pic.downk.cc/item/5fb4ba11b18d627113517eef.jpg"></p>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>14-UI组件库的对比</title>
+    <link href="/2020/11/18/14-UI%E7%BB%84%E4%BB%B6%E5%BA%93%E7%9A%84%E5%AF%B9%E6%AF%94/"/>
+    <url>/2020/11/18/14-UI%E7%BB%84%E4%BB%B6%E5%BA%93%E7%9A%84%E5%AF%B9%E6%AF%94/</url>
+    
+    <content type="html"><![CDATA[<h3 id="一、Ant-Design"><a href="#一、Ant-Design" class="headerlink" title="一、Ant Design"></a>一、Ant Design</h3><p>服务于企业级产品的设计体系，有完善的文档</p><h3 id="二、Marterial-UI"><a href="#二、Marterial-UI" class="headerlink" title="二、Marterial-UI"></a>二、Marterial-UI</h3><p>风格更时尚，更花哨，面向消费者</p><h3 id="三、Semantic-UI"><a href="#三、Semantic-UI" class="headerlink" title="三、Semantic UI"></a>三、Semantic UI</h3><p>把UI作为language描述，提供了不同library的实现。</p><p><strong>选择UI库的考虑因素：</strong></p><ul><li>1、组件库是否齐全</li><li>2、样式风格是否符合业务需求</li><li>3、API的设计是否便捷灵活</li><li>4、技术支持是否完善（文档，issue）</li><li>5、开发是否活跃（维护，迭代）</li></ul>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>bug记录</title>
+    <link href="/2020/11/18/bug%E8%AE%B0%E5%BD%95/"/>
+    <url>/2020/11/18/bug%E8%AE%B0%E5%BD%95/</url>
+    
+    <content type="html"><![CDATA[<h3 id="1、-Error-“Objects-are-not-valid-as-a-React-child”"><a href="#1、-Error-“Objects-are-not-valid-as-a-React-child”" class="headerlink" title="1、 Error: “Objects are not valid as a React child”"></a>1、 Error: “Objects are not valid as a React child”</h3><p>在redux的练习中，blog这个demo报了这个错：</p><p><img src="https://pic.downk.cc/item/5fb48937b18d62711347d6df.jpg"></p><p>原代码：</p><pre><code class="hljs js"><span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> jsonPlaceholder.get(<span class="hljs-string">`/users/<span class="hljs-subst">$&#123;id&#125;</span>`</span>);dispatch(&#123; <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;FETCH_USER&quot;</span>, <span class="hljs-attr">payload</span>: response.data &#125;);</code></pre><p>打开访问的API后发现，response.data是个object类型，不能直接赋值给payload<br>应该先通过JSON.stringify()将其转换为JSON格式，再进行赋值。</p><p>修改后的代码如下：</p><pre><code class="hljs js"><span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> jsonPlaceholder.get(<span class="hljs-string">`/users/<span class="hljs-subst">$&#123;id&#125;</span>`</span>);<span class="hljs-keyword">const</span> data = <span class="hljs-built_in">JSON</span>.stringify(response.data);dispatch(&#123; <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;FETCH_USER&quot;</span>, <span class="hljs-attr">payload</span>: data &#125;);</code></pre>]]></content>
+    
+    
+    <categories>
+      
+      <category>bug汇总</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>13-React-Router:路由不只是页面切换，更是代码组织方式</title>
     <link href="/2020/11/17/13-React-Router-%E8%B7%AF%E7%94%B1%E4%B8%8D%E5%8F%AA%E6%98%AF%E9%A1%B5%E9%9D%A2%E5%88%87%E6%8D%A2%EF%BC%8C%E6%9B%B4%E6%98%AF%E4%BB%A3%E7%A0%81%E7%BB%84%E7%BB%87%E6%96%B9%E5%BC%8F/"/>
     <url>/2020/11/17/13-React-Router-%E8%B7%AF%E7%94%B1%E4%B8%8D%E5%8F%AA%E6%98%AF%E9%A1%B5%E9%9D%A2%E5%88%87%E6%8D%A2%EF%BC%8C%E6%9B%B4%E6%98%AF%E4%BB%A3%E7%A0%81%E7%BB%84%E7%BB%87%E6%96%B9%E5%BC%8F/</url>

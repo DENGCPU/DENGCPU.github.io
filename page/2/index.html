@@ -181,6 +181,177 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2020/11/11/07-%E7%90%86%E8%A7%A3%E6%96%B0%E7%9A%84ContextAPI%E5%8F%8A%E5%85%B6%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/">07-理解新的ContextAPI及其使用场景</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/11/11/07-%E7%90%86%E8%A7%A3%E6%96%B0%E7%9A%84ContextAPI%E5%8F%8A%E5%85%B6%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/">
+          
+          
+            
+          
+          Context解决的是：组件之间的通信问题
+Context提供了一个无需为每层组件手动添加props,就能在组件树间进行数据传递的方法。
+
+1.设计目的&emsp;Context设计的目的：为了共享那些对于一个组件树而言是“全局”的数据，例如当前认证的用户、主题或者首选语言。&emsp;在一个典型的React应用中，数据是通过props属性自上而下（由父亲到儿子）进行传递的，但是这种做法对于某些属
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-11-11 16:28" pubdate>
+              2020-11-11
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/11/11/06-%E4%B8%A4%E7%A7%8D%E7%BB%84%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">06-两种组件设计模式</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/11/11/06-%E4%B8%A4%E7%A7%8D%E7%BB%84%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">
+          
+          
+            
+          
+          组件复用的另外两种形式：（除了常规的组件复用之外）
+
+高阶组件
+函数作为子组件
+
+一.高阶组件
+高阶组件(HOC) 是React中复用组件逻辑的一种高级技巧，它本身不是React API的一部分，而是基于React的组合特性形成的一种设计模式。高阶组件以组件为参数，并返回一个新组件。
+const EnhancedComponent = higherOrderComponent(WrappedCom
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-11-11 10:36" pubdate>
+              2020-11-11
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/11/11/05-%E7%90%86%E8%A7%A3VirtualDOM%E5%8F%8Akey%E5%B1%9E%E6%80%A7%E7%9A%84%E4%BD%9C%E7%94%A8/">05-理解VirtualDOM及key属性的作用</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/11/11/05-%E7%90%86%E8%A7%A3VirtualDOM%E5%8F%8Akey%E5%B1%9E%E6%80%A7%E7%9A%84%E4%BD%9C%E7%94%A8/">
+          
+          
+            
+          
+          JSX的基础：虚拟DOM
+
+
+从根节点开始比较，针对不同情况，diff算法有不同的处理方式：
+1. 属性变化及顺序：   
+==处理方式==：根据key属性，交换A与B的位置
+2. 节点类型发生变化：   
+==处理方式==：暴力删除F节点（不管他是否在其他地方用到），创建一个新的G节点，append到A节点上。
+3. 节点跨层级移动：    
+==处理方式==：diff算法直接删除左边B下面的D
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-11-11 09:52" pubdate>
+              2020-11-11
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/11/10/04-react%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/">04-react的生命周期</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/11/10/04-react%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/">
+          
+          
+            
+          
+          React的生命周期图
+1.constructor:
+
+用于初始化内部状态，很少使用
+唯一可以直接修改state的地方
+
+2.getDerivedStateFromProps:
+
+当state需要从props初始化时使用。
+尽量不要使用：维护两者状态一致性会增加复杂度。
+每次render都会调用。
+典型场景：表单控件获取默认值。
+
+3.componentDidMount:
+
+UI渲染完成后调用
+只
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-11-10 15:47" pubdate>
+              2020-11-10
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2020/11/10/03-JSX%E7%9A%84%E6%9C%AC%E8%B4%A8%E6%98%AF%E8%AF%AD%E6%B3%95%E7%B3%96/">03-JSX的本质是语法糖</a>
       </h1>
 
