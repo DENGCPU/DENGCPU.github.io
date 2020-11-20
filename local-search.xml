@@ -4,11 +4,49 @@
   
   
   <entry>
+    <title>23-在React中实现列表页</title>
+    <link href="/2020/11/20/23-%E5%9C%A8React%E4%B8%AD%E5%AE%9E%E7%8E%B0%E5%88%97%E8%A1%A8%E9%A1%B5/"/>
+    <url>/2020/11/20/23-%E5%9C%A8React%E4%B8%AD%E5%AE%9E%E7%8E%B0%E5%88%97%E8%A1%A8%E9%A1%B5/</url>
+    
+    <content type="html"><![CDATA[<h4 id="一、列表页：搜索、数据缓存和分页"><a href="#一、列表页：搜索、数据缓存和分页" class="headerlink" title="一、列表页：搜索、数据缓存和分页"></a>一、列表页：搜索、数据缓存和分页</h4><p>开发列表页需要考虑的技术要点：</p><ul><li>如何翻页</li><li>如何进行内容搜索</li><li>如何缓存数据</li><li>何时进行页面刷新</li></ul><p><img src="https://pic.downk.cc/item/5fb76b52b18d627113ee2145.jpg" alt="列表页的数据模型"></p><p><img src="https://pic.downk.cc/item/5fb76b8eb18d627113ee2fe8.jpg" alt="Store的设计"></p><p><img src="https://pic.downk.cc/item/5fb76ccbb18d627113ee8a4b.jpg" alt="URL设计和Store同步"></p><h4 id="二、列表页：缓存更新、加载状态以及错误处理"><a href="#二、列表页：缓存更新、加载状态以及错误处理" class="headerlink" title="二、列表页：缓存更新、加载状态以及错误处理"></a>二、列表页：缓存更新、加载状态以及错误处理</h4><p><img src="https://pic.downk.cc/item/5fb76f47b18d627113ef65f6.jpg"></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>极客时间React教程</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>22-在React中实现表单</title>
+    <link href="/2020/11/20/22-%E5%9C%A8React%E4%B8%AD%E5%AE%9E%E7%8E%B0%E8%A1%A8%E5%8D%95/"/>
+    <url>/2020/11/20/22-%E5%9C%A8React%E4%B8%AD%E5%AE%9E%E7%8E%B0%E8%A1%A8%E5%8D%95/</url>
+    
+    <content type="html"><![CDATA[<h4 id="一、实现表单：初始数据、提交和跳转"><a href="#一、实现表单：初始数据、提交和跳转" class="headerlink" title="一、实现表单：初始数据、提交和跳转"></a>一、实现表单：初始数据、提交和跳转</h4><p>1、单纯使用React的方式实现表单</p><p><img src="https://pic.downk.cc/item/5fb76076b18d627113eb2a31.jpg"></p><p>🐖：是在form中编辑onSubmit，而不是在button的点击事件里提交，这样即使你点回车也会进行提交（给出错误提示）</p><p>可以发现这样实现表单是比较麻烦的！</p><p>2、使用UI library实现表单（比如Antd)</p><p>具体参照：<a href="https://ant.design/components/form-cn/#header">Antd-Form表单</a></p><p>3、可以对API进行封装</p><h4 id="二、实现表单：错误处理、动态操作表单元素，内容动态加载"><a href="#二、实现表单：错误处理、动态操作表单元素，内容动态加载" class="headerlink" title="二、实现表单：错误处理、动态操作表单元素，内容动态加载"></a>二、实现表单：错误处理、动态操作表单元素，内容动态加载</h4><p>以Antd为例：一个demo<br><a href="https://codesandbox.io/s/6n20nrzlxz?file=/src/c29/FormBuilder.js">https://codesandbox.io/s/6n20nrzlxz?file=/src/c29/FormBuilder.js</a></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>极客时间React教程</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>21-ReactRouter管理登录和授权</title>
     <link href="/2020/11/20/21-ReactRouter%E7%AE%A1%E7%90%86%E7%99%BB%E5%BD%95%E5%92%8C%E6%8E%88%E6%9D%83/"/>
     <url>/2020/11/20/21-ReactRouter%E7%AE%A1%E7%90%86%E7%99%BB%E5%BD%95%E5%92%8C%E6%8E%88%E6%9D%83/</url>
     
-    <content type="html"><![CDATA[]]></content>
+    <content type="html"><![CDATA[<h3 id="使用React-Router-管理路由授权"><a href="#使用React-Router-管理路由授权" class="headerlink" title="使用React-Router 管理路由授权"></a>使用React-Router 管理路由授权</h3><p>1、实现基础：React Router的动态路由机制<br>2、区分受保护路由和公开路由<br>3、访问未授权路由时重定向到登录页面或显示禁止访问</p>]]></content>
     
     
     <categories>
