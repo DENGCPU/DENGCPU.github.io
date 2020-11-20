@@ -181,6 +181,209 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2020/11/17/12-Redux%E5%9C%A8Rect%E4%B8%AD%E7%9A%84%E7%94%A8%E6%B3%95/">12-Redux在Rect中的用法</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/11/17/12-Redux%E5%9C%A8Rect%E4%B8%AD%E7%9A%84%E7%94%A8%E6%B3%95/">
+          
+          
+            
+          
+          &emsp;为了方便在react中使用redux, Redux的作者封装了一个React专用的库React-Redux.
+&emsp;这个库是可选的，在实际项目中应该权衡下是直接使用redux还是使用React-Redux。后者虽然方便，但是要掌握额外的API，并且要遵守它的组件拆分规则。
+一、UI组件&emsp;React-Redux将所有组件分为两大类：
+
+UI组件（presentationa
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-11-17 08:29" pubdate>
+              2020-11-17
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/11/16/11-redux%E4%B9%8B%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%B8%8E%E5%BC%82%E6%AD%A5%E6%93%8D%E4%BD%9C/">11-redux之中间件与异步操作</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/11/16/11-redux%E4%B9%8B%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%B8%8E%E5%BC%82%E6%AD%A5%E6%93%8D%E4%BD%9C/">
+          
+          
+            
+          
+          第10篇文章里，介绍了redux的基本做法：用户发出Action, Reducer函数算出新的State，View重新渲染。但是异步操作应该怎么处理呢？Action发出以后，Reducer立即算出新的State, 这就叫做同步；Action发出后，过一段时间再执行Reducer,这就叫做异步。怎么才能让reducer在异步操作结束后自动执行呢？这就要用到新的工具： 中间件（middleware）
+
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-11-16 20:26" pubdate>
+              2020-11-16
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/11/16/010-%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E5%BA%93Redux/">010-状态管理库Redux</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/11/16/010-%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E5%BA%93Redux/">
+          
+          
+            
+          
+          一、React为何需要状态管理库
+组件之间通信非常麻烦，有了redux把状态单独拧出来，组件通信就变得简单了。
+Redux的特性：
+
+1、Single Source of Truth
+
+&emsp;传统的MVC架构：一个view可能对应多个model,一个model也可能对应多个view,关系错综复杂，这样一旦出现错误很难追踪。
+&emsp;Redux的结构：只有一个Store,出现错误容易追踪。
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-11-16 09:33" pubdate>
+              2020-11-16
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/11/12/09-%E6%89%93%E5%8C%85%E5%92%8C%E9%83%A8%E7%BD%B2/">09-打包和部署</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/11/12/09-%E6%89%93%E5%8C%85%E5%92%8C%E9%83%A8%E7%BD%B2/">
+          
+          
+            
+          
+          一.为什么需要打包?
+1.编译ES6语法特性，编译JSX
+2.整合资源，例如图片svg,Less/Sass
+3.优化代码体积
+
+
+二.打包注意事项:1.设置node.js环境为production2.禁止开发时专用代码，比如logger3.设置应用根路径
+npm run build 执行的就是打包过程。
+
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-11-12 16:35" pubdate>
+              2020-11-12
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/11/12/08-%E4%BD%BF%E7%94%A8%E8%84%9A%E6%89%8B%E6%9E%B6%E5%B7%A5%E5%85%B7%E5%88%9B%E5%BB%BAReact%E9%A1%B9%E7%9B%AE/">08-使用脚手架工具创建React项目</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/11/12/08-%E4%BD%BF%E7%94%A8%E8%84%9A%E6%89%8B%E6%9E%B6%E5%B7%A5%E5%85%B7%E5%88%9B%E5%BB%BAReact%E9%A1%B9%E7%9B%AE/">
+          
+          
+            
+          
+          1.为什么需要脚手架？项目越来越复杂，需要用：
+
+react: 做UI，
+
+redux: 做状态管理，
+
+react-router: 做路由管理
+
+babel: 把js新特性翻译为浏览器可以识别的旧语法
+
+webpack: 打包
+
+eslint: 用于语法检查…
+&emsp;这些工具背后需要很多的package,我们需要了解每一个package的配置和使用，这使得创建项目非常繁琐。而创建一个项目的
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-11-12 16:01" pubdate>
+              2020-11-12
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2020/11/11/07-%E7%90%86%E8%A7%A3%E6%96%B0%E7%9A%84ContextAPI%E5%8F%8A%E5%85%B6%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/">07-理解新的ContextAPI及其使用场景</a>
       </h1>
 
@@ -392,129 +595,11 @@ const element=&lt;h1&gt;hello,&#123;name&#125;&lt;/h1&gt;
     </article>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2020/11/10/02-react%E4%BB%A5%E7%BB%84%E4%BB%B6%E6%96%B9%E5%BC%8F%E8%80%83%E8%99%91UI%E7%9A%84%E6%9E%84%E5%BB%BA/">02-react以组件方式考虑UI的构建</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/11/10/02-react%E4%BB%A5%E7%BB%84%E4%BB%B6%E6%96%B9%E5%BC%8F%E8%80%83%E8%99%91UI%E7%9A%84%E6%9E%84%E5%BB%BA/">
-          
-          
-            
-          
-          
-一、构建一个组件需要考虑的三件事情：
-1、组件的UI( 一些外在的表现形式 )2、组件的状态管理（放在哪？）3、组件的交互
-
-二、何时创建组件：单一职责原则
-1、一个组件只负责一个功能2、复杂的组件应该进行拆分
-三、数据状态管理原则：DRY原则
-1.能计算得到的状态不应该单独存储2.组件尽量无状态，尽量通过props获取.
-
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-11-10 15:03" pubdate>
-              2020-11-10
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2020/11/10/01-React%E7%9A%84%E5%8E%86%E5%8F%B2%E8%83%8C%E6%99%AF/">01-React的历史背景及特点</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/11/10/01-React%E7%9A%84%E5%8E%86%E5%8F%B2%E8%83%8C%E6%99%AF/">
-          
-          
-            
-          
-          1. React 出现的历史背景A.UI方面的——传统WebUI存在的问题：
-
-传统UI关注太多的细节
-应用程序的状态分散在各处，难以追踪和维护
-
-=&gt; React的解决方案：react 始终整体”刷新”页面，无需关心细节。它只判断前后两个状态是否变化，并不关注背后的哪个细节发生了变化。
-B.数据方面的——传统的MVC难以扩展和维护，太多的model和view，关系错综复杂且双向绑定，当出现
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-11-10 09:52" pubdate>
-              2020-11-10
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2020/11/09/%E5%89%8D%E7%AB%AF%E8%B5%84%E6%BA%90%E6%B1%87%E6%80%BB/">my-first-blog</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/11/09/%E5%89%8D%E7%AB%AF%E8%B5%84%E6%BA%90%E6%B1%87%E6%80%BB/">
-          
-          
-            
-          
-           前端学习路线及资源——————左耳听风
-
-&nbsp;&emsp;对于前端的学习和提高，我的基本思路是这样的。首先，前端的三个最基本的东西 HTML 5、CSS 3 和 JavaScript（ES6）是必须要学好的。这其中有很多很多的技术，比如，CSS 3 引申出来的 Canvas（位图）、SVG（矢量图） 和 WebGL（3D 图），以及 CSS 的各种图形变换可以让你做出非常丰富的渲染效果和
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-11-09 16:03" pubdate>
-              2020-11-09
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
 
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+      <a class="extend prev" rel="prev" href="/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
   

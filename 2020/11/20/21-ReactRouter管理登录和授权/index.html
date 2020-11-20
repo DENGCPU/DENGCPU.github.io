@@ -17,9 +17,25 @@
   <meta name="description" content="前端小白，升级打怪">
   <meta name="author" content="dorothy">
   <meta name="keywords" content="前端，js,h5,css,react">
-  <title>归档 - Dorothy的博客</title>
+  <title>21-ReactRouter管理登录和授权 - Dorothy的博客</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.5.3/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.1.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+  
 
 
 
@@ -47,7 +63,7 @@
 
 
 <body>
-  <header style="height: 60vh;">
+  <header style="height: 70vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -146,9 +162,46 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="归档">
+            <span class="h2" id="subtitle" title="21-ReactRouter管理登录和授权">
               
             </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-11-20 11:00" pubdate>
+        2020年11月20日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      0 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      1
+       分钟
+    </span>
+  
+
+  
+  
+</div>
 
             
           </div>
@@ -161,106 +214,77 @@
 
   <main>
     
-      <div class="container nopadding-md">
-        <div class="py-5" id="board"
-          >
-          
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                
-
-<div class="list-group">
-  <p class="h4">共计 23 篇文章</p>
-  <hr>
-  
-  
-    
       
-      <p class="h5">2020</p>
-    
-    <a href="/2020/11/17/12-Redux%E5%9C%A8Rect%E4%B8%AD%E7%9A%84%E7%94%A8%E6%B3%95/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">12-Redux在Rect中的用法</span>
-      <time style="float: right;">11-17</time>
-    </a>
-  
-    
-    <a href="/2020/11/16/11-redux%E4%B9%8B%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%B8%8E%E5%BC%82%E6%AD%A5%E6%93%8D%E4%BD%9C/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">11-redux之中间件与异步操作</span>
-      <time style="float: right;">11-16</time>
-    </a>
-  
-    
-    <a href="/2020/11/16/010-%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E5%BA%93Redux/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">010-状态管理库Redux</span>
-      <time style="float: right;">11-16</time>
-    </a>
-  
-    
-    <a href="/2020/11/12/09-%E6%89%93%E5%8C%85%E5%92%8C%E9%83%A8%E7%BD%B2/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">09-打包和部署</span>
-      <time style="float: right;">11-12</time>
-    </a>
-  
-    
-    <a href="/2020/11/12/08-%E4%BD%BF%E7%94%A8%E8%84%9A%E6%89%8B%E6%9E%B6%E5%B7%A5%E5%85%B7%E5%88%9B%E5%BB%BAReact%E9%A1%B9%E7%9B%AE/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">08-使用脚手架工具创建React项目</span>
-      <time style="float: right;">11-12</time>
-    </a>
-  
-    
-    <a href="/2020/11/11/07-%E7%90%86%E8%A7%A3%E6%96%B0%E7%9A%84ContextAPI%E5%8F%8A%E5%85%B6%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">07-理解新的ContextAPI及其使用场景</span>
-      <time style="float: right;">11-11</time>
-    </a>
-  
-    
-    <a href="/2020/11/11/06-%E4%B8%A4%E7%A7%8D%E7%BB%84%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">06-两种组件设计模式</span>
-      <time style="float: right;">11-11</time>
-    </a>
-  
-    
-    <a href="/2020/11/11/05-%E7%90%86%E8%A7%A3VirtualDOM%E5%8F%8Akey%E5%B1%9E%E6%80%A7%E7%9A%84%E4%BD%9C%E7%94%A8/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">05-理解VirtualDOM及key属性的作用</span>
-      <time style="float: right;">11-11</time>
-    </a>
-  
-    
-    <a href="/2020/11/10/04-react%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">04-react的生命周期</span>
-      <time style="float: right;">11-10</time>
-    </a>
-  
-    
-    <a href="/2020/11/10/03-JSX%E7%9A%84%E6%9C%AC%E8%B4%A8%E6%98%AF%E8%AF%AD%E6%B3%95%E7%B3%96/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">03-JSX的本质是语法糖</span>
-      <time style="float: right;">11-10</time>
-    </a>
-  
-</div>
 
-
-  <nav aria-label="navigation">
-    <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/archives/2020/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/archives/2020/">1</a><span class="page-number current">2</span><a class="page-number" href="/archives/2020/page/3/">3</a><a class="extend next" rel="next" href="/archives/2020/page/3/"><i class="iconfont icon-arrowright"></i></a>
-    </span>
-  </nav>
-  
-  <script>
-    for (ele of document.getElementById("pagination").getElementsByTagName("a")) {
-      ele.href += '#board';
-    }
-  </script>
-
-
-
-
-              </div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">21-ReactRouter管理登录和授权</h1>
+            
+            <div class="markdown-body">
+              
             </div>
-          </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%9E%81%E5%AE%A2%E6%97%B6%E9%97%B4React%E6%95%99%E7%A8%8B/">极客时间React教程</a>
+                    
+                  </div>
+                
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/11/20/20-%E4%BD%BF%E7%94%A8Rekit%E5%BC%80%E5%8F%91%E5%8F%AF%E6%89%A9%E5%B1%95%E7%9A%84React%E5%BA%94%E7%94%A8/">
+                        <span class="hidden-mobile">20-使用Rekit开发可扩展的React应用</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
         </div>
       </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
     
 
     
@@ -343,9 +367,15 @@
 
 
 
+  <script  src="https://cdn.staticfile.org/tocbot/4.12.0/tocbot.min.js" ></script>
 
 
 
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.3.0/anchor.min.js" ></script>
 
 
 
