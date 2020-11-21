@@ -4,6 +4,101 @@
   
   
   <entry>
+    <title>28-时刻考虑性能问题</title>
+    <link href="/2020/11/21/28-%E6%97%B6%E5%88%BB%E8%80%83%E8%99%91%E6%80%A7%E8%83%BD%E9%97%AE%E9%A2%98/"/>
+    <url>/2020/11/21/28-%E6%97%B6%E5%88%BB%E8%80%83%E8%99%91%E6%80%A7%E8%83%BD%E9%97%AE%E9%A2%98/</url>
+    
+    <content type="html"><![CDATA[<h4 id="一、如何避免性能问题："><a href="#一、如何避免性能问题：" class="headerlink" title="一、如何避免性能问题："></a>一、如何避免性能问题：</h4><p>1、了解常见的性能问题场景（解决最可能产生性能问题的场景）</p><ul><li>  键盘输入过程卡顿</li><li>  鼠标的移动过程卡顿</li></ul><p>2、时刻注意代码的潜在性能问题</p><ul><li>什么时候拆分组件</li><li>组件粒度是否够细</li></ul><p>3、注意可重构的代码</p><ul><li>代码的耦合性必须低，功能模块非常独立</li></ul><p>4、了解如何使用工具定位性能问题：</p><ul><li>React-devTool</li><li>Chrome-devTool</li></ul><h4 id="二、网络性能优化：自动化按需加载"><a href="#二、网络性能优化：自动化按需加载" class="headerlink" title="二、网络性能优化：自动化按需加载"></a>二、网络性能优化：自动化按需加载</h4><p>如何在react中实现按需加载：<br>1、按需加载：用户当前需要用什么功能就只加载这个功能对应的代码。<br>2、使用Webpack的import API<br>3、使用react-loadable库实现React异步加载</p><p><img src="https://pic.downk.cc/item/5fb913a4b18d627113603f84.jpg" alt="按需加载"></p><h4 id="三、使用Reselect避免重复计算"><a href="#三、使用Reselect避免重复计算" class="headerlink" title="三、使用Reselect避免重复计算"></a>三、使用Reselect避免重复计算</h4><p>Reselect:创建自动缓存的数据处理流程（只有数据变化时才重新计算，否则使用缓存的结果）</p><p><strong>原则</strong>:所有能够计算得到的数据一定是通过计算拿到</p><p><img src="https://pic.downk.cc/item/5fb91595b18d62711360ba51.jpg" alt="自动缓存"></p><h4 id="四、React异步渲染"><a href="#四、React异步渲染" class="headerlink" title="四、React异步渲染"></a>四、React异步渲染</h4><p><img src="https://pic.downk.cc/item/5fb918ffb18d62711361b0b2.jpg"></p><p><strong>时间分片：</strong><br>1、虚拟DOM的diff操作可以分片进行<br>2、React新API：unstable_deferredUpdates<br>3、Chrome新API：requestIdleCallback 浏览器什么时候空闲</p><p><strong>渲染挂起：</strong></p><p>1、unstable_deferUpdate<br>2、React的新内置组件：Timeout组件</p><h4 id="五、使用工具发现性能问题"><a href="#五、使用工具发现性能问题" class="headerlink" title="五、使用工具发现性能问题"></a>五、使用工具发现性能问题</h4><p>1、使用React DevTool找到多余渲染<br>2、使用Chrome DevTool定位性能瓶颈</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>极客时间React教程</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>27-React中拖放的实现</title>
+    <link href="/2020/11/21/27-React%E4%B8%AD%E6%8B%96%E6%94%BE%E7%9A%84%E5%AE%9E%E7%8E%B0/"/>
+    <url>/2020/11/21/27-React%E4%B8%AD%E6%8B%96%E6%94%BE%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
+    
+    <content type="html"><![CDATA[<p><strong>第三方库实现拖放的缺陷：</strong></p><ul><li>第三方库实现拖放不够灵活，</li><li>很多场景比较简单，并不需要引入第三方库</li><li>增加额外的体积会影响性能。</li></ul><p><strong>实现拖放的技术要点：</strong></p><p>1、如何使用React的鼠标事件系统<br>2、如何判断拖放开始和结束<br>3、如何让实现拖放元素的位置移动<br>4、拖放状态在组件中如何维护</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>极客时间React教程</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>26-React集成第三方JS库（d3.js为例）</title>
+    <link href="/2020/11/21/26-React%E9%9B%86%E6%88%90%E7%AC%AC%E4%B8%89%E6%96%B9JS%E5%BA%93%EF%BC%88d3-js%E4%B8%BA%E4%BE%8B%EF%BC%89/"/>
+    <url>/2020/11/21/26-React%E9%9B%86%E6%88%90%E7%AC%AC%E4%B8%89%E6%96%B9JS%E5%BA%93%EF%BC%88d3-js%E4%B8%BA%E4%BE%8B%EF%BC%89/</url>
+    
+    <content type="html"><![CDATA[<h4 id="集成第三方JS库的技术要点："><a href="#集成第三方JS库的技术要点：" class="headerlink" title="集成第三方JS库的技术要点："></a>集成第三方JS库的技术要点：</h4><p>1、使用ref获取原生DOM节点引用<br>2、手动将组件状态更新到DOM节点<br>3、组件销毁时移除原生节点DOM事件</p><p>d3.js用来画图形的第三方库，操作原生DOM节点，也是以数据驱动（与React非常吻合）。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>极客时间React教程</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>25-使用React-Router实现分布操作</title>
+    <link href="/2020/11/21/25-%E4%BD%BF%E7%94%A8React-Router%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E6%93%8D%E4%BD%9C/"/>
+    <url>/2020/11/21/25-%E4%BD%BF%E7%94%A8React-Router%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E6%93%8D%E4%BD%9C/</url>
+    
+    <content type="html"><![CDATA[<h4 id="向导页面需要考虑的技术要点："><a href="#向导页面需要考虑的技术要点：" class="headerlink" title="向导页面需要考虑的技术要点："></a>向导页面需要考虑的技术要点：</h4><p>例子：一个向导页面<br><img src="https://pic.downk.cc/item/5fb8dbeab18d62711350c62f.jpg"></p><p>1、使用URL进行导航<br>2、表单数据如何管理<br>3.页面状态如何切换（根据数据的状态决定UI的状态）</p><h4 id="基于路由实现菜单导航："><a href="#基于路由实现菜单导航：" class="headerlink" title="基于路由实现菜单导航："></a>基于路由实现菜单导航：</h4><p>技术要点：<br>1.菜单导航只改变URL状态<br>2.根据当前URL显示菜单的当前状态。</p><p>可以使用react-router的NavLink,展示当前的选中状态 （NavLink的activeClassName属性）</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>极客时间React教程</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>24-页面数据来源于多个请求</title>
+    <link href="/2020/11/21/24-%E9%A1%B5%E9%9D%A2%E6%95%B0%E6%8D%AE%E6%9D%A5%E6%BA%90%E4%BA%8E%E5%A4%9A%E4%B8%AA%E8%AF%B7%E6%B1%82/"/>
+    <url>/2020/11/21/24-%E9%A1%B5%E9%9D%A2%E6%95%B0%E6%8D%AE%E6%9D%A5%E6%BA%90%E4%BA%8E%E5%A4%9A%E4%B8%AA%E8%AF%B7%E6%B1%82/</url>
+    
+    <content type="html"><![CDATA[<h4 id="一、页面数据来自多个请求："><a href="#一、页面数据来自多个请求：" class="headerlink" title="一、页面数据来自多个请求："></a>一、页面数据来自多个请求：</h4><p>1、请求之间无依赖关系时，多个请求可以并发进行</p><p>2、请求之间有依赖关系时，需要依次进行</p><p>3、请求完成之前，页面显示Loding状态<br>（Loding可能并不需要特别设为一个状态值，可以根据数据的状态来判断是否显示’Loding..’)</p><h4 id="二、内容页的加载与缓存"><a href="#二、内容页的加载与缓存" class="headerlink" title="二、内容页的加载与缓存"></a>二、内容页的加载与缓存</h4><p><img src="https://pic.downk.cc/item/5fb8da68b18d627113503356.jpg"></p><p><strong>内容页和列表页的数据关系：</strong></p><ul><li>简单业务：列表页数据包含内容页的数据</li><li>复杂业务：内容页数据需要额外获取</li><li>内容页数据的缓存</li></ul><p>🐖：内容页不能只依靠列表页进行，用户可能刷新页面，所以它自己也需要定义一个访问接口的action。</p><p><img src="https://pic.downk.cc/item/5fb8d9d7b18d627113500886.jpg"></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>极客时间React教程</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>23-在React中实现列表页</title>
     <link href="/2020/11/20/23-%E5%9C%A8React%E4%B8%AD%E5%AE%9E%E7%8E%B0%E5%88%97%E8%A1%A8%E9%A1%B5/"/>
     <url>/2020/11/20/23-%E5%9C%A8React%E4%B8%AD%E5%AE%9E%E7%8E%B0%E5%88%97%E8%A1%A8%E9%A1%B5/</url>
@@ -169,6 +264,12 @@
     <content type="html"><![CDATA[<p>使用next.js开发React项目的同构应用。</p><h3 id="一、什么是同构应用？"><a href="#一、什么是同构应用？" class="headerlink" title="一、什么是同构应用？"></a>一、什么是同构应用？</h3><p><img src="https://pic.downk.cc/item/5fb4b6adb18d62711350daf9.jpg"></p><p>next.js可以自动配置好同构应用的webpack配置等细节。</p><h3 id="二、next的基本用法"><a href="#二、next的基本用法" class="headerlink" title="二、next的基本用法"></a>二、next的基本用法</h3><p><img src="https://pic.downk.cc/item/5fb4b787b18d62711350fce5.jpg"></p><p><strong>在页面中使用其他的React组件：</strong></p><p>1、页面也是标准的node模块，可使用其他的React组件 （放在components目录下面）<br>2、页面会针对性打包， 仅包含起引入的组件。</p><p><img src="https://pic.downk.cc/item/5fb4b95bb18d627113515a13.jpg"></p><p>🐖：prefetch并不会预加载服务器端的数据</p><p><strong>关于lazy load:</strong><br><img src="https://pic.downk.cc/item/5fb4ba11b18d627113517eef.jpg"></p>]]></content>
     
     
+    <categories>
+      
+      <category>极客时间React教程</category>
+      
+    </categories>
+    
     
   </entry>
   
@@ -181,6 +282,12 @@
     
     <content type="html"><![CDATA[<h3 id="一、Ant-Design"><a href="#一、Ant-Design" class="headerlink" title="一、Ant Design"></a>一、Ant Design</h3><p>服务于企业级产品的设计体系，有完善的文档</p><h3 id="二、Marterial-UI"><a href="#二、Marterial-UI" class="headerlink" title="二、Marterial-UI"></a>二、Marterial-UI</h3><p>风格更时尚，更花哨，面向消费者</p><h3 id="三、Semantic-UI"><a href="#三、Semantic-UI" class="headerlink" title="三、Semantic UI"></a>三、Semantic UI</h3><p>把UI作为language描述，提供了不同library的实现。</p><p><strong>选择UI库的考虑因素：</strong></p><ul><li>1、组件库是否齐全</li><li>2、样式风格是否符合业务需求</li><li>3、API的设计是否便捷灵活</li><li>4、技术支持是否完善（文档，issue）</li><li>5、开发是否活跃（维护，迭代）</li></ul>]]></content>
     
+    
+    <categories>
+      
+      <category>极客时间React教程</category>
+      
+    </categories>
     
     
   </entry>
@@ -214,6 +321,12 @@
     <content type="html"><![CDATA[<h3 id="一、为什么需要路由？"><a href="#一、为什么需要路由？" class="headerlink" title="一、为什么需要路由？"></a>一、为什么需要路由？</h3><ul><li>1.单页应用需要进行页面切换</li><li>2.通过URL可以定位到页面</li><li>3.更有语义的组织资源</li></ul><p><img src="https://pic.downk.cc/item/5fb37daab18d62711306e930.jpg"></p><p><img src="https://pic.downk.cc/item/5fb37e3cb18d6271130703a8.jpg"></p><h3 id="二、React-Router的特性："><a href="#二、React-Router的特性：" class="headerlink" title="二、React-Router的特性："></a>二、React-Router的特性：</h3><p>1、声明式路由定义<br>2、动态路由：页面render时，path才会被解析</p><h3 id="三、实现路由的三种方式"><a href="#三、实现路由的三种方式" class="headerlink" title="三、实现路由的三种方式"></a>三、实现路由的三种方式</h3><p>1、URL路由<br>2、Hash路由： #+ 路径，支持低版本<br>3、内存路由：MemoryRouter，服务器端渲染</p><h3 id="四、基于路由配置进行资源组织"><a href="#四、基于路由配置进行资源组织" class="headerlink" title="四、基于路由配置进行资源组织"></a>四、基于路由配置进行资源组织</h3><p>1、实现业务逻辑的松耦合<br>2、易于扩展，重构和维护<br>3、路由层面实现Lazy Load</p><h3 id="五、React-Router-的几个API"><a href="#五、React-Router-的几个API" class="headerlink" title="五、React-Router 的几个API"></a>五、React-Router 的几个API</h3><p><img src="https://pic.downk.cc/item/5fb37fdab18d627113075987.jpg"></p><p><img src="https://pic.downk.cc/item/5fb37feeb18d627113075f96.jpg"></p><p><img src="https://pic.downk.cc/item/5fb38003b18d627113076520.jpg"></p><p><img src="https://pic.downk.cc/item/5fb38032b18d627113076f40.jpg"></p><p><img src="https://pic.downk.cc/item/5fb38056b18d627113077657.jpg"></p><p><img src="https://pic.downk.cc/item/5fb380a8b18d627113078667.jpg"></p><h3 id="六、通过URL传递参数"><a href="#六、通过URL传递参数" class="headerlink" title="六、通过URL传递参数"></a>六、通过URL传递参数</h3><p><img src="https://pic.downk.cc/item/5fb3827bb18d62711307e56e.jpg"></p><p><img src="https://pic.downk.cc/item/5fb3834eb18d627113081472.jpg"></p><p><img src="https://pic.downk.cc/item/5fb3842ab18d627113084eaf.jpg"></p>]]></content>
     
     
+    <categories>
+      
+      <category>极客时间React教程</category>
+      
+    </categories>
+    
     
   </entry>
   
@@ -226,6 +339,12 @@
     
     <content type="html"><![CDATA[<p>&emsp;为了方便在react中使用redux, Redux的作者封装了一个React专用的库<strong>React-Redux</strong>.</p><p>&emsp;这个库是可选的，在实际项目中应该权衡下是直接使用redux还是使用React-Redux。后者虽然方便，但是要掌握额外的API，并且要遵守它的组件拆分规则。</p><h3 id="一、UI组件"><a href="#一、UI组件" class="headerlink" title="一、UI组件"></a>一、UI组件</h3><p>&emsp;React-Redux将所有组件分为两大类：</p><ul><li>UI组件（presentational component）</li><li>容器组件（container component）</li></ul><p>&emsp;UI组件有以下特征：</p><ul><li>1、只负责UI的呈现，不带任何业务逻辑</li><li>2、没有状态（即不适用this.state这个变量）</li><li>3、所有数据都由参数（this.props)提供</li><li>4、不使用任何Redux的API</li></ul><p>一个UI组件的例子：</p><pre><code class="hljs js"><span class="hljs-keyword">const</span> Title = <span class="hljs-function"><span class="hljs-params">value</span> =&gt;</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>&#123;value&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span></code></pre><p>&emsp;因为不含有状态，UI组件又称为‘纯组件’，即它和纯函数一样，纯粹由参数决定它的值。</p><h3 id="二、容器组件"><a href="#二、容器组件" class="headerlink" title="二、容器组件"></a>二、容器组件</h3><p>&emsp; 容器组件的特征恰恰相反：</p><ul><li>负责管理数据和业务逻辑，不负责UI的呈现</li><li>带有内部状态</li><li>使用Redux的API</li></ul><p>&emsp;总之，UI组件负责UI的呈现，容器组件负责管理数据和逻辑。</p><p>&emsp;如果一个组件既有UI又有业务逻辑，那么应该将它拆分为下面的结构：外面是一个容器组件，里面包含一个UI组件。前者负责与外部的通信，将数据传给后者，由后者渲染出试图。</p><p>&emsp;React-Redux规定，所有的UI组件由用户提供，容器组件则由React-Redux自动生成。也就是说，用户负责视觉层，状态管理则是全部交给它。</p><h3 id="三、connect"><a href="#三、connect" class="headerlink" title="三、connect()"></a>三、connect()</h3><p>&emsp;React-Redux提供connect方法，用于从UI组件生成容器组件。（connect的意思就是将这两种组件连起来）</p><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123;connect&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react-redux&#x27;</span><span class="hljs-keyword">const</span> VisibleTodoList = connect()(TodoList);<span class="hljs-comment">//TodoList是UI组件，VisibleTodoList就是通过connect方法自动生成的容器组件</span></code></pre><p>&emsp;但是由于没有定义业务逻辑，上面这个容器组件没有任何意义，只是UI组件的一个单纯的包装层。为了定义业务逻辑，需要给出以下信息：</p><ul><li>（1）输入逻辑：外部的数据（即state对象）如何转换为UI组件的参数。</li><li>（2）输出逻辑：用户发出的动作如何变为Action对象，从UI组件传出去。</li></ul><p>&emsp;因此，connect方法的完整API如下：</p><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123;connect&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react-redux&#x27;</span>;<span class="hljs-keyword">const</span> VisibleTodoList = connect(    mapStateToProps,    mapDispatchToProps)(TodoList)</code></pre><p>&emsp;connect函数接受两个参数：mapStateToProps  和 mapDispatchToProps。它们定义了UI组件的业务逻辑：前者负责输入逻辑，即将state映射到UI组件的参数（props),后者负责输出逻辑，即将用户对UI组件的操作映射为Action对象。</p><h3 id="四、mapStateToProps"><a href="#四、mapStateToProps" class="headerlink" title="四、mapStateToProps()"></a>四、mapStateToProps()</h3><p>&emsp; mapStateToProps是一个函数，它的作用就是像它的名字那样，建立一个从（外部的）state对象到（UI组件的）props对象的映射关系。</p><p>&emsp;作为函数，mapStateToProps执行后应该返回一个对象，里面的每一个键值对就是一个映射。<br>例子：</p><pre><code class="hljs js"><span class="hljs-keyword">const</span> mapStateToProps=<span class="hljs-function">(<span class="hljs-params">state</span>)=&gt;</span>&#123;    <span class="hljs-keyword">return</span> &#123;        <span class="hljs-comment">//todos属性，代表UI组件的同名属性</span>        <span class="hljs-comment">//getVisibleTodos可以从state算出todos的值</span>        todos: getVisibleTodos(state.todos,state.visibilityFilter)    &#125;&#125;<span class="hljs-comment">//getVisibleTodos可以从state算出todos的值</span><span class="hljs-keyword">const</span> getVisibleTodos=<span class="hljs-function">(<span class="hljs-params">todos,filter</span>)=&gt;</span>&#123;    <span class="hljs-function"><span class="hljs-title">switch</span>(<span class="hljs-params">filter</span>)</span>&#123;        <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;SHOW_ALL&#x27;</span>:            <span class="hljs-keyword">return</span> todos;        <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;SHOW_COMPLETED&#x27;</span>:            <span class="hljs-keyword">return</span> todos.filter(<span class="hljs-function"><span class="hljs-params">t</span>=&gt;</span>t.completed);        <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;SHOW_ACTIVE&#x27;</span>:            <span class="hljs-keyword">return</span> todos.filter(<span class="hljs-function"><span class="hljs-params">t</span>=&gt;</span>!t.completed);        <span class="hljs-keyword">default</span>:            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">&#x27;Unknow filter:&#x27;</span>+filter)    &#125;&#125;</code></pre><p>&emsp;mapStateToProps 会订阅Store,每当state更新的时候，会自动执行，重新计算UI组件的参数，从而触发UI组件的重新渲染。</p><p>&emsp;mapStateToProps 的第一个参数总是state对象，还可以使用第二个参数，代表容器组件的props对象。</p><pre><code class="hljs js"><span class="hljs-comment">//容器组件的代码</span><span class="hljs-comment">// &lt;FilterLink filter=&#x27;SHOW_ALL&#x27;&gt;ALL&lt;/FilterLink&gt;</span><span class="hljs-keyword">const</span> mapStateToProps = <span class="hljs-function">(<span class="hljs-params">state,ownProps</span>) =&gt;</span>&#123;    <span class="hljs-keyword">return</span> &#123;        active:ownProps.filter === state.visibilityFilter    &#125;&#125;</code></pre><p> &emsp;使用ownProps作为参数后，如果容器组件的参数发生变化，也会引起UI组件重新渲染。</p><p> &emsp;connect方法可以省略mapStateToProps参数，那样的话UI组件就不会订阅Store, 也就是说Store的更新不会引起UI组件渲染。</p><h3 id="五、mapDispatchToProps"><a href="#五、mapDispatchToProps" class="headerlink" title="五、mapDispatchToProps()"></a>五、mapDispatchToProps()</h3><p> &emsp;mapDispatchToProps 是connect函数的第二个参数，用来建立UI组件的参数到Store.dispatch的映射，它定义了哪些用户的操作应该当作Action，传给Store。它可以是一个函数，也可以是一个对象。</p><p> &emsp;1、<strong>如果mapDispatchToProps是一个函数</strong>，会得到dispatch和ownProps(容器组件的props对象)两个参数。</p><pre><code class="hljs js"><span class="hljs-keyword">const</span> mapDispatchToProps = (    dispatch,    ownProps) =&gt; &#123;    <span class="hljs-keyword">return</span> &#123;        onClick:<span class="hljs-function">()=&gt;</span>&#123;            dispatch(&#123;                type:<span class="hljs-string">&#x27;SET_VISIBILITY_FILTER&#x27;</span>,                filter:ownProps.filter            &#125;)        &#125;    &#125;&#125;</code></pre><p>&emsp;从上述代码中可以看出，mapispatchToProps作为函数，应该返回以一个对象，该对象的每个键值对都是一个映射，定义了UI组件的参数怎样发出action。</p><p>&emsp;2、<strong>如果mapDispatchToProps是一个对象</strong>，它的每个键名也是对应UI的同名参数，键值应该是一个函数，会被当作是Action Creator,返回的Action会由Redux自动发出。</p><pre><code class="hljs js"><span class="hljs-keyword">const</span> mapDispatchToProps=&#123;    onClick:<span class="hljs-function">(<span class="hljs-params">filter</span>)=&gt;</span>&#123;        type:<span class="hljs-string">&#x27;SET_VISIBILITY_FILTER&#x27;</span>,        filter:filter    &#125;&#125;</code></pre><h3 id="六、Provider组件"><a href="#六、Provider组件" class="headerlink" title="六、Provider组件"></a>六、Provider组件</h3><p>&emsp;connect方法生成容器组件以后，需要让容器组件拿到state对象，才能生成UI组件的参数。一种解决方法是将state对象作为参数，传给容器组件。但是这样比较麻烦，尤其是容器组件在很深的层级时，一级级将state传下去就很麻烦。</p><p>&emsp;React-Redux提供Provider组件，可以让容器组件拿到state。</p><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123;Provider&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react-redux&#x27;</span>;<span class="hljs-keyword">import</span> &#123;createStore&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;redux&#x27;</span>;<span class="hljs-keyword">import</span> todoApp <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./reducers&#x27;</span>;<span class="hljs-keyword">import</span> App <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./components/App&#x27;</span>;<span class="hljs-keyword">let</span> store = createStore(todoApp);render(    &lt;Provider store=&#123;store&#125;&gt;        &lt;App /&gt;    &lt;/Provider&gt;,    <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">&#x27;root&#x27;</span>))</code></pre><p>&emsp;Provider 在根组件外面包了一层，这样一来，App的所有子组件默认都可以拿到state了。Provider的原理时React组件的context属性。<br>源码：</p><pre><code class="hljs js"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Provider</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span></span>&#123;    <span class="hljs-function"><span class="hljs-title">getChildContext</span>(<span class="hljs-params"></span>)</span>&#123;        <span class="hljs-keyword">return</span> &#123;            store:<span class="hljs-built_in">this</span>.props.store        &#125;    &#125;    <span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params"></span>)</span>&#123;        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.props.children;    &#125;&#125;Provider.childContextTypes = &#123;    store:React.PropTypes.object&#125;</code></pre><p>&emsp;上面代码中，store放在了上下文对象context上面。然后，子组件就可以从context拿到store。代码如下：</p><pre><code class="hljs js"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">VisibleTodoList</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span></span>&#123;    <span class="hljs-function"><span class="hljs-title">componentDidMount</span>(<span class="hljs-params"></span>)</span>&#123;        <span class="hljs-keyword">const</span> &#123;store&#125; = <span class="hljs-built_in">this</span>.context;        <span class="hljs-built_in">this</span>.unsubscribe=store.subscribe(<span class="hljs-function">()=&gt;</span>            <span class="hljs-built_in">this</span>.forceUpdate()        );    &#125;    <span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params"></span>)</span>&#123;        <span class="hljs-keyword">const</span> props=<span class="hljs-built_in">this</span>.props;        <span class="hljs-keyword">const</span> &#123;store&#125;=<span class="hljs-built_in">this</span>.context;        <span class="hljs-keyword">const</span> state=store.getState();        <span class="hljs-comment">//...</span>    &#125;&#125;VisibleTodoList.contextTypes = &#123;    store:React.PropTypes.object&#125;</code></pre><p>React-Redux 自动生成的容器组件的代码就是类似于上面这样，拿到store。</p><h3 id="七、React-Router-路由库"><a href="#七、React-Router-路由库" class="headerlink" title="七、React-Router 路由库"></a>七、React-Router 路由库</h3><p>&emsp;使用React-Router的项目，与其他项目没有不同之处，也是使用Provider在Router外面包一层。毕竟Provider的唯一功能就是传入store对象。</p><pre><code class="hljs js"><span class="hljs-keyword">const</span> Root = <span class="hljs-function">(<span class="hljs-params">&#123;store&#125;</span>) =&gt;</span> (    &lt;Provider store=&#123;store&#125;&gt;        &lt;Router&gt;            &lt;Route path=<span class="hljs-string">&quot;/&quot;</span> component=&#123;App&#125; /&gt;        &lt;/Router&gt;    &lt;/Provider&gt;)</code></pre>]]></content>
     
+    
+    <categories>
+      
+      <category>极客时间React教程</category>
+      
+    </categories>
     
     
   </entry>
@@ -240,6 +359,12 @@
     <content type="html"><![CDATA[<p>第10篇文章里，介绍了redux的基本做法：用户发出Action, Reducer函数算出新的State，View重新渲染。<br><img src="https://pic.downk.cc/item/5fb26119b18d627113c52bcf.jpg"><br>但是异步操作应该怎么处理呢？Action发出以后，Reducer立即算出新的State, 这就叫做同步；Action发出后，过一段时间再执行Reducer,这就叫做异步。<br>怎么才能让reducer在异步操作结束后自动执行呢？这就要用到新的工具： <strong>中间件</strong>（middleware）<br><img src="https://pic.downk.cc/item/5fb27135b18d627113c87d35.jpg"></p><h3 id="一、中间件的概念"><a href="#一、中间件的概念" class="headerlink" title="一、中间件的概念"></a>一、中间件的概念</h3><p>为了让redux可以进行异步操作，势必要在redux工作流程中添加新的功能。那么在哪个环节添加合适呢？</p><p>（1）Reducer: 纯函数，只能承担计算State的功能，不适合承担其他功能，也承担不了。因为理论上，纯函数不能进行读写的操作。</p><p>（2）View: 与State一一对应，可以看作是State的视觉层，也不合适承担其他功能。</p><p>（3）Action: 存放数据的对象，即消息的载体，只能被别人操作，自己不能进行任何操作。</p><p>想来想去，只有发送Action的这个步骤，即Store.dispatch()这个方法，可以添加功能。<br>中间件就是一个函数，对store.dispatch方法进行了改造，在发出Action和执行Reducer这两步之间，添加了其他功能。</p><h3 id="二、中间件的使用"><a href="#二、中间件的使用" class="headerlink" title="二、中间件的使用"></a>二、中间件的使用</h3><p>常用的中间件都是现成的，只有引用别人写好的模块就行。</p><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; applyMiddleware,createStore&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;redux&#x27;</span>;<span class="hljs-keyword">import</span> createLogger <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;redux-logger&#x27;</span>;<span class="hljs-keyword">const</span> logger = createLogger();<span class="hljs-keyword">const</span> store = createStore(    reducer,    initialState, <span class="hljs-comment">//整个应用的初始状态</span>    applyMiddleware(logger))</code></pre><p>🐖：中间件的次序有讲究。有的中间件有次序要求，比如logger就一定放在最后，否则输出结果会不正确。使用前要查阅相关文档</p><pre><code class="hljs js"><span class="hljs-keyword">const</span> store = createStore(    reducer,    appltMiddleware(thunk,promise,logger)    <span class="hljs-comment">//这里是用了三个中间件</span>)</code></pre><p>==applyMiddlewares()：== applyMiddlewares是Redux的原生方法，作用是将所有中间件组成一个数组，依次执行。</p><h3 id="三、异步操作的基本思路"><a href="#三、异步操作的基本思路" class="headerlink" title="三、异步操作的基本思路"></a>三、异步操作的基本思路</h3><p>同步操作只要发出一种Action即可，异步操作的差别是它要发出三种Action:</p><ul><li>操作发起时的Action</li><li>操作成功时的Action</li><li>操作失败时的Action</li></ul><p>以服务器取出数据为例，三种Action可以有两种写法：</p><pre><code class="hljs js"><span class="hljs-comment">//写法一：名称相同，参数不同</span>&#123;<span class="hljs-attr">type</span>:<span class="hljs-string">&#x27;FETCH_POSTS&#x27;</span>&#125;&#123;<span class="hljs-attr">type</span>:<span class="hljs-string">&#x27;FETCH_POSTS&#x27;</span>,<span class="hljs-attr">status</span>:<span class="hljs-string">&#x27;error&#x27;</span>,<span class="hljs-attr">error</span>:<span class="hljs-string">&#x27;OoPS&#x27;</span>&#125;&#123;<span class="hljs-attr">type</span>:<span class="hljs-string">&#x27;FETCH_POSTS&#x27;</span>,<span class="hljs-attr">status</span>:<span class="hljs-string">&#x27;success&#x27;</span>,<span class="hljs-attr">response</span>:&#123;...&#125; &#125;<span class="hljs-comment">//写法二：名称不同</span>&#123;<span class="hljs-attr">type</span>:<span class="hljs-string">&#x27;FETCH_POSTS_REQUEST&#x27;</span>&#125;&#123;<span class="hljs-attr">type</span>:<span class="hljs-string">&#x27;FETCH_POSTS_FAILURE&#x27;</span>,<span class="hljs-attr">error</span>:<span class="hljs-string">&#x27;Oops&#x27;</span>&#125;&#123;<span class="hljs-attr">type</span>:<span class="hljs-string">&#x27;FETCH_POSTS_SUCCESS&#x27;</span>,<span class="hljs-attr">response</span>:&#123;...&#125;&#125;</code></pre><p>除了Action种类不同，异步操作的State也要进行改造，反映不同的操作状态。<br>例子：</p><pre><code class="hljs js"><span class="hljs-keyword">let</span> state=&#123;    <span class="hljs-comment">//...</span>    isFetching:<span class="hljs-literal">true</span>, <span class="hljs-comment">//是否正在抓取数据</span>    didInvalidate:<span class="hljs-literal">true</span>,<span class="hljs-comment">//是否超时</span>    lastUpdated:<span class="hljs-string">&#x27;xxxx&#x27;</span><span class="hljs-comment">//上一次更新时间</span>&#125;</code></pre><p>现在，整个异步操作的思路就比较清晰了</p><ul><li>1.操作开始时，发送一个Action,触发State 更新为“正在操作”状态，View重新渲染</li><li>2.操作结束后，再送出一个Action,触发State 更新为“操作结束”状态，View再次重新渲染。</li></ul><h3 id="四、redux-thunk中间件"><a href="#四、redux-thunk中间件" class="headerlink" title="四、redux-thunk中间件"></a>四、redux-thunk中间件</h3><p>异步操作至少要发两个Action：用户触发第一个Action,这个跟同步操作一样没有问题，但是，如何才能再操作结束时，系统自动送出第二个Action呢？</p><p>这个奥妙在于Action Creator之中。</p><pre><code class="hljs js"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AsyncApp</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span></span>&#123;    <span class="hljs-comment">//加载成功后，</span>    <span class="hljs-function"><span class="hljs-title">componentDidMount</span>(<span class="hljs-params"></span>)</span>&#123;        <span class="hljs-keyword">const</span> &#123;dispatch,selectedPost&#125;=<span class="hljs-built_in">this</span>.props;        <span class="hljs-comment">//发送一个Action,向服务器要数据</span>        <span class="hljs-comment">//这里的fetchPosts()函数就是Action Creator</span>        dispatch(fetchPosts(selectedPost));    &#125;&#125;</code></pre><p>下面就是fetchPosts的代码</p><pre><code class="hljs js"><span class="hljs-keyword">const</span> fetchPosts = <span class="hljs-function"><span class="hljs-params">postTitle</span> =&gt;</span><span class="hljs-function">(<span class="hljs-params">dispatch,getState</span>)=&gt;</span>&#123;    <span class="hljs-comment">//1.先发出一个Action</span>    dispatch(requestPosts(postTitle));    <span class="hljs-comment">//2.进行异步操作</span>    <span class="hljs-keyword">return</span> fetch(<span class="hljs-string">&#x27;/some/API/$&#123;postTitle&#125;.json&#x27;</span>)        <span class="hljs-comment">//3.拿到结果，将结果转换为JSON格式</span>        .then(<span class="hljs-function"><span class="hljs-params">response</span> =&gt;</span> response.json())        <span class="hljs-comment">//4.再发出一个Action</span>        .then(<span class="hljs-function"><span class="hljs-params">json</span> =&gt;</span> dispatch(receivePosts(postTitle,json)))&#125;</code></pre><p>🐖：</p><ul><li>fetchPosts 返回了一个函数，而普通的Action Creator返回一个Action对象</li><li>fetchPosts 返回的函数入参时dispatch和getState这两个redux方法，普通的Action Creator的参数是Action的内容。</li><li>在返回的函数中，先发出一个Action（requestPosts(postTitle)），表示操作开始</li><li>异步操作结束之后，又发出一个Action（receivePosts(postTitle,json)），表示操作结束。</li></ul><p>这样的处理，解决了异步操作中需要自动发出第二个Action的问题，但是，Action是由store.dispatch方法发出的，而这个方法正常情况下，入参只能是对象而不能是函数。<br>====&gt; 这时，就需要中间件redux-think</p><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; createStore, applyMiddleware &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;redux&#x27;</span>;<span class="hljs-keyword">import</span> thunk <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;redux-thunk&#x27;</span>;<span class="hljs-keyword">import</span> reducer <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./reducers&#x27;</span>;<span class="hljs-comment">// Note: this API requires redux@&gt;=3.1.0</span><span class="hljs-keyword">const</span> store = createStore(  reducer,  applyMiddleware(thunk));</code></pre><p>上面代码使用redux-thunk,改造store.dispatch,使得后者可以接受函数作为参数。</p><p>因此，异步操作的第一个解决方案：写一个返回函数的Action Creator,然后使用redux-thunk 中间件改造store.dispatch.</p><h3 id="五、redux-promise中间件"><a href="#五、redux-promise中间件" class="headerlink" title="五、redux-promise中间件"></a>五、redux-promise中间件</h3><p>&emsp;既然Action Creator 可以返回函数，当然也可返回其他值。所以另一种异步操作的解决方案就是，让Action Creator返回一个Promise对象.</p><p>&emsp;这就需要使用redux-promise中间件。</p><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123;createStore,applyMiddleware&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;redux&#x27;</span>;<span class="hljs-keyword">import</span> promiseMiddleware <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;redux-promise&#x27;</span>;<span class="hljs-keyword">import</span> reducer <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./reducers&#x27;</span>;<span class="hljs-comment">//这时Action Creator有两种写法，</span><span class="hljs-comment">//1.返回值是一个对象</span><span class="hljs-keyword">const</span> fetchPosts=<span class="hljs-function">(<span class="hljs-params">dispatch,postTitle</span>)=&gt;</span><span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">resolve,reject</span>)</span>&#123;    dispatch(requestPosts(postTitle));    <span class="hljs-keyword">return</span> fetch(<span class="hljs-string">&#x27;/some/API/$&#123;postTitle&#125;.json)</span><span class="hljs-string">        .then(response=&gt;&#123;</span><span class="hljs-string">            type:&#x27;</span>FETCH_POSTS<span class="hljs-string">&#x27;,</span><span class="hljs-string">            payload:response.json()</span><span class="hljs-string">        &#125;)</span><span class="hljs-string">&#125;)</span><span class="hljs-string"></span><span class="hljs-string">//2.Action对象的payload属性是一个Promise对象，</span><span class="hljs-string">// 这时需要从redux-actions模块引入createAction方法</span></code></pre><p>参考文章：<a href="http://www.ruanyifeng.com/blog/2016/09/redux_tutorial_part_two_async_operations.html">阮一峰redux教程</a></p>]]></content>
     
     
+    <categories>
+      
+      <category>极客时间React教程</category>
+      
+    </categories>
+    
     
   </entry>
   
@@ -252,6 +377,12 @@
     
     <content type="html"><![CDATA[<h3 id="一、React为何需要状态管理库"><a href="#一、React为何需要状态管理库" class="headerlink" title="一、React为何需要状态管理库"></a>一、React为何需要状态管理库</h3><p><img src="https://i.bmp.ovh/imgs/2020/11/26a4726bd6216f11.png"></p><p><img src="https://i.bmp.ovh/imgs/2020/11/8ed5fe88ed497e9c.png"><br>组件之间通信非常麻烦，有了redux把状态单独拧出来，组件通信就变得简单了。</p><p>Redux的特性：</p><ul><li><strong>1、Single Source of Truth</strong></li></ul><p>&emsp;传统的MVC架构：一个view可能对应多个model,一个model也可能对应多个view,关系错综复杂，这样一旦出现错误很难追踪。<br><img src="https://i.bmp.ovh/imgs/2020/11/5a9cb384b94cc272.png"></p><p>&emsp;Redux的结构：只有一个Store,出现错误容易追踪。</p><p><img src="https://i.bmp.ovh/imgs/2020/11/fbb96f01a9c20437.png"></p><ul><li><p><strong>2、可预测性</strong> （不可变性immutable）</p><p><img src="https://i.bmp.ovh/imgs/2020/11/4753506caf528c03.png"></p></li><li><p><strong>3、纯函数更新State</strong></p></li></ul><p>&emsp;&emsp;redux没有副作用.<br><img src="https://i.bmp.ovh/imgs/2020/11/17c05a6f634a7eaf.png"></p><h3 id="二、理解Redux的核心概念：Store-Action-Reducer"><a href="#二、理解Redux的核心概念：Store-Action-Reducer" class="headerlink" title="二、理解Redux的核心概念：Store, Action,Reducer"></a>二、理解Redux的核心概念：Store, Action,Reducer</h3><p><strong>1.理解Store:</strong><br><img src="https://i.bmp.ovh/imgs/2020/11/bc6be7d1bc1deaf2.png"></p><p>Store就是保存数据的地方，可以把它看作是一个容器。整个应用只能有一个Store。<br>Redux提供<strong>createStore</strong>这个函数，用来生成Store。</p><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123;createStore&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;redux&#x27;</span>;<span class="hljs-comment">//createStore接受一个函数，返回新生成的store对象。</span><span class="hljs-keyword">const</span> store = createStore(fn);</code></pre><p><strong>==State:==</strong> &emsp;Store对象包含所有数据，如果想得到某个时点的数据，就要对Store生成快照。这种时点的数据集合，就叫做State。<br>当前时刻的State,可以通过 store.getState() 拿到。</p><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123;createStore&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;redux&#x27;</span>;<span class="hljs-keyword">const</span> store = createStore(fn);<span class="hljs-keyword">const</span> state = store.getState();</code></pre><p>redux规定，<strong>一个state对应一个view</strong>。只要state相同，view就相同。知道了State,就知道了View是什么样，反之亦然。</p><p><strong>2.理解Action:</strong></p><p>&emsp;State的变化，会导致view的变化。但是，用户接触不到State,只能接触到view。所以，State的变化必须是view导致的。Action就是view发出的通知，标识State应该要变化了。</p><p>&emsp;Action是一个对象，其中的type属性是必须的，标识Action的名称。其他属性可以自由设置。</p><pre><code class="hljs js"><span class="hljs-keyword">const</span> action = &#123;  type:<span class="hljs-string">&#x27;ADD_TODO&#x27;</span>,  payload:<span class="hljs-string">&#x27;learn redux&#x27;</span>&#125;</code></pre><p>上述代码中，Action的名称是ADD_TODO，它携带的信息是字符串 learn redux.</p><p>可以这么理解，Action描述当前发生的事情。改变State的唯一方法，就是使用Action。它会运送数据给Store。</p><p><strong>Action Creator:</strong><br>View要发生多少种消息，就会有多少种Action.如果都手写，会很麻烦。所以，可以定义一个函数用来生成Action,这个函数就叫 Action Creator</p><pre><code class="hljs js"><span class="hljs-keyword">const</span> ADD_TODO = <span class="hljs-string">&#x27;添加TODO&#x27;</span>;<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">addTodo</span>(<span class="hljs-params">text</span>)</span>&#123;  <span class="hljs-keyword">return</span> &#123;    type:ADD_TODO,    text  &#125;&#125;<span class="hljs-keyword">const</span> action=addTodo(<span class="hljs-string">&#x27;learn redux&#x27;</span>)<span class="hljs-string">``</span><span class="hljs-string">` </span><span class="hljs-string">上面代码中，addTodo函数就是一个Action Creator</span><span class="hljs-string"></span><span class="hljs-string">**store.dispatch():**</span><span class="hljs-string">store.dispatch()是View发出Action的唯一方法。</span><span class="hljs-string">`</span><span class="hljs-string">``</span>js<span class="hljs-keyword">import</span> &#123;createStore&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;redux&#x27;</span>;<span class="hljs-keyword">const</span> store = createStore(fn);store.dispatch(&#123;  type:<span class="hljs-string">&#x27;ADD_TODO&#x27;</span>,  payload:<span class="hljs-string">&#x27;learn redux&#x27;</span>&#125;)</code></pre><p>结合 Action Crreator,这段代码可以改写如下：</p><pre><code class="hljs js">store.dispatch(addTodo(<span class="hljs-string">&#x27;learn redux&#x27;</span>));</code></pre><p><strong>3.理解Reducer：</strong></p><p>Store在收到Action之后，必须给出一个新的State,这样View才会发生变化。这种State的计算过程，就叫做 Reducer。</p><p>Reducer是一个函数，它接受Action和当前的State,返回一个新的State。</p><pre><code class="hljs js"><span class="hljs-keyword">const</span> reducer = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">state,action</span>)</span>&#123;  <span class="hljs-comment">//...</span>  <span class="hljs-keyword">return</span> new_state;&#125;</code></pre><p>整个应用的初始状态，可以作为State的默认值，下面就是一个实际的例子。</p><pre><code class="hljs js"><span class="hljs-keyword">const</span> defaultState=<span class="hljs-number">0</span>;<span class="hljs-keyword">const</span> reducer = <span class="hljs-function">(<span class="hljs-params">state=defaultState,action</span>)=&gt;</span>&#123;  <span class="hljs-function"><span class="hljs-title">switch</span>(<span class="hljs-params">action.type</span>)</span>&#123;    <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;ADD&#x27;</span>:      <span class="hljs-keyword">return</span> state + action.payload;    <span class="hljs-keyword">default</span>:      <span class="hljs-keyword">return</span> state;  &#125;&#125;;<span class="hljs-keyword">const</span> state=reducer(<span class="hljs-number">1</span>,&#123;  type:<span class="hljs-string">&#x27;ADD&#x27;</span>,  payload:<span class="hljs-number">2</span>&#125;)</code></pre><p>上面代码中，reducer函数接收到一个名为ADD的action以后，就返回一个新的State。<br>实际应用中，Reducer不需要像上面这样手动调用，store.dispatch方法会触发reducer的自动执行。为此，Store需要知道reducer函数，做法就是在生成Store的时候，就将reducer传入给createStore方法。</p><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123;createStore&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;redux&#x27;</span>;<span class="hljs-keyword">const</span> store = createStore(reducer);<span class="hljs-comment">//以后每当store.dispatch发送过来一个新的Action,</span><span class="hljs-comment">//就会自动调用Reducer，得到新的State</span></code></pre><p>🐖为什么这个函数被叫做Reducer呢？<br>✨因为它可以作为数组的reduce方法的参数，下面是一个例子，一系列的Action对象按照顺序作为一个数组。</p><pre><code class="hljs js"><span class="hljs-keyword">const</span> actions = [  &#123;<span class="hljs-attr">type</span>:<span class="hljs-string">&#x27;ADD&#x27;</span>,<span class="hljs-attr">payload</span>:<span class="hljs-number">0</span>&#125;,  &#123;<span class="hljs-attr">type</span>:<span class="hljs-string">&#x27;ADD&#x27;</span>,<span class="hljs-attr">payload</span>:<span class="hljs-number">1</span>&#125;,  &#123;<span class="hljs-attr">type</span>:<span class="hljs-string">&#x27;ADD&#x27;</span>,<span class="hljs-attr">payload</span>:<span class="hljs-number">2</span>&#125;];<span class="hljs-keyword">const</span> total = actions.reduce(reducer,<span class="hljs-number">0</span>)<span class="hljs-comment">//3</span></code></pre><p>上面代码中，数组actions表示依次有三个 Action，分别是加0、加1和加2。数组的reduce方法接受 Reducer 函数作为参数，就可以直接得到最终的状态3。 </p><p><img src="https://i.bmp.ovh/imgs/2020/11/43ed9499a953d590.png"></p><p><strong>Reducer函数最重要的特征是:它是一个纯函数。</strong><br>==纯函数==： 纯函数是函数式编程的概念，必须遵守以下一些约束。</p><ul><li>不得改写参数</li><li>不能调用系统 I/O的API</li><li>不能调用Date.now()或者Math.random等不纯的方法，因为每次都会得到不一样的结果。</li></ul><p>由于Reducer是纯函数，就可以保证同样的State必定得到同样的View。但也正因为这一点，Reducer函数里面不能改变State，必须返回一个全新的对象。所以，一般常采用 拓展运算符…和Object.assign()对state进行更新。(最好把State对象设为只读)</p><pre><code class="hljs js"><span class="hljs-comment">//1.state是一个对象</span><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">reducer</span>(<span class="hljs-params">state,action</span>)</span>&#123;  <span class="hljs-keyword">return</span> <span class="hljs-built_in">Object</span>.assign(&#123;&#125;,state,&#123;thingTochange&#125;);  <span class="hljs-comment">//或者</span>  <span class="hljs-keyword">return</span> &#123;...state,...newState&#125;;&#125;<span class="hljs-comment">//2.state是一个数组</span><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">reducer</span>(<span class="hljs-params">state,action</span>)</span>&#123;  <span class="hljs-keyword">return</span> [...state,newItem]&#125;</code></pre><p>下图综合理解这三个概念，可以看出redux的单向数据流动。<br><img src="https://i.bmp.ovh/imgs/2020/11/9fceb4adcb97b639.png"></p><h3 id="三、redux的几个工具函数"><a href="#三、redux的几个工具函数" class="headerlink" title="三、redux的几个工具函数"></a>三、redux的几个工具函数</h3><p><strong>1.combineReducers:</strong></p><p>将多个reducer结合起来形成新的reducer。</p><p><img src="https://pic.downk.cc/item/5fb1ddf2b18d627113a841a0.jpg"></p><p><strong>2.bindActionCreators:</strong></p><p><img src="https://pic.downk.cc/item/5fb1de1eb18d627113a848fb.jpg"></p><p><img src="https://pic.downk.cc/item/5fb1de6fb18d627113a8563c.jpg"></p><h3 id="四、在React中使用Redux"><a href="#四、在React中使用Redux" class="headerlink" title="四、在React中使用Redux"></a>四、在React中使用Redux</h3><p>redux提供了一个<strong>react-redux</strong>的package，用connect把一个已有的组件连接到store上。</p><p><img src="https://pic.downk.cc/item/5fb1e29cb18d627113a9146f.jpg"></p><p><img src="https://pic.downk.cc/item/5fb1e356b18d627113a93618.jpg"></p><h3 id="五、理解Redux的异步action以及中间件"><a href="#五、理解Redux的异步action以及中间件" class="headerlink" title="五、理解Redux的异步action以及中间件"></a>五、理解Redux的异步action以及中间件</h3><p>中间件截获后去访问一个API，根据访问的结果再dispatch.</p><p><img src="https://pic.downk.cc/item/5fb1eab2b18d627113aabab1.jpg"></p><p>异步的action并不是一个新的action类型, 而是几个同步action的组合使用.</p><p><img src="https://pic.downk.cc/item/5fb1eb4eb18d627113aae915.jpg"></p><p><img src="https://pic.downk.cc/item/5fb1ecf0b18d627113ab5f8a.jpg"></p><h3 id="六、如何在redux中组织Action和Reducer"><a href="#六、如何在redux中组织Action和Reducer" class="headerlink" title="六、如何在redux中组织Action和Reducer"></a>六、如何在redux中组织Action和Reducer</h3><p><img src="https://pic.downk.cc/item/5fb1ede4b18d627113ab90f7.jpg"></p><p><img src="https://pic.downk.cc/item/5fb1ee82b18d627113abad69.jpg"></p><p><img src="https://pic.downk.cc/item/5fb1eec1b18d627113abb8da.jpg"></p><h3 id="七、-Redux的运行基础-不可变数据-immutability"><a href="#七、-Redux的运行基础-不可变数据-immutability" class="headerlink" title="七、 Redux的运行基础:不可变数据(immutability)"></a>七、 Redux的运行基础:不可变数据(immutability)</h3><p><img src="https://pic.downk.cc/item/5fb1efbcb18d627113abe8a3.jpg"></p><h5 id="1-为什么需要不可变数据"><a href="#1-为什么需要不可变数据" class="headerlink" title="1.为什么需要不可变数据?"></a>1.为什么需要不可变数据?</h5><ul><li><p><strong>1.性能优化:</strong><br> &emsp;store变化时会通知组件更新==&gt; store的变化都是由action触发==&gt;action触发在旧的state上形成新的state。不需要比较新旧state值是否变了,只需要判断<strong>前后状态的引用</strong>有没有变化</p></li><li><p><strong>2.易于调试和跟踪:</strong><br>任何时候，store变化时可以记录之前和之后的状态值。</p></li><li><p><strong>3.易于推测:</strong><br>任何时候，都可以找到是什么引起store的变化</p><h5 id="2-如何操作不可变数据"><a href="#2-如何操作不可变数据" class="headerlink" title="2.如何操作不可变数据?"></a>2.如何操作不可变数据?</h5></li></ul><p>==三种方式:==<br><img src="https://pic.downk.cc/item/5fb1f0f2b18d627113ac3540.jpg"></p><p>简单场景：使用原生写法就可以了。</p><p><img src="https://pic.downk.cc/item/5fb1f37cb18d627113acb0d5.jpg"></p><p>复杂场景：需要借助一些类库。</p><p><img src="https://pic.downk.cc/item/5fb1f414b18d627113accfd2.jpg"></p><p>immer: 性能差一点，适用应用程序小，场景简单的情况。<br><img src="https://pic.downk.cc/item/5fb1f44fb18d627113acdf4d.jpg"></p><h3 id="八、梳理Redux的工作流程"><a href="#八、梳理Redux的工作流程" class="headerlink" title="八、梳理Redux的工作流程"></a>八、梳理Redux的工作流程</h3><p><img src="https://pic.downk.cc/item/5fb26119b18d627113c52bcf.jpg"></p><p>1.首先，用户发出Action。</p><pre><code class="hljs js">store.dispatch(action)</code></pre><p>2.然后，Store自动调用Reducer,并且传入两个参数：当前State和收到的Action。Reducer会返回新的State</p><pre><code class="hljs js"><span class="hljs-keyword">let</span> nextState = todoApp(previousState,action);</code></pre><p>State一旦有变化，Store就会调用监听函数</p><pre><code class="hljs js"><span class="hljs-comment">//设置监听函数</span>store.subscribe(listener);</code></pre><p>listener可以通过store.getState()得到当前状态，如果使用的是React,这时可以触发重新渲染View。</p><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">listener</span>(<span class="hljs-params"></span>)</span>&#123;  <span class="hljs-keyword">let</span> newState = store.getState();  component.setState(newState);&#125;</code></pre>]]></content>
     
+    
+    <categories>
+      
+      <category>极客时间React教程</category>
+      
+    </categories>
     
     
   </entry>
@@ -266,6 +397,12 @@
     <content type="html"><![CDATA[<h4 id="一-为什么需要打包"><a href="#一-为什么需要打包" class="headerlink" title="一.为什么需要打包?"></a>一.为什么需要打包?</h4><ul><li>1.编译ES6语法特性，编译JSX</li><li>2.整合资源，例如图片svg,Less/Sass</li><li>3.优化代码体积</li></ul><p><img src="https://i.bmp.ovh/imgs/2020/11/ef5409f73d9ca563.png"></p><h4 id="二-打包注意事项"><a href="#二-打包注意事项" class="headerlink" title="二.打包注意事项:"></a>二.打包注意事项:</h4><p>1.设置node.js环境为production<br>2.禁止开发时专用代码，比如logger<br>3.设置应用根路径</p><p>npm run build 执行的就是打包过程。</p>]]></content>
     
     
+    <categories>
+      
+      <category>极客时间React教程</category>
+      
+    </categories>
+    
     
   </entry>
   
@@ -278,6 +415,12 @@
     
     <content type="html"><![CDATA[<h3 id="1-为什么需要脚手架？"><a href="#1-为什么需要脚手架？" class="headerlink" title="1.为什么需要脚手架？"></a>1.为什么需要脚手架？</h3><p><img src="https://i.bmp.ovh/imgs/2020/11/1df974a0ce1a7435.png"><br>项目越来越复杂，需要用：</p><ul><li><p>react: 做UI，</p></li><li><p>redux: 做状态管理，</p></li><li><p>react-router: 做路由管理</p></li><li><p>babel: 把js新特性翻译为浏览器可以识别的旧语法</p></li><li><p>webpack: 打包</p></li><li><p>eslint: 用于语法检查<br>…<br><img src="https://i.bmp.ovh/imgs/2020/11/611411d14c00f1a4.png"></p><p>&emsp;这些工具背后需要很多的package,我们需要了解每一个package的配置和使用，这使得创建项目非常繁琐。而创建一个项目的过程大致是差不多的，完全可以抽象出来做成一个工具<br>&emsp;===&gt;所以，脚手架应运而生。</p></li></ul><h3 id="2-常见的用于创建React应用的脚手架工具："><a href="#2-常见的用于创建React应用的脚手架工具：" class="headerlink" title="2.常见的用于创建React应用的脚手架工具："></a>2.常见的用于创建React应用的脚手架工具：</h3><ul><li><p><strong>Create React APP</strong><br><img src="https://i.bmp.ovh/imgs/2020/11/6a1c377349d0f209.png"><br>&emsp; facebook 官方推出的，使用了最简策略，用于学习或创建简单的react项目</p></li><li><p><strong>Rekit</strong><br><img src="https://i.bmp.ovh/imgs/2020/11/57aaa6b41498f44a.png"></p><p>&emsp;基于create-react-app,提供了更多的功能，可以开发大型的项目。</p></li><li><p><strong>Codesandbox</strong><br><img src="https://i.bmp.ovh/imgs/2020/11/c18cd49b5e89621e.png"><br>&emsp; Online,在线的创建项目，webpack运行在浏览器端,大大提高打包速度。支持react,vue,angular</p></li></ul>]]></content>
     
+    
+    <categories>
+      
+      <category>极客时间React教程</category>
+      
+    </categories>
     
     
   </entry>
@@ -292,6 +435,12 @@
     <content type="html"><![CDATA[<p><strong>Context解决的是：组件之间的通信问题</strong></p><p>Context提供了一个无需为每层组件手动添加props,就能在组件树间进行数据传递的方法。</p><p><img src="https://i.bmp.ovh/imgs/2020/11/c51c0b02a804b0fb.png"></p><h4 id="1-设计目的"><a href="#1-设计目的" class="headerlink" title="1.设计目的"></a>1.设计目的</h4><p>&emsp;Context设计的目的：为了共享那些对于一个组件树而言是“全局”的数据，例如当前认证的用户、主题或者首选语言。<br>&emsp;在一个典型的React应用中，数据是通过props属性自上而下（由父亲到儿子）进行传递的，但是这种做法对于某些属性是及其繁琐的（比如上文说的UI主题，），这些属性是应用程序中许多组件都需要的。</p><p><strong>==&gt;</strong> 所以，Context被设计出来，提供了一种在组件间共享“全局”数据的方式，从而不必显示地通过组件树逐层地传递props.</p><h4 id="2-使用Context前的考虑"><a href="#2-使用Context前的考虑" class="headerlink" title="2.使用Context前的考虑"></a>2.使用Context前的考虑</h4><p><strong>Context主要应用场景</strong>：很多不同层级之间的组件需要访问同样的一些数据。(但是需要谨慎使用，因为这会让组件的复用性变差。)<br>如果只是想避免层层传递一些属性，<a href="https://zh-hans.reactjs.org/docs/composition-vs-inheritance.html">组件组合（component composition）</a>有时是一个比Context更好的解决方案。</p><h4 id="3-相关的API"><a href="#3-相关的API" class="headerlink" title="3.相关的API"></a>3.相关的API</h4><p> <strong><em>(1) React.createContext</em></strong><br>  <pre><code class="hljs js"><span class="hljs-keyword">const</span> MyContext = React.createContext(defaultValue);</code></pre></p><ul><li>createContext函数创建一个Context对象，当React渲染一个订阅了这个Context对象的组件时，这个组件会从组件树中离自身最近的匹配到的Provider中读取当前的context值。<br>…</li><li><em>defaultValue</em>: 只有当组件所处的组件树中没有匹配到Provider时，其defaultValue参数才起作用。即使Provider中的value值是”undefined”，消费组件的defaultValue也不会生效。<br>（defaultValue有助于在不使用Provider包装组件的情况下，对组件进行测试）</li></ul><p><strong><em>(2)Context.Provider</em></strong></p><pre><code class="hljs js">&lt;MyContext.Provider value=&#123;<span class="hljs-comment">/*某个值*/</span>&#125;&gt;</code></pre><ul><li><p>每个Context对象都会返回一个Provider React组件，它允许消费组件订阅context的变化。</p></li><li><p>一个Provider可以和多个消费组件有对应关系。多个Provider也可以嵌套使用，里面的会覆盖外层的数据。</p></li><li><p>Provider有一个value属性，传递给消费组件。当value值发生变化时，Provider内部的所有消费组件都会重新渲染。<br>（Provider及其内部的消费组件都不受制于shouldComponentUpdate函数，所以当消费组件在其祖先组件推出更新的情况下也能更新）</p></li><li><p>通过新旧值检测确定变化，使用了和 Object.is相同的算法。</p></li></ul><p><strong><em>(3) Class.contextType</em></strong></p><pre><code class="hljs js"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyClass</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>&#123;  <span class="hljs-function"><span class="hljs-title">componentDidMount</span>(<span class="hljs-params"></span>)</span> &#123;    <span class="hljs-keyword">let</span> value = <span class="hljs-built_in">this</span>.context;    <span class="hljs-comment">/* 在组件挂载完成后，使用 MyContext 组件的值来执行一些有副作用的操作 */</span>  &#125;  <span class="hljs-function"><span class="hljs-title">componentDidUpdate</span>(<span class="hljs-params"></span>)</span> &#123;    <span class="hljs-keyword">let</span> value = <span class="hljs-built_in">this</span>.context;    <span class="hljs-comment">/* ... */</span>  &#125;  <span class="hljs-function"><span class="hljs-title">componentWillUnmount</span>(<span class="hljs-params"></span>)</span> &#123;    <span class="hljs-keyword">let</span> value = <span class="hljs-built_in">this</span>.context;    <span class="hljs-comment">/* ... */</span>  &#125;  <span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params"></span>)</span> &#123;    <span class="hljs-keyword">let</span> value = <span class="hljs-built_in">this</span>.context;    <span class="hljs-comment">/* 基于 MyContext 组件的值进行渲染 */</span>  &#125;&#125;MyClass.contextType = MyContext;</code></pre><ul><li>挂载在class上的contextType属性会被重新赋值为一个由React.createContext()创建的Context对象。所以使用this.context可以消费最近Context上的那个值，我们可以任何生命周期访问到this.context，包括render函数。</li><li>通过class.contextType只能订阅一个context</li></ul><p><strong><em>(4) Context.Consumer</em></strong></p><pre><code class="hljs js">&lt;MyContext.Consumer&gt;    &#123;<span class="hljs-function"><span class="hljs-params">value</span>=&gt;</span><span class="hljs-comment">/*基于context值进行渲染*/</span>&#125;&lt;/MyContext.Consumer&gt;</code></pre><ul><li><p>这是一个可以订阅context的变更的React组件，它在函数式组件中可以订阅一个context。</p></li><li><p>这种方法需要一个<a href="https://zh-hans.reactjs.org/docs/render-props.html#using-props-other-than-render">函数作为子元素（function as a child)</a>,这个函数接收当前的context值，并返回一个React节点。</p></li><li><p> 传递给Consumer的value值也就是组件树上方离context最近的Provider提供的value值，如果没有对应的Provider,就用createContext()中的defaultValue.</p></li></ul><p><strong><em>(5) Context.displayName</em></strong></p><p>示例，下述组件在DevTools中将是显示MyDisplayName:</p><pre><code class="hljs js"><span class="hljs-keyword">const</span> MyContext = React.createContext(<span class="hljs-comment">/*some value*/</span>);MyContext.displayName = <span class="hljs-string">&#x27;MyDisplayName&#x27;</span>;&lt;MyContext.Provider&gt; <span class="hljs-comment">// &quot;MyDisplayName.Provider&quot; 在 DevTools 中</span>&lt;MyContext.Consumer&gt; <span class="hljs-comment">// &quot;MyDisplayName.Consumer&quot; 在 DevTools 中</span></code></pre><ul><li>context对象接受一个名为displayName的属性，类型为字符串。React DevTools使用该字符串来确定context要显示的内容。</li></ul>]]></content>
     
     
+    <categories>
+      
+      <category>极客时间React教程</category>
+      
+    </categories>
+    
     
   </entry>
   
@@ -304,6 +453,12 @@
     
     <content type="html"><![CDATA[<h4 id="组件复用的另外两种形式："><a href="#组件复用的另外两种形式：" class="headerlink" title="组件复用的另外两种形式："></a>组件复用的另外两种形式：</h4><p>（除了常规的组件复用之外）</p><ul><li><strong>高阶组件</strong></li><li><strong>函数作为子组件</strong></li></ul><h4 id="一-高阶组件"><a href="#一-高阶组件" class="headerlink" title="一.高阶组件"></a>一.高阶组件</h4><p><img src="https://i.bmp.ovh/imgs/2020/11/f50691752374e779.png"></p><p><strong>高阶组件(HOC)</strong> 是React中复用组件逻辑的一种高级技巧，它本身不是React API的一部分，而是基于React的组合特性形成的一种设计模式。高阶组件以组件为参数，并返回一个新组件。</p><pre><code class="hljs js"><span class="hljs-keyword">const</span> EnhancedComponent = higherOrderComponent(WrappedComponenent)</code></pre><p>==区分:== &emsp;组件是将props转换为UI，高阶组件是将组件转换为另一个组件。</p><p>具体参见：<a href="https://zh-hans.reactjs.org/docs/higher-order-components.html">React官方文档–高阶组件</a></p><h4 id="二-函数作为子组件"><a href="#二-函数作为子组件" class="headerlink" title="二.函数作为子组件"></a>二.函数作为子组件</h4><p><img src="https://i.bmp.ovh/imgs/2020/11/17246cbcf6e05f4d.png"></p><p><strong>总结：</strong></p><p>1、高阶组件和函数作为子组件都是设计模式（并不是新的组件类型）</p><p>2、可以实现更多场景的组件复用</p>]]></content>
     
+    
+    <categories>
+      
+      <category>极客时间React教程</category>
+      
+    </categories>
     
     
   </entry>
@@ -318,6 +473,12 @@
     <content type="html"><![CDATA[<p>JSX的基础：虚拟DOM</p><p><img src="https://i.bmp.ovh/imgs/2020/11/6244a9607b4da0d0.png"></p><p><img src="https://i.bmp.ovh/imgs/2020/11/314414dd61ae46e0.png"></p><p>从根节点开始比较，针对不同情况，diff算法有不同的处理方式：</p><p><strong>1. 属性变化及顺序：</strong><br>   <img src="https://i.bmp.ovh/imgs/2020/11/231a0e379e4ef3a4.png"></p><p>==处理方式==：根据key属性，交换A与B的位置</p><p><strong>2. 节点类型发生变化：</strong><br>   <img src="https://i.bmp.ovh/imgs/2020/11/c65c14d031817b7e.png"></p><p>==处理方式==：暴力删除F节点（不管他是否在其他地方用到），创建一个新的G节点，append到A节点上。</p><p><strong>3. 节点跨层级移动：</strong><br>    <img src="https://i.bmp.ovh/imgs/2020/11/06f09ef16c9da001.png"></p><p>==处理方式==：diff算法直接删除左边B下面的D节点（以及其子树），到了右边，React直接创建一个新的D节点。</p><h4 id="虚拟DOM的两个假设："><a href="#虚拟DOM的两个假设：" class="headerlink" title="虚拟DOM的两个假设："></a>虚拟DOM的两个假设：</h4><p><strong>1、组件的DOM结构是相对稳定的（一般很少出现跨层级移动的情况）</strong></p><p>&emsp;&emsp;跨层级的节点移动，react的diff算法是直接删除。</p><p><strong>2、类型相同的兄弟节点可以被唯一标识（key属性）。</strong></p><hr><h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><ul><li>算法复杂度为O(n)</li><li>虚拟DOM如何计算diff</li><li>key属性的作用</li></ul>]]></content>
     
     
+    <categories>
+      
+      <category>极客时间React教程</category>
+      
+    </categories>
+    
     
   </entry>
   
@@ -330,6 +491,12 @@
     
     <content type="html"><![CDATA[<h3 id="React的生命周期图"><a href="#React的生命周期图" class="headerlink" title="React的生命周期图"></a>React的生命周期图</h3><p><img src="https://i.bmp.ovh/imgs/2020/11/32b8163f9eadfd47.png"></p><p><strong>1.constructor:</strong></p><ul><li>用于初始化内部状态，很少使用</li><li>唯一可以直接修改state的地方</li></ul><p><strong>2.getDerivedStateFromProps:</strong></p><ul><li>当state需要从props初始化时使用。</li><li>尽量不要使用：维护两者状态一致性会增加复杂度。</li><li>每次render都会调用。</li><li>典型场景：表单控件获取默认值。</li></ul><p><strong>3.componentDidMount:</strong></p><ul><li>UI渲染完成后调用</li><li>只执行一次</li><li>典型场景：获取外部资源</li></ul><p><strong>4.componeWillUnmout:</strong></p><ul><li>组件移除时被调用</li><li>典型场景：资源释放</li></ul><p><strong>5.getSnapshotBeforeUpdate:</strong></p><ul><li>在页面render之前调用，state已经更新</li><li>典型场景：获取render之前的DOM状态</li></ul><p><strong>6.componentDidUpdate:</strong></p><ul><li>每次UI更新时被调用</li><li>典型场景：页面需要根据props变化重新获取数据</li></ul><p><strong>7.shouldComponentUpdate:</strong></p><ul><li>决定Vitual DOM是否重绘</li><li>一般由PureComponent自动实现</li><li>典型场景：性能优化</li></ul>]]></content>
     
+    
+    <categories>
+      
+      <category>极客时间React教程</category>
+      
+    </categories>
     
     
   </entry>
@@ -344,6 +511,12 @@
     <content type="html"><![CDATA[<p>###理解JSX</p><p><em>JSX：在javaScript代码中直接写HTML标记。</em></p><pre><code class="hljs js"><span class="hljs-keyword">const</span> name=<span class="hljs-string">&#x27;jane&#x27;</span><span class="hljs-keyword">const</span> element=<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>hello,&#123;name&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span></code></pre><p><strong>1.JSX的本质</strong><br><img src="https://i.bmp.ovh/imgs/2020/11/5e744edbbade47d2.png"></p><p><strong>2.在JSX中使用表达式</strong><br><img src="https://i.bmp.ovh/imgs/2020/11/87d92de0fdbd6f36.png"></p><p><strong>3.JSX的优点</strong></p><ul><li>声明创建界面的直观</li><li>代码动态创建界面的灵活</li><li>无需学习新的模板语言</li></ul><p><strong>约定：自定义组件首字母大写</strong><br>1.react认为小写的tag是原生DOM节点，如div<br>2.大写字母开头的组件是自定义节点<br>3.JSX标记可以直接使用属性语法，如&lt;menu.Item /&gt;</p>]]></content>
     
     
+    <categories>
+      
+      <category>极客时间React教程</category>
+      
+    </categories>
+    
     
   </entry>
   
@@ -357,6 +530,12 @@
     <content type="html"><![CDATA[<p><img src="https://i.bmp.ovh/imgs/2020/11/b28d10e0a2054aec.png"></p><p><strong>一、构建一个组件需要考虑的三件事情：</strong></p><p>1、组件的UI( 一些外在的表现形式 )<br>2、组件的状态管理（放在哪？）<br>3、组件的交互</p><p><img src="https://i.bmp.ovh/imgs/2020/11/f878479d2f41ffb4.png"></p><p><strong>二、何时创建组件：单一职责原则</strong></p><p>1、一个组件只负责一个功能<br>2、复杂的组件应该进行拆分</p><p><strong>三、数据状态管理原则：DRY原则</strong></p><p>1.能计算得到的状态不应该单独存储<br>2.组件尽量无状态，尽量通过props获取.</p>]]></content>
     
     
+    <categories>
+      
+      <category>极客时间React教程</category>
+      
+    </categories>
+    
     
   </entry>
   
@@ -369,6 +548,12 @@
     
     <content type="html"><![CDATA[<h3 id="1-React-出现的历史背景"><a href="#1-React-出现的历史背景" class="headerlink" title="1. React 出现的历史背景"></a>1. React 出现的历史背景</h3><h4 id="A-UI方面的——"><a href="#A-UI方面的——" class="headerlink" title="A.UI方面的——"></a>A.UI方面的——</h4><p>传统WebUI存在的问题：</p><ul><li>传统UI关注太多的细节</li><li>应用程序的状态分散在各处，难以追踪和维护</li></ul><p><strong>=&gt;</strong> <strong>React的解决方案</strong>：react 始终整体”刷新”页面，无需关心细节。它只判断前后两个状态是否变化，并不关注背后的哪个细节发生了变化。<br><img src="https://i.bmp.ovh/imgs/2020/11/981310a92f37e99e.png"></p><h4 id="B-数据方面的——"><a href="#B-数据方面的——" class="headerlink" title="B.数据方面的——"></a>B.数据方面的——</h4><p>传统的MVC难以扩展和维护，太多的model和view，关系错综复杂且双向绑定，当出现了问题，很难追踪是model还是view层出现了问题。<br><img src="https://i.bmp.ovh/imgs/2020/11/0520d5fd55b9ac16.png"> </p><p><strong>=&gt;</strong> <strong>React的解决方案</strong>，提出了单向数据流架构flux.(后面衍生出redux和mobx)<br><img src="https://i.bmp.ovh/imgs/2020/11/1d93a50d7d4e112b.png"></p><h3 id="2-React-的特点："><a href="#2-React-的特点：" class="headerlink" title="2. React 的特点："></a>2. React 的特点：</h3><p>1个新概念<br>4个必须的API<br>单向数据流<br>完善的错误提示</p>]]></content>
     
+    
+    <categories>
+      
+      <category>极客时间React教程</category>
+      
+    </categories>
     
     
   </entry>
