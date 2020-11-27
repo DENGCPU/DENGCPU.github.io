@@ -17,7 +17,7 @@
   <meta name="description" content="前端小白，升级打怪">
   <meta name="author" content="dorothy">
   <meta name="keywords" content="前端，js,h5,css,react">
-  <title>28-时刻考虑性能问题 - Dorothy的博客</title>
+  <title>React01--ref的使用 - Dorothy的博客</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.5.3/css/bootstrap.min.css" />
 
@@ -162,7 +162,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="28-时刻考虑性能问题">
+            <span class="h2" id="subtitle" title="React01--ref的使用">
               
             </span>
 
@@ -172,8 +172,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2020-11-21 21:04" pubdate>
-        2020年11月21日 晚上
+      <time datetime="2020-11-24 15:18" pubdate>
+        2020年11月24日 下午
       </time>
     </span>
   
@@ -184,7 +184,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      350 字
+      902 字
     </span>
   
 
@@ -194,7 +194,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      3
+      11
        分钟
     </span>
   
@@ -224,38 +224,94 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">28-时刻考虑性能问题</h1>
+            <h1 style="display: none">React01--ref的使用</h1>
             
             <div class="markdown-body">
-              <h4 id="一、如何避免性能问题："><a href="#一、如何避免性能问题：" class="headerlink" title="一、如何避免性能问题："></a>一、如何避免性能问题：</h4><p>1、了解常见的性能问题场景（解决最可能产生性能问题的场景）</p>
+              <h2 id="ref的详细用法"><a href="#ref的详细用法" class="headerlink" title="ref的详细用法"></a>ref的详细用法</h2><p>在react典型的数据流中，props传递时父子组件交互的唯一方式：通过传递一个新的props值来使子组件重新render，从而达到父子组件通信。但是，某些情况下，你需要在典型数据流之外强制修改子组件。比如：</p>
 <ul>
-<li>  键盘输入过程卡顿</li>
-<li>  鼠标的移动过程卡顿</li>
+<li>管理焦点，文本选择或者媒体播放</li>
+<li>触发强制动画</li>
+<li>集成第三方DOM库</li>
 </ul>
-<p>2、时刻注意代码的潜在性能问题</p>
+<p>这些情况下，react提供了新的方案：ref</p>
+<h4 id="一、ref简介"><a href="#一、ref简介" class="headerlink" title="一、ref简介"></a>一、ref简介</h4><p>React提供的ref属性，<strong>表示对组件真正实例的引用</strong>，其实就是ReactDOM.render()返回的组件实例；需要区分一下：ReactDOM.render()渲染组件时返回的是组件实例；而渲染dom元素时，返回的是具体的dom节点。</p>
+<p>例如，下面的代码：</p>
+<pre><code class="hljs js"><span class="hljs-keyword">const</span> domCom=<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">button</span>&gt;</span>button<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span>;
+<span class="hljs-keyword">const</span> refDom=ReactDOM.render(domCom,container);
+<span class="hljs-keyword">const</span> refCom=ReactDOM.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">myComponent</span> /&gt;</span></span>,container);
+<span class="hljs-built_in">console</span>.log(refDom);
+<span class="hljs-built_in">console</span>.log(refCom);</code></pre>
+<p>上述代码运行如下：<br><img src="https://pic.downk.cc/item/5fbcde31b18d6271133f9065.jpg" srcset="/img/loading.gif"></p>
+<p>ref可以挂在任何组件上，可以挂在组件上也可以是dom元素上：</p>
 <ul>
-<li>什么时候拆分组件</li>
-<li>组件粒度是否够细</li>
+<li>挂在组件上（指有状态组件）的ref表示对组件实例的引用</li>
+<li>挂载到dom元素上时表示具体的dom节点</li>
 </ul>
-<p>3、注意可重构的代码</p>
+<h4 id="二、ref可以设置回调函数"><a href="#二、ref可以设置回调函数" class="headerlink" title="二、ref可以设置回调函数"></a>二、ref可以设置回调函数</h4><p>ref属性可以设置为一个回调函数，这也是官方推荐的做法。这个函数的执行时机为：</p>
 <ul>
-<li>代码的耦合性必须低，功能模块非常独立</li>
+<li>==组件被挂载后==，回调函数立即执行，回调函数的参数为该组件的具体实例。</li>
+<li>==组件被卸载或者原有的ref属性本身发生变化时==，回调也会被立即执行，此时回调函数参数为null,以避免内存泄漏。</li>
 </ul>
-<p>4、了解如何使用工具定位性能问题：</p>
+<p>例子：</p>
+<pre><code class="hljs js"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CustomTextInput</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span></span>&#123;
+    <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">props</span>)</span>&#123;
+        <span class="hljs-built_in">super</span>(props);
+        <span class="hljs-built_in">this</span>.textInput=<span class="hljs-literal">null</span>;
+        <span class="hljs-built_in">this</span>.setTextInputRef=<span class="hljs-function"><span class="hljs-params">element</span>=&gt;</span>&#123;
+            <span class="hljs-built_in">this</span>.textInput=element;
+        &#125;
+        <span class="hljs-built_in">this</span>.focusTextInput=<span class="hljs-function">()=&gt;</span>&#123;
+        <span class="hljs-comment">//使用原生DOM API使得text输入框获得焦点</span>
+            <span class="hljs-keyword">if</span>(<span class="hljs-built_in">this</span>.textInput) <span class="hljs-built_in">this</span>.textInput.focus();
+        &#125;
+    &#125;
+    <span class="hljs-function"><span class="hljs-title">componentDidMount</span>(<span class="hljs-params"></span>)</span>&#123;
+        <span class="hljs-comment">//组件挂载后，让文本自动获得焦点</span>
+        <span class="hljs-built_in">this</span>.focusTextInput();
+    &#125;
+    <span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params"></span>)</span>&#123;
+        &lt;div&gt;
+            &lt;input
+              type=<span class="hljs-string">&#x27;text&#x27;</span>
+              ref=&#123;<span class="hljs-built_in">this</span>.setTextInputRef&#125;
+            /&gt;
+            &lt;input
+             type=<span class="hljs-string">&quot;button&quot;</span>
+             value=<span class="hljs-string">&quot;Focus the text input&quot;</span>
+             onClick=&#123;<span class="hljs-built_in">this</span>.focusTextInput&#125;
+            /&gt;
+        &lt;/div&gt;
+    &#125;
+  
+&#125;</code></pre>
+<p>上述代码中，React将在组件挂载时，会调用ref回调函数并传入DOM元素，当卸载时调用它并传入null。在componentDidMount或componentDidUpdate触发前，React会保证refs一定是最新的。</p>
+<h4 id="三、ref可以设置字符串-了解"><a href="#三、ref可以设置字符串-了解" class="headerlink" title="三、ref可以设置字符串 (了解)"></a>三、ref可以设置字符串 (了解)</h4><p>&emsp;ref还可以设置为字符串值，不过这种方式基本不再推荐使用。</p>
+<pre><code class="hljs js">&lt;input ref=<span class="hljs-string">&#x27;input&#x27;</span>&gt;</code></pre>
+<p>&emsp;然后再其他地方如事件回调中通过this.refs.input可以访问该组件实例，其实就是dom节点</p>
+<pre><code class="hljs js"><span class="hljs-keyword">let</span> element=<span class="hljs-built_in">this</span>.refs.input</code></pre>
+
+<h4 id="四、创建与访问Refs"><a href="#四、创建与访问Refs" class="headerlink" title="四、创建与访问Refs"></a>四、创建与访问Refs</h4><p><strong>1.创建refs:</strong></p>
+<p>&emsp;refs是使用React.createRef()创建的，并通过ref属性附加到React元素。在构建组件时，通常将refs分配给组件实例属性，以便在整个组件中都引用它们。</p>
+<pre><code class="hljs js"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyComponent</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>&#123;
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">props</span>)</span> &#123;
+    <span class="hljs-built_in">super</span>(props);
+    <span class="hljs-built_in">this</span>.myRef = React.createRef();
+  &#125;
+  <span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params"></span>)</span> &#123;
+    <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">&#123;this.myRef&#125;</span> /&gt;</span></span>;
+  &#125;
+&#125;</code></pre>
+
+<p><strong>2.访问refs:</strong></p>
+<p>&emsp;当ref被传递给render中的元素时，对该节点的引用可以哎ref的current属性中被访问。</p>
+<pre><code class="hljs js"><span class="hljs-keyword">const</span> node = <span class="hljs-built_in">this</span>.myRef.current;</code></pre>
+
+<p>ref的值根据节点类型不同而有所不同：</p>
 <ul>
-<li>React-devTool</li>
-<li>Chrome-devTool</li>
+<li>当ref属性用于HTML元素时，构造函数中使用 React.createRef() 创建的 ref 接收底层 DOM 元素作为其 current 属性。</li>
+<li>当ref属性用于自定义class组件时，ref对象接收组件的挂载实例作为其current属性。</li>
 </ul>
-<h4 id="二、网络性能优化：自动化按需加载"><a href="#二、网络性能优化：自动化按需加载" class="headerlink" title="二、网络性能优化：自动化按需加载"></a>二、网络性能优化：自动化按需加载</h4><p>如何在react中实现按需加载：<br>1、按需加载：用户当前需要用什么功能就只加载这个功能对应的代码。<br>2、使用Webpack的import API<br>3、使用react-loadable库实现React异步加载</p>
-<p><img src="https://pic.downk.cc/item/5fb913a4b18d627113603f84.jpg" srcset="/img/loading.gif" alt="按需加载"></p>
-<h4 id="三、使用Reselect避免重复计算"><a href="#三、使用Reselect避免重复计算" class="headerlink" title="三、使用Reselect避免重复计算"></a>三、使用Reselect避免重复计算</h4><p>Reselect:创建自动缓存的数据处理流程（只有数据变化时才重新计算，否则使用缓存的结果）</p>
-<p><strong>原则</strong>:所有能够计算得到的数据一定是通过计算拿到</p>
-<p><img src="https://pic.downk.cc/item/5fb91595b18d62711360ba51.jpg" srcset="/img/loading.gif" alt="自动缓存"></p>
-<h4 id="四、React异步渲染"><a href="#四、React异步渲染" class="headerlink" title="四、React异步渲染"></a>四、React异步渲染</h4><p><img src="https://pic.downk.cc/item/5fb918ffb18d62711361b0b2.jpg" srcset="/img/loading.gif"></p>
-<p><strong>时间分片：</strong><br>1、虚拟DOM的diff操作可以分片进行<br>2、React新API：unstable_deferredUpdates<br>3、Chrome新API：requestIdleCallback 浏览器什么时候空闲</p>
-<p><strong>渲染挂起：</strong></p>
-<p>1、unstable_deferUpdate<br>2、React的新内置组件：Timeout组件</p>
-<h4 id="五、使用工具发现性能问题"><a href="#五、使用工具发现性能问题" class="headerlink" title="五、使用工具发现性能问题"></a>五、使用工具发现性能问题</h4><p>1、使用React DevTool找到多余渲染<br>2、使用Chrome DevTool定位性能瓶颈</p>
+<p>🐖：不能在函数组件上使用ref属性，因为他们没有实例！</p>
 
             </div>
             <hr>
@@ -265,7 +321,7 @@
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
                     
-                      <a class="hover-with-bg" href="/categories/%E6%9E%81%E5%AE%A2%E6%97%B6%E9%97%B4React%E6%95%99%E7%A8%8B/">极客时间React教程</a>
+                      <a class="hover-with-bg" href="/categories/React%E5%AD%A6%E4%B9%A0/">React学习</a>
                     
                   </div>
                 
@@ -279,18 +335,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/11/24/React01-ref%E7%9A%84%E4%BD%BF%E7%94%A8/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">React01--ref的使用</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/11/21/27-React%E4%B8%AD%E6%8B%96%E6%94%BE%E7%9A%84%E5%AE%9E%E7%8E%B0/">
-                        <span class="hidden-mobile">27-React中拖放的实现</span>
+                      <a href="/2020/11/21/28-%E6%97%B6%E5%88%BB%E8%80%83%E8%99%91%E6%80%A7%E8%83%BD%E9%97%AE%E9%A2%98/">
+                        <span class="hidden-mobile">28-时刻考虑性能问题</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

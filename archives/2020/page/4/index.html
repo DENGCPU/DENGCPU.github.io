@@ -17,25 +17,9 @@
   <meta name="description" content="前端小白，升级打怪">
   <meta name="author" content="dorothy">
   <meta name="keywords" content="前端，js,h5,css,react">
-  <title>28-时刻考虑性能问题 - Dorothy的博客</title>
+  <title>归档 - Dorothy的博客</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.5.3/css/bootstrap.min.css" />
-
-
-  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
-  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
-
-  
-    
-    
-      
-      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.1.2/styles/github-gist.min.css" />
-    
-  
-
-  
-    <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
-  
 
 
 
@@ -63,7 +47,7 @@
 
 
 <body>
-  <header style="height: 70vh;">
+  <header style="height: 60vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -162,46 +146,9 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="28-时刻考虑性能问题">
+            <span class="h2" id="subtitle" title="归档">
               
             </span>
-
-            
-              <div class="mt-3">
-  
-  
-    <span class="post-meta">
-      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2020-11-21 21:04" pubdate>
-        2020年11月21日 晚上
-      </time>
-    </span>
-  
-</div>
-
-<div class="mt-1">
-  
-    
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-chart"></i>
-      350 字
-    </span>
-  
-
-  
-    
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-clock-fill"></i>
-      
-      
-      3
-       分钟
-    </span>
-  
-
-  
-  
-</div>
 
             
           </div>
@@ -214,112 +161,52 @@
 
   <main>
     
+      <div class="container nopadding-md">
+        <div class="py-5" id="board"
+          >
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+<div class="list-group">
+  <p class="h4">共计 31 篇文章</p>
+  <hr>
+  
+  
+    
       
+      <p class="h5">2020</p>
+    
+    <a href="/2020/11/09/%E5%89%8D%E7%AB%AF%E8%B5%84%E6%BA%90%E6%B1%87%E6%80%BB/" class="list-group-item list-group-item-action">
+      <span class="archive-post-title">my-first-blog</span>
+      <time style="float: right;">11-09</time>
+    </a>
+  
+</div>
 
-<div class="container-fluid">
-  <div class="row">
-    <div class="d-none d-lg-block col-lg-2"></div>
-    <div class="col-lg-8 nopadding-md">
-      <div class="container nopadding-md" id="board-ctn">
-        <div class="py-5" id="board">
-          <article class="post-content mx-auto">
-            <!-- SEO header -->
-            <h1 style="display: none">28-时刻考虑性能问题</h1>
-            
-            <div class="markdown-body">
-              <h4 id="一、如何避免性能问题："><a href="#一、如何避免性能问题：" class="headerlink" title="一、如何避免性能问题："></a>一、如何避免性能问题：</h4><p>1、了解常见的性能问题场景（解决最可能产生性能问题的场景）</p>
-<ul>
-<li>  键盘输入过程卡顿</li>
-<li>  鼠标的移动过程卡顿</li>
-</ul>
-<p>2、时刻注意代码的潜在性能问题</p>
-<ul>
-<li>什么时候拆分组件</li>
-<li>组件粒度是否够细</li>
-</ul>
-<p>3、注意可重构的代码</p>
-<ul>
-<li>代码的耦合性必须低，功能模块非常独立</li>
-</ul>
-<p>4、了解如何使用工具定位性能问题：</p>
-<ul>
-<li>React-devTool</li>
-<li>Chrome-devTool</li>
-</ul>
-<h4 id="二、网络性能优化：自动化按需加载"><a href="#二、网络性能优化：自动化按需加载" class="headerlink" title="二、网络性能优化：自动化按需加载"></a>二、网络性能优化：自动化按需加载</h4><p>如何在react中实现按需加载：<br>1、按需加载：用户当前需要用什么功能就只加载这个功能对应的代码。<br>2、使用Webpack的import API<br>3、使用react-loadable库实现React异步加载</p>
-<p><img src="https://pic.downk.cc/item/5fb913a4b18d627113603f84.jpg" srcset="/img/loading.gif" alt="按需加载"></p>
-<h4 id="三、使用Reselect避免重复计算"><a href="#三、使用Reselect避免重复计算" class="headerlink" title="三、使用Reselect避免重复计算"></a>三、使用Reselect避免重复计算</h4><p>Reselect:创建自动缓存的数据处理流程（只有数据变化时才重新计算，否则使用缓存的结果）</p>
-<p><strong>原则</strong>:所有能够计算得到的数据一定是通过计算拿到</p>
-<p><img src="https://pic.downk.cc/item/5fb91595b18d62711360ba51.jpg" srcset="/img/loading.gif" alt="自动缓存"></p>
-<h4 id="四、React异步渲染"><a href="#四、React异步渲染" class="headerlink" title="四、React异步渲染"></a>四、React异步渲染</h4><p><img src="https://pic.downk.cc/item/5fb918ffb18d62711361b0b2.jpg" srcset="/img/loading.gif"></p>
-<p><strong>时间分片：</strong><br>1、虚拟DOM的diff操作可以分片进行<br>2、React新API：unstable_deferredUpdates<br>3、Chrome新API：requestIdleCallback 浏览器什么时候空闲</p>
-<p><strong>渲染挂起：</strong></p>
-<p>1、unstable_deferUpdate<br>2、React的新内置组件：Timeout组件</p>
-<h4 id="五、使用工具发现性能问题"><a href="#五、使用工具发现性能问题" class="headerlink" title="五、使用工具发现性能问题"></a>五、使用工具发现性能问题</h4><p>1、使用React DevTool找到多余渲染<br>2、使用Chrome DevTool定位性能瓶颈</p>
 
-            </div>
-            <hr>
-            <div>
-              <div class="post-metas mb-3">
-                
-                  <div class="post-meta mr-3">
-                    <i class="iconfont icon-category"></i>
-                    
-                      <a class="hover-with-bg" href="/categories/%E6%9E%81%E5%AE%A2%E6%97%B6%E9%97%B4React%E6%95%99%E7%A8%8B/">极客时间React教程</a>
-                    
-                  </div>
-                
-                
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <a class="extend prev" rel="prev" href="/archives/2020/page/3/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/archives/2020/">1</a><a class="page-number" href="/archives/2020/page/2/">2</a><a class="page-number" href="/archives/2020/page/3/">3</a><span class="page-number current">4</span>
+    </span>
+  </nav>
+  
+  <script>
+    for (ele of document.getElementById("pagination").getElementsByTagName("a")) {
+      ele.href += '#board';
+    }
+  </script>
+
+
+
+
               </div>
-              
-                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
-              
-              
-                <div class="post-prevnext row">
-                  <article class="post-prev col-6">
-                    
-                    
-                      <a href="/2020/11/24/React01-ref%E7%9A%84%E4%BD%BF%E7%94%A8/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">React01--ref的使用</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
-                  </article>
-                  <article class="post-next col-6">
-                    
-                    
-                      <a href="/2020/11/21/27-React%E4%B8%AD%E6%8B%96%E6%94%BE%E7%9A%84%E5%AE%9E%E7%8E%B0/">
-                        <span class="hidden-mobile">27-React中拖放的实现</span>
-                        <span class="visible-mobile">下一篇</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
-                    
-                  </article>
-                </div>
-              
             </div>
-
-            
-          </article>
+          </div>
         </div>
       </div>
-    </div>
-    
-      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
-        <div id="toc">
-  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
-  <div class="toc-body" id="toc-body"></div>
-</div>
-
-      </div>
-    
-  </div>
-</div>
-
-<!-- Custom -->
-
-
     
 
     
@@ -402,15 +289,9 @@
 
 
 
-  <script  src="https://cdn.staticfile.org/tocbot/4.12.0/tocbot.min.js" ></script>
 
 
 
-  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
-
-
-
-  <script  src="https://cdn.staticfile.org/anchor-js/4.3.0/anchor.min.js" ></script>
 
 
 
