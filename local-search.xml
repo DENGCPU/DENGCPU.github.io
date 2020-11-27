@@ -4,6 +4,25 @@
   
   
   <entry>
+    <title>React02-setState的使用</title>
+    <link href="/2020/11/27/React02-setState%E7%9A%84%E4%BD%BF%E7%94%A8/"/>
+    <url>/2020/11/27/React02-setState%E7%9A%84%E4%BD%BF%E7%94%A8/</url>
+    
+    <content type="html"><![CDATA[<h3 id="setState-updater-callback"><a href="#setState-updater-callback" class="headerlink" title="setState(updater, [callback])"></a>setState(updater, [callback])</h3><h4 id="一、概述"><a href="#一、概述" class="headerlink" title="一、概述"></a>一、概述</h4><p>1、setState()将对组件state的更新排入队列，并通知React需要使用更新后的state重新渲染此组件及其子组件。这是用于更新用户界面以响应事件处理器和处理服务器数据的主要方式。</p><p>2、<strong>将setState()视为请求而不是立即更新组件的命令</strong>。为了更好的感知性能，React会延迟调用它，然后通过一次传递更新多个组件。React并不会保证state的变更会立即生效。</p><p>3、<strong>setState()并不总是立即更新组件，它会批量推迟更新</strong>。这使得在调用setState()后立即读取this.state成为了隐患。为了消除隐患，应当使用componentDidUpdate或者setState的回调函数，这两种方式都可以保证在应用更新后触发。如果需要基于之前的state来设置当前的state，查看关于updater部分的描述。</p><p>4、除非shouldComponentUpate()返回false,否则setState()将始终执行重新渲染操作。</p><h4 id="二、参数1：updater函数"><a href="#二、参数1：updater函数" class="headerlink" title="二、参数1：updater函数"></a>二、参数1：updater函数</h4><pre><code class="hljs js">(state,props) =&gt; stateChange</code></pre><p>其中，state是对应用变化时组件状态的引用，它不应该直接被修改。应当使用基于state和props构建的新对象来表示变化。例如，我们需要使用props.step来增加state：</p><pre><code class="hljs js"><span class="hljs-built_in">this</span>.setState(<span class="hljs-function">(<span class="hljs-params">state, props</span>)=&gt;</span>&#123;    <span class="hljs-keyword">return</span> &#123; <span class="hljs-attr">counter</span>: state.counter + props.step&#125;&#125;)</code></pre><p>updater函数中接收的state和props都保证为最新。updater的返回值会与state进行浅合并。</p><p>🐖：setState()的第一个参数除了接受函数外，还接受对象类型：</p><pre><code class="hljs js">setState(stateChange[,callback])</code></pre><p>stateChange会将传入的对象浅合并到新的state中，例子：</p><pre><code class="hljs js"><span class="hljs-built_in">this</span>.setState(&#123;<span class="hljs-attr">counter</span>: <span class="hljs-number">2</span>&#125;)</code></pre><p>这种形式的setState()也是异步的！并且在同一个周期内对多个setState进行批处理。例如，如果在同一个时期多次设置商品数量增加,则相当于：</p><pre><code class="hljs js"><span class="hljs-built_in">Object</span>.assign(    previousState,    &#123;<span class="hljs-attr">quantiity</span>: state.quantity + <span class="hljs-number">1</span>&#125;,    &#123;<span class="hljs-attr">quantiity</span>: state.quantity + <span class="hljs-number">1</span>&#125;)</code></pre><p>此时，后调用的setState()将覆盖同一周期内先调用setState的值，因此商品数仅增加1次。如果后续状态取决于当前的状态，建议使用updater函数的形式代替：</p><pre><code class="hljs js"><span class="hljs-built_in">this</span>.setState(<span class="hljs-function">(<span class="hljs-params">state</span>)=&gt;</span>&#123;    <span class="hljs-keyword">return</span> &#123;<span class="hljs-attr">quantity</span>: state.quantity + <span class="hljs-number">1</span>&#125;;&#125;)</code></pre><h4 id="三、参数2：回调函数callback-（可选）"><a href="#三、参数2：回调函数callback-（可选）" class="headerlink" title="三、参数2：回调函数callback （可选）"></a>三、参数2：回调函数callback （可选）</h4><p>这个回调函数，<strong>将在setState完成合并并重新渲染组件后执行</strong>。通常，建议使用componentDidUpdate()方式来代替这个回调函数的使用。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>React学习</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>React01--ref的使用</title>
     <link href="/2020/11/24/React01-ref%E7%9A%84%E4%BD%BF%E7%94%A8/"/>
     <url>/2020/11/24/React01-ref%E7%9A%84%E4%BD%BF%E7%94%A8/</url>

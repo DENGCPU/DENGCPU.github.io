@@ -17,7 +17,7 @@
   <meta name="description" content="前端小白，升级打怪">
   <meta name="author" content="dorothy">
   <meta name="keywords" content="前端，js,h5,css,react">
-  <title>React01--ref的使用 - Dorothy的博客</title>
+  <title>React02-setState的使用 - Dorothy的博客</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.5.3/css/bootstrap.min.css" />
 
@@ -162,7 +162,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="React01--ref的使用">
+            <span class="h2" id="subtitle" title="React02-setState的使用">
               
             </span>
 
@@ -172,8 +172,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2020-11-24 15:18" pubdate>
-        2020年11月24日 下午
+      <time datetime="2020-11-27 15:09" pubdate>
+        2020年11月27日 下午
       </time>
     </span>
   
@@ -184,7 +184,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      902 字
+      610 字
     </span>
   
 
@@ -194,7 +194,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      11
+      7
        分钟
     </span>
   
@@ -224,94 +224,35 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">React01--ref的使用</h1>
+            <h1 style="display: none">React02-setState的使用</h1>
             
             <div class="markdown-body">
-              <h2 id="ref的详细用法"><a href="#ref的详细用法" class="headerlink" title="ref的详细用法"></a>ref的详细用法</h2><p>在react典型的数据流中，props传递时父子组件交互的唯一方式：通过传递一个新的props值来使子组件重新render，从而达到父子组件通信。但是，某些情况下，你需要在典型数据流之外强制修改子组件。比如：</p>
-<ul>
-<li>管理焦点，文本选择或者媒体播放</li>
-<li>触发强制动画</li>
-<li>集成第三方DOM库</li>
-</ul>
-<p>这些情况下，react提供了新的方案：ref</p>
-<h4 id="一、ref简介"><a href="#一、ref简介" class="headerlink" title="一、ref简介"></a>一、ref简介</h4><p>React提供的ref属性，<strong>表示对组件真正实例的引用</strong>，其实就是ReactDOM.render()返回的组件实例；需要区分一下：ReactDOM.render()渲染组件时返回的是组件实例；而渲染dom元素时，返回的是具体的dom节点。</p>
-<p>例如，下面的代码：</p>
-<pre><code class="hljs js"><span class="hljs-keyword">const</span> domCom=<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">button</span>&gt;</span>button<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span>;
-<span class="hljs-keyword">const</span> refDom=ReactDOM.render(domCom,container);
-<span class="hljs-keyword">const</span> refCom=ReactDOM.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">myComponent</span> /&gt;</span></span>,container);
-<span class="hljs-built_in">console</span>.log(refDom);
-<span class="hljs-built_in">console</span>.log(refCom);</code></pre>
-<p>上述代码运行如下：<br><img src="https://pic.downk.cc/item/5fbcde31b18d6271133f9065.jpg" srcset="/img/loading.gif"></p>
-<p>ref可以挂在任何组件上，可以挂在组件上也可以是dom元素上：</p>
-<ul>
-<li>挂在组件上（指有状态组件）的ref表示对组件实例的引用</li>
-<li>挂载到dom元素上时表示具体的dom节点</li>
-</ul>
-<h4 id="二、ref可以设置回调函数"><a href="#二、ref可以设置回调函数" class="headerlink" title="二、ref可以设置回调函数"></a>二、ref可以设置回调函数</h4><p>ref属性可以设置为一个回调函数，这也是官方推荐的做法。这个函数的执行时机为：</p>
-<ul>
-<li>==组件被挂载后==，回调函数立即执行，回调函数的参数为该组件的具体实例。</li>
-<li>==组件被卸载或者原有的ref属性本身发生变化时==，回调也会被立即执行，此时回调函数参数为null,以避免内存泄漏。</li>
-</ul>
-<p>例子：</p>
-<pre><code class="hljs js"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CustomTextInput</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span></span>&#123;
-    <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">props</span>)</span>&#123;
-        <span class="hljs-built_in">super</span>(props);
-        <span class="hljs-built_in">this</span>.textInput=<span class="hljs-literal">null</span>;
-        <span class="hljs-built_in">this</span>.setTextInputRef=<span class="hljs-function"><span class="hljs-params">element</span>=&gt;</span>&#123;
-            <span class="hljs-built_in">this</span>.textInput=element;
-        &#125;
-        <span class="hljs-built_in">this</span>.focusTextInput=<span class="hljs-function">()=&gt;</span>&#123;
-        <span class="hljs-comment">//使用原生DOM API使得text输入框获得焦点</span>
-            <span class="hljs-keyword">if</span>(<span class="hljs-built_in">this</span>.textInput) <span class="hljs-built_in">this</span>.textInput.focus();
-        &#125;
-    &#125;
-    <span class="hljs-function"><span class="hljs-title">componentDidMount</span>(<span class="hljs-params"></span>)</span>&#123;
-        <span class="hljs-comment">//组件挂载后，让文本自动获得焦点</span>
-        <span class="hljs-built_in">this</span>.focusTextInput();
-    &#125;
-    <span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params"></span>)</span>&#123;
-        &lt;div&gt;
-            &lt;input
-              type=<span class="hljs-string">&#x27;text&#x27;</span>
-              ref=&#123;<span class="hljs-built_in">this</span>.setTextInputRef&#125;
-            /&gt;
-            &lt;input
-             type=<span class="hljs-string">&quot;button&quot;</span>
-             value=<span class="hljs-string">&quot;Focus the text input&quot;</span>
-             onClick=&#123;<span class="hljs-built_in">this</span>.focusTextInput&#125;
-            /&gt;
-        &lt;/div&gt;
-    &#125;
-  
-&#125;</code></pre>
-<p>上述代码中，React将在组件挂载时，会调用ref回调函数并传入DOM元素，当卸载时调用它并传入null。在componentDidMount或componentDidUpdate触发前，React会保证refs一定是最新的。</p>
-<h4 id="三、ref可以设置字符串-了解"><a href="#三、ref可以设置字符串-了解" class="headerlink" title="三、ref可以设置字符串 (了解)"></a>三、ref可以设置字符串 (了解)</h4><p>&emsp;ref还可以设置为字符串值，不过这种方式基本不再推荐使用。</p>
-<pre><code class="hljs js">&lt;input ref=<span class="hljs-string">&#x27;input&#x27;</span>&gt;</code></pre>
-<p>&emsp;然后再其他地方如事件回调中通过this.refs.input可以访问该组件实例，其实就是dom节点</p>
-<pre><code class="hljs js"><span class="hljs-keyword">let</span> element=<span class="hljs-built_in">this</span>.refs.input</code></pre>
+              <h3 id="setState-updater-callback"><a href="#setState-updater-callback" class="headerlink" title="setState(updater, [callback])"></a>setState(updater, [callback])</h3><h4 id="一、概述"><a href="#一、概述" class="headerlink" title="一、概述"></a>一、概述</h4><p>1、setState()将对组件state的更新排入队列，并通知React需要使用更新后的state重新渲染此组件及其子组件。这是用于更新用户界面以响应事件处理器和处理服务器数据的主要方式。</p>
+<p>2、<strong>将setState()视为请求而不是立即更新组件的命令</strong>。为了更好的感知性能，React会延迟调用它，然后通过一次传递更新多个组件。React并不会保证state的变更会立即生效。</p>
+<p>3、<strong>setState()并不总是立即更新组件，它会批量推迟更新</strong>。这使得在调用setState()后立即读取this.state成为了隐患。为了消除隐患，应当使用componentDidUpdate或者setState的回调函数，这两种方式都可以保证在应用更新后触发。如果需要基于之前的state来设置当前的state，查看关于updater部分的描述。</p>
+<p>4、除非shouldComponentUpate()返回false,否则setState()将始终执行重新渲染操作。</p>
+<h4 id="二、参数1：updater函数"><a href="#二、参数1：updater函数" class="headerlink" title="二、参数1：updater函数"></a>二、参数1：updater函数</h4><pre><code class="hljs js">(state,props) =&gt; stateChange</code></pre>
+<p>其中，state是对应用变化时组件状态的引用，它不应该直接被修改。应当使用基于state和props构建的新对象来表示变化。例如，我们需要使用props.step来增加state：</p>
+<pre><code class="hljs js"><span class="hljs-built_in">this</span>.setState(<span class="hljs-function">(<span class="hljs-params">state, props</span>)=&gt;</span>&#123;
+    <span class="hljs-keyword">return</span> &#123; <span class="hljs-attr">counter</span>: state.counter + props.step&#125;
+&#125;)</code></pre>
+<p>updater函数中接收的state和props都保证为最新。updater的返回值会与state进行浅合并。</p>
+<p>🐖：setState()的第一个参数除了接受函数外，还接受对象类型：</p>
+<pre><code class="hljs js">setState(stateChange[,callback])</code></pre>
+<p>stateChange会将传入的对象浅合并到新的state中，例子：</p>
+<pre><code class="hljs js"><span class="hljs-built_in">this</span>.setState(&#123;<span class="hljs-attr">counter</span>: <span class="hljs-number">2</span>&#125;)</code></pre>
+<p>这种形式的setState()也是异步的！并且在同一个周期内对多个setState进行批处理。例如，如果在同一个时期多次设置商品数量增加,则相当于：</p>
+<pre><code class="hljs js"><span class="hljs-built_in">Object</span>.assign(
+    previousState,
+    &#123;<span class="hljs-attr">quantiity</span>: state.quantity + <span class="hljs-number">1</span>&#125;,
+    &#123;<span class="hljs-attr">quantiity</span>: state.quantity + <span class="hljs-number">1</span>&#125;
+)</code></pre>
+<p>此时，后调用的setState()将覆盖同一周期内先调用setState的值，因此商品数仅增加1次。如果后续状态取决于当前的状态，建议使用updater函数的形式代替：</p>
+<pre><code class="hljs js"><span class="hljs-built_in">this</span>.setState(<span class="hljs-function">(<span class="hljs-params">state</span>)=&gt;</span>&#123;
+    <span class="hljs-keyword">return</span> &#123;<span class="hljs-attr">quantity</span>: state.quantity + <span class="hljs-number">1</span>&#125;;
+&#125;)</code></pre>
 
-<h4 id="四、创建与访问Refs"><a href="#四、创建与访问Refs" class="headerlink" title="四、创建与访问Refs"></a>四、创建与访问Refs</h4><p><strong>1.创建refs:</strong></p>
-<p>&emsp;refs是使用React.createRef()创建的，并通过ref属性附加到React元素。在构建组件时，通常将refs分配给组件实例属性，以便在整个组件中都引用它们。</p>
-<pre><code class="hljs js"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyComponent</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>&#123;
-  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">props</span>)</span> &#123;
-    <span class="hljs-built_in">super</span>(props);
-    <span class="hljs-built_in">this</span>.myRef = React.createRef();
-  &#125;
-  <span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params"></span>)</span> &#123;
-    <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">&#123;this.myRef&#125;</span> /&gt;</span></span>;
-  &#125;
-&#125;</code></pre>
-
-<p><strong>2.访问refs:</strong></p>
-<p>&emsp;当ref被传递给render中的元素时，对该节点的引用可以哎ref的current属性中被访问。</p>
-<pre><code class="hljs js"><span class="hljs-keyword">const</span> node = <span class="hljs-built_in">this</span>.myRef.current;</code></pre>
-
-<p>ref的值根据节点类型不同而有所不同：</p>
-<ul>
-<li>当ref属性用于HTML元素时，构造函数中使用 React.createRef() 创建的 ref 接收底层 DOM 元素作为其 current 属性。</li>
-<li>当ref属性用于自定义class组件时，ref对象接收组件的挂载实例作为其current属性。</li>
-</ul>
-<p>🐖：不能在函数组件上使用ref属性，因为他们没有实例！</p>
+<h4 id="三、参数2：回调函数callback-（可选）"><a href="#三、参数2：回调函数callback-（可选）" class="headerlink" title="三、参数2：回调函数callback （可选）"></a>三、参数2：回调函数callback （可选）</h4><p>这个回调函数，<strong>将在setState完成合并并重新渲染组件后执行</strong>。通常，建议使用componentDidUpdate()方式来代替这个回调函数的使用。</p>
 
             </div>
             <hr>
@@ -335,18 +276,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/11/27/React02-setState%E7%9A%84%E4%BD%BF%E7%94%A8/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">React02-setState的使用</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/11/21/28-%E6%97%B6%E5%88%BB%E8%80%83%E8%99%91%E6%80%A7%E8%83%BD%E9%97%AE%E9%A2%98/">
-                        <span class="hidden-mobile">28-时刻考虑性能问题</span>
+                      <a href="/2020/11/24/React01-ref%E7%9A%84%E4%BD%BF%E7%94%A8/">
+                        <span class="hidden-mobile">React01--ref的使用</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
