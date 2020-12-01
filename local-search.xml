@@ -4,6 +4,44 @@
   
   
   <entry>
+    <title>01-你真的了解React吗？</title>
+    <link href="/2020/11/30/01-%E4%BD%A0%E7%9C%9F%E7%9A%84%E4%BA%86%E8%A7%A3React%E5%90%97%EF%BC%9F/"/>
+    <url>/2020/11/30/01-%E4%BD%A0%E7%9C%9F%E7%9A%84%E4%BA%86%E8%A7%A3React%E5%90%97%EF%BC%9F/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    <categories>
+      
+      <category>面试宝典之React篇</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>01-你真的了解React吗？</title>
+    <link href="/2020/11/30/%E4%BD%A0%E7%9C%9F%E7%9A%84%E4%BA%86%E8%A7%A3React%E5%90%97%EF%BC%9F/"/>
+    <url>/2020/11/30/%E4%BD%A0%E7%9C%9F%E7%9A%84%E4%BA%86%E8%A7%A3React%E5%90%97%EF%BC%9F/</url>
+    
+    <content type="html"><![CDATA[<h4 id="面试场景1：谈谈你对React的理解？（概念题）"><a href="#面试场景1：谈谈你对React的理解？（概念题）" class="headerlink" title="面试场景1：谈谈你对React的理解？（概念题）"></a>面试场景1：谈谈你对React的理解？（概念题）</h4><p>针对这种概念题，一般采用四字口诀：“讲说理列”</p><ul><li>讲概念: 一句话讲清楚该技术是什么。  </li><li>说用途：描述该技术的用途（结合具体场景，拓展性的描述)</li><li>理思路：梳理该技术的核心思路或运作流程。</li><li>列优缺：对该技术的优点缺点进行列举（与其他技术方案进行横向对比，但切忌踩一捧一！）</li></ul><h5 id="1、讲React概念"><a href="#1、讲React概念" class="headerlink" title="1、讲React概念"></a>1、讲React概念</h5><p><strong>React是通过组件化的方式解决视图层开发复用的问题，本质是一个组件化框架。</strong></p><p>简单概括为： View = fn(props)， 给定相同的输入状态，函数总会生成一致的组件。如果变量多一些，也可以扩展为 View = fn(props,state,context)</p><h5 id="2、说React用途"><a href="#2、说React用途" class="headerlink" title="2、说React用途"></a>2、说React用途</h5><p><strong>React的用途就是：构建视图。</strong> React的生态丰富了它的使用场景：</p><ul><li>首先，PC网页和移动端网页，React都支持</li><li>其次，React Native 可用于开发ios与Android应用</li><li>React 360可以开发VR应用</li><li>冷门的ink,可以使用React开发命令行应用。</li></ul><h5 id="3、理React思路"><a href="#3、理React思路" class="headerlink" title="3、理React思路"></a>3、理React思路</h5><p><strong>React的核心思路：声明式、组件化、通用性</strong>（官方称，一次学习，随处编写）</p><ul><li><strong>声明式</strong>：优势在于直观，可以做到一目了然，也便于组合。</li></ul><p>命令式编程：</p><pre><code class="hljs js"><span class="hljs-comment">//HTML</span>&lt;div <span class="hljs-class"><span class="hljs-keyword">class</span></span>=<span class="hljs-string">&#x27;block&#x27;</span>&gt;&lt;/div&gt;<span class="hljs-comment">//JS</span><span class="hljs-keyword">const</span> block=$(<span class="hljs-string">&#x27;.block&#x27;</span>)block.css(<span class="hljs-string">&#x27;color&#x27;</span>,<span class="hljs-string">&#x27;red&#x27;</span>)</code></pre><p>声明式编程：</p><pre><code class="hljs js"><span class="hljs-keyword">const</span> Block=<span class="hljs-function">(<span class="hljs-params">props</span>)=&gt;</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&#123;&#123;color:</span>&#x27;<span class="hljs-attr">red</span>&#x27;&#125;&#125;&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span></code></pre><p>可以发现，声明式编程更容易阅读，而且更容易与其他组件代码组合。</p><ul><li><p><strong>组件化</strong>：组件化优势在于可以降低系统间功能的耦合性，提高功能内部的聚合性。这样便于代码复用。</p></li><li><p><strong>通用性</strong>：React将DOM抽象为虚拟DOM，开发者并不是直接操作DOM。正因为这一层封装的存在，使得React不再局限于web开发，而是出现更繁荣的生态。不论VR，Native,还是shell命令，只有兼容虚拟DOM层，都可以直接运行React。</p></li></ul><h5 id="4、列React优缺"><a href="#4、列React优缺" class="headerlink" title="4、列React优缺"></a>4、列React优缺</h5><ul><li><p>优点：其实就是React的核心设计思路：声明式，组件化，通用性。</p></li><li><p>缺点：React不是一个一揽子框架，比如路由一类的功能，React团队希望交给社区解决。导致技术选型和学习使用上有较高的成本，在开发大型前端应用时需要向社区寻找并整合解决方案。（非官方的一揽子解决方案是有的，比如DvaJS、React-coat等）</p></li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>面试宝典之React篇</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>React02-setState的使用</title>
     <link href="/2020/11/27/React02-setState%E7%9A%84%E4%BD%BF%E7%94%A8/"/>
     <url>/2020/11/27/React02-setState%E7%9A%84%E4%BD%BF%E7%94%A8/</url>
@@ -527,7 +565,7 @@
     <link href="/2020/11/10/04-react%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/"/>
     <url>/2020/11/10/04-react%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/</url>
     
-    <content type="html"><![CDATA[<h3 id="React的生命周期图"><a href="#React的生命周期图" class="headerlink" title="React的生命周期图"></a>React的生命周期图</h3><p><img src="https://i.bmp.ovh/imgs/2020/11/32b8163f9eadfd47.png"></p><p><strong>1.constructor:</strong></p><ul><li>用于初始化内部状态，很少使用</li><li>唯一可以直接修改state的地方</li></ul><p><strong>2.getDerivedStateFromProps:</strong></p><ul><li>当state需要从props初始化时使用。</li><li>尽量不要使用：维护两者状态一致性会增加复杂度。</li><li>每次render都会调用。</li><li>典型场景：表单控件获取默认值。</li></ul><p><strong>3.componentDidMount:</strong></p><ul><li>UI渲染完成后调用</li><li>只执行一次</li><li>典型场景：获取外部资源</li></ul><p><strong>4.componeWillUnmout:</strong></p><ul><li>组件移除时被调用</li><li>典型场景：资源释放</li></ul><p><strong>5.getSnapshotBeforeUpdate:</strong></p><ul><li>在页面render之前调用，state已经更新</li><li>典型场景：获取render之前的DOM状态</li></ul><p><strong>6.componentDidUpdate:</strong></p><ul><li>每次UI更新时被调用</li><li>典型场景：页面需要根据props变化重新获取数据</li></ul><p><strong>7.shouldComponentUpdate:</strong></p><ul><li>决定Vitual DOM是否重绘</li><li>一般由PureComponent自动实现</li><li>典型场景：性能优化</li></ul>]]></content>
+    <content type="html"><![CDATA[<h3 id="React的生命周期图"><a href="#React的生命周期图" class="headerlink" title="React的生命周期图"></a>React的生命周期图</h3><p><img src="https://i.bmp.ovh/imgs/2020/11/32b8163f9eadfd47.png"></p><p>🐖：mounting到底意味着什么？<br>答： When we talk about mounting， we’re talking about the process of converting the virtual components into actual DOM elements that are placed in the DOM by React.（其实就是React将虚拟DOM转化为真实DOM的过程)</p><p><strong>1.constructor:</strong></p><ul><li>用于初始化内部状态，很少使用</li><li>唯一可以直接修改state的地方</li></ul><p><strong>2.getDerivedStateFromProps:</strong></p><ul><li>当state需要从props初始化时使用。</li><li>尽量不要使用：维护两者状态一致性会增加复杂度。</li><li>每次render都会调用。</li><li>典型场景：表单控件获取默认值。</li></ul><p><strong>3.componentDidMount:</strong></p><ul><li>UI渲染完成后调用</li><li>只执行一次</li><li>典型场景：获取外部资源</li></ul><p><strong>4.componeWillUnmout:</strong></p><ul><li>组件移除时被调用</li><li>典型场景：资源释放</li></ul><p><strong>5.getSnapshotBeforeUpdate:</strong></p><ul><li>在页面render之前调用，state已经更新</li><li>典型场景：获取render之前的DOM状态</li></ul><p><strong>6.componentDidUpdate:</strong></p><ul><li>每次UI更新时被调用</li><li>典型场景：页面需要根据props变化重新获取数据</li></ul><p><strong>7.shouldComponentUpdate:</strong></p><ul><li>决定Vitual DOM是否重绘</li><li>一般由PureComponent自动实现</li><li>典型场景：性能优化</li></ul>]]></content>
     
     
     <categories>

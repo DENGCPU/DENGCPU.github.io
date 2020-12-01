@@ -181,6 +181,101 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2020/11/17/13-React-Router-%E8%B7%AF%E7%94%B1%E4%B8%8D%E5%8F%AA%E6%98%AF%E9%A1%B5%E9%9D%A2%E5%88%87%E6%8D%A2%EF%BC%8C%E6%9B%B4%E6%98%AF%E4%BB%A3%E7%A0%81%E7%BB%84%E7%BB%87%E6%96%B9%E5%BC%8F/">13-React-Router:路由不只是页面切换，更是代码组织方式</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/11/17/13-React-Router-%E8%B7%AF%E7%94%B1%E4%B8%8D%E5%8F%AA%E6%98%AF%E9%A1%B5%E9%9D%A2%E5%88%87%E6%8D%A2%EF%BC%8C%E6%9B%B4%E6%98%AF%E4%BB%A3%E7%A0%81%E7%BB%84%E7%BB%87%E6%96%B9%E5%BC%8F/">
+          
+          
+            
+          
+          一、为什么需要路由？
+1.单页应用需要进行页面切换
+2.通过URL可以定位到页面
+3.更有语义的组织资源
+
+
+
+二、React-Router的特性：1、声明式路由定义2、动态路由：页面render时，path才会被解析
+三、实现路由的三种方式1、URL路由2、Hash路由： #+ 路径，支持低版本3、内存路由：MemoryRouter，服务器端渲染
+四、基于路由配置进行资源组织1、实现业务逻辑的松
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-11-17 15:34" pubdate>
+              2020-11-17
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E6%9E%81%E5%AE%A2%E6%97%B6%E9%97%B4React%E6%95%99%E7%A8%8B/">极客时间React教程</a>
+            
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/11/17/12-Redux%E5%9C%A8Rect%E4%B8%AD%E7%9A%84%E7%94%A8%E6%B3%95/">12-Redux在Rect中的用法</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/11/17/12-Redux%E5%9C%A8Rect%E4%B8%AD%E7%9A%84%E7%94%A8%E6%B3%95/">
+          
+          
+            
+          
+          &emsp;为了方便在react中使用redux, Redux的作者封装了一个React专用的库React-Redux.
+&emsp;这个库是可选的，在实际项目中应该权衡下是直接使用redux还是使用React-Redux。后者虽然方便，但是要掌握额外的API，并且要遵守它的组件拆分规则。
+一、UI组件&emsp;React-Redux将所有组件分为两大类：
+
+UI组件（presentationa
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-11-17 08:29" pubdate>
+              2020-11-17
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E6%9E%81%E5%AE%A2%E6%97%B6%E9%97%B4React%E6%95%99%E7%A8%8B/">极客时间React教程</a>
+            
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2020/11/16/11-redux%E4%B9%8B%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%B8%8E%E5%BC%82%E6%AD%A5%E6%93%8D%E4%BD%9C/">11-redux之中间件与异步操作</a>
       </h1>
 
@@ -526,22 +621,7 @@ const EnhancedComponent = higherOrderComponent(WrappedCom
             
           
           React的生命周期图
-1.constructor:
-
-用于初始化内部状态，很少使用
-唯一可以直接修改state的地方
-
-2.getDerivedStateFromProps:
-
-当state需要从props初始化时使用。
-尽量不要使用：维护两者状态一致性会增加复杂度。
-每次render都会调用。
-典型场景：表单控件获取默认值。
-
-3.componentDidMount:
-
-UI渲染完成后调用
-只
+🐖：mounting到底意味着什么？答： When we talk about mounting， we’re talking about the process of converting the virtual components into actual DOM elements that are placed in the DOM by React.（其实就是Re
         </a>
       </p>
 
@@ -550,108 +630,6 @@ UI渲染完成后调用
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
             <time datetime="2020-11-10 15:47" pubdate>
-              2020-11-10
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E6%9E%81%E5%AE%A2%E6%97%B6%E9%97%B4React%E6%95%99%E7%A8%8B/">极客时间React教程</a>
-            
-          </div>
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2020/11/10/03-JSX%E7%9A%84%E6%9C%AC%E8%B4%A8%E6%98%AF%E8%AF%AD%E6%B3%95%E7%B3%96/">03-JSX的本质是语法糖</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/11/10/03-JSX%E7%9A%84%E6%9C%AC%E8%B4%A8%E6%98%AF%E8%AF%AD%E6%B3%95%E7%B3%96/">
-          
-          
-            
-          
-          ###理解JSX
-JSX：在javaScript代码中直接写HTML标记。
-const name=&#x27;jane&#x27;
-const element=&lt;h1&gt;hello,&#123;name&#125;&lt;/h1&gt;
-1.JSX的本质
-2.在JSX中使用表达式
-3.JSX的优点
-
-声明创建界面的直观
-代码动态创建界面的灵活
-无需学习新的模板语言
-
-约定：自定义组件首字
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-11-10 15:17" pubdate>
-              2020-11-10
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E6%9E%81%E5%AE%A2%E6%97%B6%E9%97%B4React%E6%95%99%E7%A8%8B/">极客时间React教程</a>
-            
-          </div>
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2020/11/10/02-react%E4%BB%A5%E7%BB%84%E4%BB%B6%E6%96%B9%E5%BC%8F%E8%80%83%E8%99%91UI%E7%9A%84%E6%9E%84%E5%BB%BA/">02-react以组件方式考虑UI的构建</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/11/10/02-react%E4%BB%A5%E7%BB%84%E4%BB%B6%E6%96%B9%E5%BC%8F%E8%80%83%E8%99%91UI%E7%9A%84%E6%9E%84%E5%BB%BA/">
-          
-          
-            
-          
-          
-一、构建一个组件需要考虑的三件事情：
-1、组件的UI( 一些外在的表现形式 )2、组件的状态管理（放在哪？）3、组件的交互
-
-二、何时创建组件：单一职责原则
-1、一个组件只负责一个功能2、复杂的组件应该进行拆分
-三、数据状态管理原则：DRY原则
-1.能计算得到的状态不应该单独存储2.组件尽量无状态，尽量通过props获取.
-
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-11-10 15:03" pubdate>
               2020-11-10
             </time>
           </div>
