@@ -4,6 +4,25 @@
   
   
   <entry>
+    <title>npm01--dependencies与devDependencies的区别</title>
+    <link href="/2020/12/06/npm01-dependencies%E4%B8%8EdevDependencies%E7%9A%84%E5%8C%BA%E5%88%AB/"/>
+    <url>/2020/12/06/npm01-dependencies%E4%B8%8EdevDependencies%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
+    
+    <content type="html"><![CDATA[<h4 id="dependencies-与-devDependencies"><a href="#dependencies-与-devDependencies" class="headerlink" title="dependencies 与 devDependencies"></a>dependencies 与 devDependencies</h4><p>&emsp;当我们在使用npm install 安装node模块时，有两种命令参数将这些node模块的信息写入到package.json文件中：</p><ul><li>npm install *** –save，这个命令是将依赖包的信息添加到package.json文件的dependencies键下。</li><li>npm install *** –save-dev，这个命令是将依赖包的信息添加到devDependencies键下。</li></ul><h4 id="1-不同点："><a href="#1-不同点：" class="headerlink" title="1.不同点："></a>1.不同点：</h4><p><strong>devDependencies是开发环境</strong>，我们使用的一些构建工具如webpack、glup等只是在开发过程中用的包，上线后就和它们没有关系了，所以这种都写入devDependencies（还有一些单元测试工具也卸载这里）</p><p><strong>dependencies是生产环境</strong>，比如我们写一个项目需要依赖React/Vue/jQuery才能执行，没有这个包的依赖运行就会出错，这时候就必须把依赖写入dependencies里。</p><h4 id="2-相同点："><a href="#2-相同点：" class="headerlink" title="2.相同点："></a>2.相同点：</h4><p>dependencies和 devDependencies相同的地方在于：就是当我们clone别人的库进行开发测试的时候，可以通过npm install 一键安装这两个目录下的所有依赖，而不需要一行行地查找别人到底在文件中引用了哪些依赖。</p><p>参考：<a href="https://docs.npmjs.com/cli/v6/configuring-npm/package-json#dependencies">npm官方文档–dependencies</a></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>npm学习</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>为什么React要用JSX？</title>
     <link href="/2020/12/02/%E4%B8%BA%E4%BB%80%E4%B9%88React%E8%A6%81%E7%94%A8JSX%EF%BC%9F/"/>
     <url>/2020/12/02/%E4%B8%BA%E4%BB%80%E4%B9%88React%E8%A6%81%E7%94%A8JSX%EF%BC%9F/</url>
