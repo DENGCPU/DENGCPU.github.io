@@ -1,0 +1,715 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="前端小白，升级打怪">
+  <meta name="author" content="dorothy">
+  <meta name="keywords" content="前端，js,h5,css,react">
+  <title>面试03-如何避免生命周期中的坑？ - Dorothy的博客</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.5.3/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.1.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.5","typing":{"enable":true,"typeSpeed":60,"cursorChar":"_","loop":false},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"copy_btn":true,"image_zoom":{"enable":true},"lazyload":{"enable":true,"onlypost":false},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>DorothyJay</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="面试03-如何避免生命周期中的坑？">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-12-07 16:33" pubdate>
+        2020年12月7日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.9k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      34
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">面试03-如何避免生命周期中的坑？</h1>
+            
+            <div class="markdown-body">
+              <h4 id="面试场景3：如何避免生命周期中的坑？（经验题）"><a href="#面试场景3：如何避免生命周期中的坑？（经验题）" class="headerlink" title="面试场景3：如何避免生命周期中的坑？（经验题）"></a>面试场景3：如何避免生命周期中的坑？（经验题）</h4><p>如何避免坑？换种思维也就是”为什么会有坑?”,在代码编写中，遇到的坑通常有两种：</p>
+<ul>
+<li>1.在不恰当的时机调用了不合适的代码</li>
+<li>2.在需要调用时，却忘了调用</li>
+</ul>
+<p>那么针对生命周期的坑，可以通过梳理生命周期，明确周期函数职责，确认什么时候该做什么事，依次来避免坑。因此现在主要思考两个问题：</p>
+<ul>
+<li>1.基于周期类型的梳理，确认生命周期函数的<strong>使用方式</strong></li>
+<li>2.基于职责的梳理，确认生命周期函数的<strong>适用范围</strong></li>
+</ul>
+<p><img src="https://pic.downk.cc/item/5fcdeaf03ffa7d37b3c10890.jpg" srcset="/img/loading.gif" alt="生命周期的梳理"></p>
+<h5 id="一、生命周期的概念"><a href="#一、生命周期的概念" class="headerlink" title="一、生命周期的概念"></a>一、生命周期的概念</h5><p>当我们在讨论React组件生命周期的时候，一定是在讨论类组件（Class Component)。函数式组件并没有生命周期的概念，它本身就是一个函数，只会从头执行到尾。</p>
+<p>生命周期其实是一个抽象的概念，提到生命周期我们第一时间想到的是componentDidMount, componenetWillMount等函数。然而这些函数并不等同于组件的生命周期，只是在生命周期中按顺序被调用的函数。<strong>挂载 -&gt; 更新 -&gt;卸载</strong>，这一完整的流程，才是React组件的生命周期。</p>
+<h5 id="二、生命周期流程梳理"><a href="#二、生命周期流程梳理" class="headerlink" title="二、生命周期流程梳理"></a>二、生命周期流程梳理</h5><p><strong>1.挂载阶段</strong><br>&emsp;挂载阶段是指组件从初始化到完成加载的过程。</p>
+<ul>
+<li>✨<strong>constructor函数</strong>：constructor是类通用的构造函数，常用于初始化（通常是初始化state,以及绑定函数）<pre><code class="hljs js"><span class="hljs-comment">//过去的写法</span>
+<span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Counter</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span></span>&#123;
+    <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">props</span>)</span>&#123;
+        <span class="hljs-built_in">super</span>(props);
+        <span class="hljs-built_in">this</span>.state=&#123;
+            count:<span class="hljs-number">0</span>
+        &#125;
+        <span class="hljs-built_in">this</span>.handleClick=<span class="hljs-built_in">this</span>.handleClick.bind(<span class="hljs-built_in">this</span>);
+    &#125;
+    <span class="hljs-function"><span class="hljs-title">handleClick</span>(<span class="hljs-params"></span>)</span>&#123;
+        ...
+    &#125;
+    <span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params"></span>)</span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+    &#125;
+&#125;
+<span class="hljs-string">``</span><span class="hljs-string">` </span>
+<span class="hljs-string">当类属性开始流行后，现在React社区的写法发生了变化，去除了constructor。</span>
+<span class="hljs-string"></span>
+<span class="hljs-string">`</span><span class="hljs-string">``</span>js
+<span class="hljs-comment">//现在的写法</span>
+<span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Counter</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span></span>&#123;
+    state=&#123;
+        count:<span class="hljs-number">0</span>,
+    &#125;
+    <span class="hljs-comment">//类属性第三阶段提案，这种不再需要额外绑定</span>
+    handleClick=<span class="hljs-function">()=&gt;</span>&#123;
+        ...
+    &#125;
+    <span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params"></span>)</span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+    &#125;
+
+&#125;</code></pre>
+React社区去除constructor的原因：</li>
+</ul>
+<ol>
+<li>constructor本身并不属于React的生命周期，它只是Class组件的初始化函数</li>
+<li>constructor中并不推荐去处理初始化以外的逻辑</li>
+<li>通过去除constructor，代码变得更加简洁</li>
+</ol>
+<ul>
+<li>✨<strong>getDerivedStateFromProps函数</strong>： 使组件在props变化时更新state</li>
+</ul>
+<p>它的触发时机是：</p>
+<ol>
+<li>当props被传入时</li>
+<li>state发送变化时</li>
+<li>forceUpdate被调用时</li>
+</ol>
+<p>🐖：一个常见错误是认为只有props发送变化时，getDerivedStateFromProps才会被调用，实际上只要父组件重新渲染时，getDerivedStateFromProps就会被调用，外部参数props传入时就会发生变化。以下是官方文档给出的例子：</p>
+<pre><code class="hljs js"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ExampleComponent</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>&#123;
+
+  <span class="hljs-comment">// 在构造函数中初始化 state，</span>
+  <span class="hljs-comment">// 或者使用属性初始化器。</span>
+  state = &#123;
+    isScrollingDown: <span class="hljs-literal">false</span>,
+    lastRow: <span class="hljs-literal">null</span>,
+
+  &#125;;
+  <span class="hljs-keyword">static</span> <span class="hljs-function"><span class="hljs-title">getDerivedStateFromProps</span>(<span class="hljs-params">props, state</span>)</span> &#123;
+    <span class="hljs-keyword">if</span> (props.currentRow !== state.lastRow) &#123;
+      <span class="hljs-keyword">return</span> &#123;
+        isScrollingDown: props.currentRow &gt; state.lastRow,
+        lastRow: props.currentRow,
+      &#125;;
+    &#125;
+    <span class="hljs-comment">// 返回 null 表示无需更新 state。</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+
+  &#125;
+&#125;</code></pre>
+<p>按照官方的说话，它的使用场景是非常有限的。由于太多使用错误的案例，React团队还因此写了<a target="_blank" rel="noopener" href="https://zh-hans.reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html">你可能不需要使用派生state</a>，文中列举了错误使用getDerivedStateFromProps的两个典型反面案例：</p>
+<ol>
+<li>直接复制prop到state</li>
+<li>在props变化后修改state</li>
+</ol>
+<p>这两种写法除了增加代码的维护成本外，没有带来任何好处。</p>
+<ul>
+<li>✨<strong>UNSAFE_componentWillMount函数</strong>： 也就是componentWillMount，用于组件加载前做某些操作。在React的异步渲染机制下，该方法可能会被多次调用，所以目前被标记为弃用。</li>
+</ul>
+<p>一个常见的错误是componentWillMount跟服务器端同构渲染时，如果在该函数里面发起网络请求，拉取数据，那么会在服务器端和客户端分别执行一次。所以更推荐使用componentDidMount中完成拉取数据的操作。</p>
+<ul>
+<li><p>✨<strong>render函数</strong>： render函数返回的JSX结构，用于描述具体的渲染内容。但是，render函数并没有真正的去渲染组件，渲染是依靠React操作JSX结构完成的。<br>🐖：render函数应该是一个纯函数，不能在里面产生副作用，比如调用setState或者绑定事件。① 不能setState是因为render函数在每次渲染时都会被调用，而setState会触发渲染，就会造成死循环。② 不能绑定事件是因为容易被频繁调用注册。</p>
+</li>
+<li><p>✨<strong>componentDidMount函数</strong>： 主要用于组件加载完成后进行某些操作，比如发起网络请求或者绑定事件，该函数是接着render之后调用的。但是componentDidMount一定是在真实DOM绘制完成之后调用吗？在浏览器端可以这么认为。但是在其他场景下，尤其是React Native场景下，componentDidMount并不意味着真实的界面已经绘制完毕。（由于机器的性能限制，视图可能还在绘制中）</p>
+</li>
+</ul>
+<p><strong>2.更新阶段</strong><br>&emsp;更新阶段是指外部props传入，或者state发生变化时的阶段。这个阶段主要有以下6个函数：</p>
+<ul>
+<li>💖<strong>UNSAFE_componentWillReceiveProps函数</strong>： 该函数已经被标记弃用，因为其功能可被getDerivedStateFromProps所替代。当getDerivedStateFromProps存在时，UNSAFE_componentWillReceiveProps不会被调用。</li>
+<li>💖<strong>getDerivedStateFromProps函数</strong>: 同挂载阶段的变现一致。</li>
+<li>💖<strong>shouldComponentUpdate函数</strong>: 该方法通过返回true或者false来确定是否需要触发新的渲染，因为渲染触发最后一道关卡，所以也是性能优化的必争之地。通过添加判断条件来阻止不必要的渲染。</li>
+</ul>
+<p>React官方提供了一个通用的优化方案，也就是PureComponent。PureComponent的核心原理是默认实现了shouldComponentUpdate函数，在这个函数中对props和state进行浅比较，用来判断是否触发更新。</p>
+<pre><code class="hljs js"><span class="hljs-function"><span class="hljs-title">shouldComponentUpdate</span>(<span class="hljs-params">nextProps, nextState</span>)</span> &#123;
+
+  <span class="hljs-comment">// 浅比较仅比较值与引用，并不会对 Object 中的每一项值进行比较</span>
+
+  <span class="hljs-keyword">if</span> (shadowEqual(nextProps, <span class="hljs-built_in">this</span>.props) || shadowEqual(nextState, <span class="hljs-built_in">this</span>.state) ) &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>
+  &#125;
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
+&#125;
+</code></pre>
+
+<ul>
+<li><p>💖<strong>UNSAFE_componentWillUpdate函数</strong>: 同样已废弃，因为在后续的React异步渲染设计中，可能会出现组件暂停更新渲染的情况。</p>
+</li>
+<li><p>💖<strong>render函数</strong>: 跟挂载阶段的表现一致</p>
+</li>
+<li><p>💖<strong>getSnapshotBeforeUpdate函数</strong>: getSnapshotBeforeUpdate是配合React新的异步渲染机制，在DOM更新发生之前被调用，返回值作为对componentDidUpdate的第三个参数。官方示例如下：</p>
+<pre><code class="hljs js"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ScrollingList</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>&#123;
+
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">props</span>)</span> &#123;
+
+    <span class="hljs-built_in">super</span>(props);
+
+    <span class="hljs-built_in">this</span>.listRef = React.createRef();
+
+  &#125;
+
+  <span class="hljs-function"><span class="hljs-title">getSnapshotBeforeUpdate</span>(<span class="hljs-params">prevProps, prevState</span>)</span> &#123;
+
+    <span class="hljs-comment">// Are we adding new items to the list?</span>
+
+    <span class="hljs-comment">// Capture the scroll position so we can adjust scroll later.</span>
+
+    <span class="hljs-keyword">if</span> (prevProps.list.length &lt; <span class="hljs-built_in">this</span>.props.list.length) &#123;
+
+      <span class="hljs-keyword">const</span> list = <span class="hljs-built_in">this</span>.listRef.current;
+
+      <span class="hljs-keyword">return</span> list.scrollHeight - list.scrollTop;
+
+    &#125;
+
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+
+  &#125;
+
+  <span class="hljs-function"><span class="hljs-title">componentDidUpdate</span>(<span class="hljs-params">prevProps, prevState, snapshot</span>)</span> &#123;
+
+    <span class="hljs-comment">// If we have a snapshot value, we&#x27;ve just added new items.</span>
+
+    <span class="hljs-comment">// Adjust scroll so these new items don&#x27;t push the old ones out of view.</span>
+
+    <span class="hljs-comment">// (snapshot here is the value returned from getSnapshotBeforeUpdate)</span>
+
+    <span class="hljs-keyword">if</span> (snapshot !== <span class="hljs-literal">null</span>) &#123;
+
+      <span class="hljs-keyword">const</span> list = <span class="hljs-built_in">this</span>.listRef.current;
+
+      list.scrollTop = list.scrollHeight - snapshot;
+
+    &#125;
+
+  &#125;
+  <span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params"></span>)</span> &#123;
+    <span class="hljs-keyword">return</span> (
+      &lt;div ref=&#123;<span class="hljs-built_in">this</span>.listRef&#125;&gt;&#123;<span class="hljs-comment">/* ...contents... */</span>&#125;&lt;/div&gt;
+    );
+  &#125;
+</code></pre></li>
+<li><p>💖<strong>componentDidUpdate函数</strong>: 正如上面的案例，getSnapshotBeforeUpdate的返回值会作为componentDidUpdate的第三个参数使用。componentDidUpdate函数中可以使用setState来触发重新渲染，但是一定要小心，避免死循环！</p>
+</li>
+</ul>
+<p><strong>3.挂载阶段</strong><br>&emsp;挂载阶段，只有一个回调函数。</p>
+<ul>
+<li>✌<strong>componentWillUnmount函数</strong>：该函数主要用于清理工作，一个比较常见的bug是忘记在componentWillUnmount中取消定时器，导致定时操作依然在组件销毁后不停地执行。所以在该阶段一定要完成事件解绑，取消定时器。</li>
+</ul>
+<h5 id="小结："><a href="#小结：" class="headerlink" title="小结："></a>小结：</h5><p> 根据上面的内容，可以做一个思维导图：<br> <img src="https://pic.downk.cc/item/5fce2a393ffa7d37b3f47cbd.jpg" srcset="/img/loading.gif" alt="React生命周期思维导图"></p>
+<h5 id="二、生命周期职责梳理"><a href="#二、生命周期职责梳理" class="headerlink" title="二、生命周期职责梳理"></a>二、生命周期职责梳理</h5><p> 职责梳理主要是搞清楚两个事情：<br> 1、什么情况下会触发重新渲染？<br> 2、渲染中发生报错后会怎样？</p>
+<p> <strong>1.触发重新渲染的三种情况</strong>：</p>
+<ul>
+<li><p>😊<strong>函数组件</strong>： 函数组件在任何情况下都有可能重新渲染。它没有生命周期，但是官方提供了一个优化手段，那就是React.memo:</p>
+<pre><code class="hljs js"><span class="hljs-keyword">const</span> MyComponent = React.memo(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">MyComponent</span>(<span class="hljs-params">props</span>)</span>&#123;
+    <span class="hljs-comment">/*使用props渲染*/</span>
+&#125;)</code></pre>
+<p>React.memo并不阻断渲染，而是跳过渲染组件的操作并直接复用最新一次渲染的结果，这与shouldComponentUpdate是完全不同的。</p>
+</li>
+<li><p>😊<strong>React.Component</strong>：如果不实现shouldComponentUpdate函数，那么有两种情况触发渲染：<br>1、当state发生变化时。（最常见的情况）<br>2、当父组件的Props传入时。（无论Props有没有发生变化，只有传入就会引发重新渲染）</p>
+</li>
+<li><p>😊<strong>React.PureComponent</strong>: PureComponent默认实现了shouldComponentUpdate函数，所以仅在props与state进行浅比较后，确认有变更时才会触发重新渲染。</p>
+</li>
+<li><p>*2.错误边界**： </p>
+</li>
+</ul>
+<p>&emsp;错误边界是一种React组件，这种组件可以捕获并打印发生在其子组件树上任何位置的JavaScript错误，并且，它会渲染出备用UI，如下官方示例：</p>
+<pre><code class="hljs js"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ErrorBoundary</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>&#123;
+
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">props</span>)</span> &#123;
+
+    <span class="hljs-built_in">super</span>(props);
+
+    <span class="hljs-built_in">this</span>.state = &#123; <span class="hljs-attr">hasError</span>: <span class="hljs-literal">false</span> &#125;;
+
+  &#125;
+
+  <span class="hljs-keyword">static</span> <span class="hljs-function"><span class="hljs-title">getDerivedStateFromError</span>(<span class="hljs-params">error</span>)</span> &#123;
+
+    <span class="hljs-comment">// 更新 state 使下一次渲染能够显示降级后的 UI</span>
+
+    <span class="hljs-keyword">return</span> &#123; <span class="hljs-attr">hasError</span>: <span class="hljs-literal">true</span> &#125;;
+
+  &#125;
+
+  <span class="hljs-function"><span class="hljs-title">componentDidCatch</span>(<span class="hljs-params">error, errorInfo</span>)</span> &#123;
+
+    <span class="hljs-comment">// 你同样可以将错误日志上报给服务器</span>
+
+    logErrorToMyService(error, errorInfo);
+
+  &#125;
+
+  <span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params"></span>)</span> &#123;
+
+    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">this</span>.state.hasError) &#123;
+
+      <span class="hljs-comment">// 你可以自定义降级后的 UI 并渲染</span>
+
+      <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Something went wrong.<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span>;
+
+    &#125;
+
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.props.children; 
+
+  &#125;
+
+&#125;</code></pre>
+<p>无论是React,还是React Native,如果没有错误边界，在用户侧看到的现象是：在执行某个错误操作时，触发了bug, 引发了崩溃，页面会突然白屏。</p>
+<p>🐖：在渲染时的报错，只能通过componentDidCatch捕获。这是在做线上页面报错监控时，及其容易忽略的点。</p>
+<h5 id="三、答题："><a href="#三、答题：" class="headerlink" title="三、答题："></a>三、答题：</h5><p>经过上面的梳理,现在可以回答开头的问题了。</p>
+<blockquote>
+<p>避免生命周期中的坑需要做好两件事：</p>
+<p>1.不在恰当的时候调用了不该调用的代码；<br>2.在需要调用时，不要忘了调用。</p>
+</blockquote>
+<p>那么，有7种情况容易造成React生命周期的坑：</p>
+<blockquote>
+<p>1.getDerivedStateFromProps 容易编写反模式代码，使受控组件与非受控组件区分模糊。</p>
+</blockquote>
+<blockquote>
+<p>2.componentWillMount 在 React 中已被标记弃用，不推荐使用，主要原因是新的异步渲染架构会导致它被多次调用。所以网络请求及事件绑定代码应移至 componentDidMount中。</p>
+</blockquote>
+<blockquote>
+<p>3.componentWillReceiveProps 同样被标记弃用，被 getDerivedStateFromProps 所取代，主要原因是性能问题。</p>
+</blockquote>
+<blockquote>
+<p>4.shouldComponentUpdate 通过返回 true 或者 false 来确定是否需要触发新的渲染。主要用于性能优化。</p>
+</blockquote>
+<blockquote>
+<p>5.componentWillUpdate 同样是由于新的异步渲染机制，而被标记废弃，不推荐使用，原先的逻辑可结合 getSnapshotBeforeUpdate 与 componentDidUpdate 改造使用。</p>
+</blockquote>
+<blockquote>
+<p>6.如果在 componentWillUnmount 函数中忘记解除事件绑定，取消定时器等清理操作，容易引发 bug。</p>
+</blockquote>
+<blockquote>
+<p>7.如果没有添加错误边界处理，当渲染发生异常时，用户将会看到一个无法操作的白屏，所以一定要添加。</p>
+</blockquote>
+<h5 id="四、进阶提问：React-的请求应该放在哪里，为什么"><a href="#四、进阶提问：React-的请求应该放在哪里，为什么" class="headerlink" title="四、进阶提问：React 的请求应该放在哪里，为什么?"></a>四、进阶提问：React 的请求应该放在哪里，为什么?</h5><p> 对于异步请求，应该放在componentDidUpdate中操作。从时间顺序上看，似乎还有两个选择，但是它们都有各自的弊端：</p>
+<ul>
+<li><p>constructor：可以放，但是从设计上看不推荐，constructor主要用于初始化state和函数绑定，并不应该承载业务逻辑。而且随着类属性的流行，constructor已经很少使用了。</p>
+</li>
+<li><p>componentWillMout: 已经被标废弃，在新的异步渲染机制下回触发多次渲染，容易引发bug,不利于React升级后的代码维护。</p>
+</li>
+</ul>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E9%9D%A2%E8%AF%95%E5%AE%9D%E5%85%B8%E4%B9%8BReact%E7%AF%87/">面试宝典之React篇</a>
+                    
+                  </div>
+                
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/12/06/npm01-dependencies%E4%B8%8EdevDependencies%E7%9A%84%E5%8C%BA%E5%88%AB/">
+                        <span class="hidden-mobile">npm01--dependencies与devDependencies的区别</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+
+  <script  src="https://cdn.staticfile.org/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":200})
+    NProgress.start()
+    document.addEventListener('DOMContentLoaded', function() {
+      window.NProgress && window.NProgress.inc();
+    })
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.5.3/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.12.0/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    (function () {
+      var path = "/local-search.xml";
+      var inputArea = document.querySelector("#local-search-input");
+      inputArea.onclick = function () {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+        this.onclick = null
+      }
+    })()
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+
+</body>
+</html>
