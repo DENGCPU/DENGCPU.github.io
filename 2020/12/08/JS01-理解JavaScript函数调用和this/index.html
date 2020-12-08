@@ -1,0 +1,510 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="前端小白，升级打怪">
+  <meta name="author" content="dorothy">
+  <meta name="keywords" content="前端，js,h5,css,react">
+  <title>JS01-理解JavaScript函数调用和this - Dorothy的博客</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.5.3/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.1.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.5","typing":{"enable":true,"typeSpeed":60,"cursorChar":"_","loop":false},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"copy_btn":true,"image_zoom":{"enable":true},"lazyload":{"enable":true,"onlypost":false},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>DorothyJay</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="JS01-理解JavaScript函数调用和this">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-12-08 20:58" pubdate>
+        2020年12月8日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      777 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      12
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">JS01-理解JavaScript函数调用和this</h1>
+            
+            <div class="markdown-body">
+              <h4 id="理解JavaScript函数调用与this的语义"><a href="#理解JavaScript函数调用与this的语义" class="headerlink" title="理解JavaScript函数调用与this的语义"></a>理解JavaScript函数调用与this的语义</h4><p>&emsp;我们经常对JS的函数调用，以及this在函数调用中的指代有很多的困惑。通过理解核心函数调用的原语可能会有助于消除很多此类的疑惑，也可以把其他函数调用方式看成是最原始函数调用的语法糖。The basic idea is the same.</p>
+<h5 id="一、-The-Core-Primitive-核心原语："><a href="#一、-The-Core-Primitive-核心原语：" class="headerlink" title="一、 The Core Primitive 核心原语："></a>一、 The Core Primitive 核心原语：</h5><p>First, let’s look at the core function invocation primitive, a Function’s call method[1]. The call method is relatively straight forward.</p>
+<ol>
+<li>Make an argument list (<strong>argList</strong>) out of parameters 1 through the end</li>
+<li>The first parameter is <strong>thisValue</strong></li>
+<li>Invoke the function with <strong>this</strong> set to <strong>thisValue</strong> and the <strong>argList</strong> as its argument list<br>例子：<pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">hello</span>(<span class="hljs-params">thing</span>)</span>&#123;
+
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span> + <span class="hljs-string">&#x27;say hello&#x27;</span> + thing);
+
+&#125;
+hello.call(<span class="hljs-string">&#x27;Yehuda&#x27;</span>,<span class="hljs-string">&#x27;world&#x27;</span>);<span class="hljs-comment">//Yehuda says hello world</span></code></pre>
+
+</li>
+</ol>
+<p>As you can see, we invoked the <strong>hello</strong> method with this set to “Yehuda” and a single argument “world”. This is the core primitive of JavaScript function invocation. You can think of all other function calls as desugaring to this primitive. (to “desugar” is to take a convenient syntax and describe it in terms of a more basic core primitive).</p>
+<h5 id="二、简单函数调用"><a href="#二、简单函数调用" class="headerlink" title="二、简单函数调用"></a>二、简单函数调用</h5><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">hello</span>(<span class="hljs-params">thing</span>)</span>&#123;
+
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;Hello&#x27;</span> + thing);
+&#125;
+<span class="hljs-comment">//简单函数调用</span>
+hello(<span class="hljs-string">&#x27;world&#x27;</span>);
+
+<span class="hljs-comment">//desugars to:</span>
+hello.call(<span class="hljs-built_in">window</span>, <span class="hljs-string">&#x27;world&#x27;</span>)
+
+<span class="hljs-comment">//在ES5的严格模式中，desugars to:</span>
+hello.call(<span class="hljs-literal">undefined</span>, <span class="hljs-string">&#x27;world&#x27;</span>)</code></pre>
+
+<p>在内联声明的函数中，也有相同的“解糖”：<br>(function() {})()  = (function() {}).call(window或undefined)</p>
+<h5 id="三、成员函数"><a href="#三、成员函数" class="headerlink" title="三、成员函数"></a>三、成员函数</h5><pre><code class="hljs js"><span class="hljs-keyword">var</span> person = &#123;
+    name: <span class="hljs-string">&#x27;Eich&#x27;</span>,
+    hello: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">thing</span>)</span>&#123;
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span> + <span class="hljs-string">&#x27;say hello&#x27;</span> + thing)
+    &#125;
+&#125;
+<span class="hljs-comment">//成员函数调用</span>
+person.hello(<span class="hljs-string">&#x27;world&#x27;</span>);
+<span class="hljs-comment">//desugars to:</span>
+person.hello.call(person,<span class="hljs-string">&#x27;world&#x27;</span>)</code></pre>
+
+<p>如果为一个对象动态的添加成员函数，也有相同的“解糖”：</p>
+<pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">hello</span>(<span class="hljs-params">thing</span>)</span>&#123;
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span> + <span class="hljs-string">&#x27;say hello&#x27;</span> + thing);
+&#125;
+person = &#123;<span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Eich&#x27;</span>&#125;;
+person.hello = hello;
+
+person.hello(<span class="hljs-string">&#x27;world&#x27;</span>);
+<span class="hljs-comment">//still desugars to :</span>
+<span class="hljs-comment">//person.hello.call(person,&#x27;world&#x27;)</span>
+
+hello(<span class="hljs-string">&#x27;world&#x27;</span>);<span class="hljs-comment">//&quot;[object DOMwindow] say hello world&quot;</span></code></pre>
+<p>🐖：Notice that the function doesn’t have a persistent notion of its ‘this’. It is always set at call time based upon the way it was invoked by its caller.</p>
+<h5 id="四、使用函数原型绑定-Function-prototype-bind"><a href="#四、使用函数原型绑定-Function-prototype-bind" class="headerlink" title="四、使用函数原型绑定 Function.prototype.bind"></a>四、使用函数原型绑定 Function.prototype.bind</h5><p>&emsp;因为有时使用持久化this值引用函数可能会很方便，所以人们一直以来都使用简单的闭包技巧将函数转换成不变的this值。</p>
+<pre><code class="hljs js"><span class="hljs-keyword">var</span> person = &#123;
+    name: <span class="hljs-string">&#x27;Eich&#x27;</span>,
+    hello: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"><span class="hljs-built_in">this</span></span>)</span>&#123;
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.name + <span class="hljs-string">&#x27;says hello&#x27;</span> +thing);
+    &#125;
+&#125;
+<span class="hljs-keyword">var</span> boundHello = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">thing</span>)</span>&#123;
+    <span class="hljs-comment">//使用原始的call方法把this转换为我们想要它指代的值</span>
+    <span class="hljs-keyword">return</span> person.hello.call(person,thing)
+&#125;
+boundHello(<span class="hljs-string">&#x27;world&#x27;</span>);
+<span class="hljs-comment">//desugars to: boundHello.call(window, &#x27;world&#x27;)</span></code></pre>
+
+<p>我们还可以进一步改进，让上面的写法更加通用：</p>
+<pre><code class="hljs js"><span class="hljs-keyword">var</span> bind = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">func,thisValue</span>)</span>&#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>&#123;
+        <span class="hljs-keyword">return</span> func.apply(thisValue, <span class="hljs-built_in">arguments</span>);
+    &#125;
+&#125;
+<span class="hljs-keyword">var</span> boundHello = bind(person.hello, person);
+boundHello(<span class="hljs-string">&#x27;world&#x27;</span>)<span class="hljs-comment">//&#x27;Eich says hello world&#x27;</span></code></pre>
+<p>上述代码中，arguments是类数组对象，代表所有被传入函数的参数值。apply() 方法跟call类似，除了它接收的是类数组对象作为参数，而call接收的是一个一个参数组成的列表 call(thisArg, arg1,arg2,…)。<br>对上述代码的解释：Our <strong>bind</strong> method simply returns a new function. When it is invoked, our new function simply invokes the original function that was passed in, setting the original value as <strong>this</strong>. It also passes through the arguments.</p>
+<p>参考文章： <a target="_blank" rel="noopener" href="https://yehudakatz.com/2011/08/11/understanding-javascript-function-invocation-and-this/">Understanding JavaScript Function Invocation and “this”</a></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/JS%E5%AD%A6%E4%B9%A0/">JS学习</a>
+                    
+                  </div>
+                
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/12/07/%E9%9D%A2%E8%AF%9503-%E5%A6%82%E4%BD%95%E9%81%BF%E5%85%8D%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E4%B8%AD%E7%9A%84%E5%9D%91%EF%BC%9F/">
+                        <span class="hidden-mobile">面试03-如何避免生命周期中的坑？</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+
+  <script  src="https://cdn.staticfile.org/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":200})
+    NProgress.start()
+    document.addEventListener('DOMContentLoaded', function() {
+      window.NProgress && window.NProgress.inc();
+    })
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.5.3/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.12.0/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    (function () {
+      var path = "/local-search.xml";
+      var inputArea = document.querySelector("#local-search-input");
+      inputArea.onclick = function () {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+        this.onclick = null
+      }
+    })()
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+
+</body>
+</html>
