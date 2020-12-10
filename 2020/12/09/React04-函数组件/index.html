@@ -1,0 +1,955 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="前端小白，升级打怪">
+  <meta name="author" content="dorothy">
+  <meta name="keywords" content="前端，js,h5,css,react">
+  <title>React04-函数组件 - Dorothy的博客</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.5.3/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.1.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.5","typing":{"enable":true,"typeSpeed":60,"cursorChar":"_","loop":false},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"copy_btn":true,"image_zoom":{"enable":true},"lazyload":{"enable":true,"onlypost":false},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>DorothyJay</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="React04-函数组件">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-12-09 10:03" pubdate>
+        2020年12月9日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      4.3k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      61
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">React04-函数组件</h1>
+            
+            <div class="markdown-body">
+              <h3 id="React-Function-Components"><a href="#React-Function-Components" class="headerlink" title="React Function Components"></a>React Function Components</h3><p>&emsp; React函数组件是编写现代React应用程序的常用方式，自从React Hook被引入之后，使得完全使用函数式组件来编写一个React应用程序成为可能。函数式组件的核心：就是一个返回JSX的JavaScript函数。</p>
+<h4 id="一、一个简单的函数组件的例子"><a href="#一、一个简单的函数组件的例子" class="headerlink" title="一、一个简单的函数组件的例子"></a>一、一个简单的函数组件的例子</h4><p>函数式组件的例子：</p>
+<pre><code class="hljs js"><span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">App</span>(<span class="hljs-params"></span>)</span>&#123;
+    <span class="hljs-keyword">const</span> greeting = <span class="hljs-string">&#x27;hello function component!&#x27;</span>;
+
+    <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>&#123;greeting&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span>
+&#125;
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> App;</code></pre>
+<p>从上述代码中，我们可以注意到函数式组件中并没有类class组件里有的render()函数。实际上，函数主体里面定义的内容都是render函数，该函数最后返JSX。</p>
+<p>如果想在React函数组件里面，再渲染一个组件，可以像下面这样写：</p>
+<pre><code class="hljs js"><span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">App</span>(<span class="hljs-params"></span>)</span>&#123;
+    <span class="hljs-comment">//将Headline组件作为HTML元素，以JSX的方式渲染出来</span>
+    <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Headine</span> /&gt;</span></span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Headeline</span>(<span class="hljs-params"></span>)</span>&#123;
+    <span class="hljs-keyword">const</span> greeting = <span class="hljs-string">&#x27;hello function component!&#x27;</span>;
+
+    <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>&#123;greeting&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span>;
+&#125;
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> App;</code></pre>
+
+<h4 id="二、函数组件的参数Props"><a href="#二、函数组件的参数Props" class="headerlink" title="二、函数组件的参数Props"></a>二、函数组件的参数Props</h4><p>&emsp;在React中，props被用于组件与组件之间传递信息（父组件通过props传递信息给子组件）。Essentially props in React are always passed down the component tree;</p>
+<p>一个使用props的例子：</p>
+<pre><code class="hljs js"><span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">App</span>(<span class="hljs-params"></span>)</span>&#123;
+    <span class="hljs-keyword">const</span> greeting = <span class="hljs-string">&#x27;hello function component&#x27;</span>;
+
+    <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Headline</span> <span class="hljs-attr">value</span> = <span class="hljs-string">&#123;greeting&#125;</span> /&gt;</span></span>;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Headline</span>(<span class="hljs-params">props</span>)</span>&#123;
+    <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>&#123;props.value&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span>
+&#125;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> App;</code></pre>
+
+<p>由于props通常都是一个对象，我们也可以使用JS 对象解构的方式从props中抽取我们想要的信息。比如上面的Headline组件也可以写成下面的形式：</p>
+<pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Headline</span>(<span class="hljs-params">&#123;value&#125;</span>)</span>&#123;
+    <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>&#123;value&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span>
+&#125;
+<span class="hljs-comment">//需要解构多个信息出来时：</span>
+<span class="hljs-comment">//function Headline(&#123;value1,value2&#125;)&#123;...&#125;</span></code></pre>
+
+<p>关于props的更多使用：可以参考<a target="_blank" rel="noopener" href="https://www.robinwieruch.de/react-pass-props-to-component">How to pass props to components in React</a></p>
+<h4 id="三、React-箭头函数组件"><a href="#三、React-箭头函数组件" class="headerlink" title="三、React 箭头函数组件"></a>三、React 箭头函数组件</h4><p>&emsp;箭头函数组件 Arrow Funciton Components(or Lambda Function Component)，是随着ES6箭头函数的出现，引入到React中的。</p>
+<p>用箭头函数重构上面的函数组件例子：</p>
+<pre><code class="hljs js"><span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;
+
+<span class="hljs-keyword">const</span> App=<span class="hljs-function">()=&gt;</span>&#123;
+    <span class="hljs-keyword">const</span> greeting = <span class="hljs-string">&#x27;hello function components!&#x27;</span>;
+
+    <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Headline</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&#123;greeting&#125;</span> /&gt;</span></span>
+&#125;;
+
+<span class="hljs-keyword">const</span> Headline=<span class="hljs-function">(<span class="hljs-params">&#123;value&#125;</span>)=&gt;</span>&#123;
+    <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>&#123;value&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span>
+&#125;;
+
+<span class="hljs-comment">//根据箭头函数的简写规则，上面的Headline可以简写为：</span>
+<span class="hljs-keyword">const</span> Headline = <span class="hljs-function">(<span class="hljs-params">&#123;value&#125;</span>) =&gt;</span>
+     &lt;h1&gt;&#123;value&#125;&lt;/h1&gt;;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> App;</code></pre>
+
+<h4 id="四、Stateless-Function-Component"><a href="#四、Stateless-Function-Component" class="headerlink" title="四、Stateless Function Component"></a>四、Stateless Function Component</h4><p>&emsp;到目前为止，我们写的例子里都是无状态的函数组件。它们仅仅接收一个props,然后返回一个输出【以JSX：（props)=&gt;JSX】。 这种类型的组件不需要管理state，也没有任何副作用（例如，接受浏览器的本地存储），所以我们称为“Stateless Function Component”，因为它们是无状态的且以一个函数的形式表达出来。然而，React Hooks使得函数式组件有state成为可能。</p>
+<h4 id="五、有state的函数组件"><a href="#五、有state的函数组件" class="headerlink" title="五、有state的函数组件"></a>五、有state的函数组件</h4><p>&emsp;现在我们先移除上面例子中函数组件里的所有props:</p>
+<pre><code class="hljs js"><span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;
+ 
+<span class="hljs-keyword">const</span> App = <span class="hljs-function">() =&gt;</span> &#123;
+  <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Headline</span> /&gt;</span></span>;
+&#125;;
+ 
+<span class="hljs-keyword">const</span> Headline = <span class="hljs-function">() =&gt;</span> &#123;
+  <span class="hljs-keyword">const</span> greeting = <span class="hljs-string">&#x27;Hello Function Component!&#x27;</span>;
+ 
+  <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>&#123;greeting&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span>;
+&#125;;
+ 
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> App;</code></pre>
+<p>这样，使用这个application的用户就没法和它进行任何交互，也无法改变greeting变量。The application is static and not interactive at all。  State就是让React组件变得可交互，React Hooks 帮助我们实现函数式组件也可以使用state。</p>
+<pre><code class="hljs js"><span class="hljs-keyword">import</span> React, &#123;useState&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;
+
+<span class="hljs-keyword">const</span> App=<span class="hljs-function">()=&gt;</span>&#123;
+    <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Headline</span> /&gt;</span></span>;
+&#125;
+
+<span class="hljs-keyword">const</span> Headline=<span class="hljs-function">()=&gt;</span>&#123;
+    <span class="hljs-keyword">const</span> [greeting , setGreeting] = useState(
+        <span class="hljs-string">&#x27;hello function component!&#x27;</span>
+    );
+
+    <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>&#123;greeting&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span>
+&#125;;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> App;</code></pre>
+
+<p>useState hook函数将初始状态作为参数，返回一个数组（当前的state是这个数组的第一个元素，用于改变state的函数时这个数组的第二个元素）。我们使用了数组解构的方式来获取这个数组的元素。而且数组解构允许我们自己为变量命名。</p>
+<p>现在，让我们添加一个input field 来改变state（使用setGreeting):</p>
+<pre><code class="hljs js"><span class="hljs-keyword">import</span> React, &#123;useState&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;
+
+<span class="hljs-keyword">const</span> App=<span class="hljs-function">()=&gt;</span>&#123;
+    <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Headline</span> /&gt;</span></span>;
+&#125;
+
+<span class="hljs-keyword">const</span> Headline=<span class="hljs-function">()=&gt;</span>&#123;
+    <span class="hljs-keyword">const</span> [greeting , setGreeting] = useState(
+        <span class="hljs-string">&#x27;hello function component!&#x27;</span>
+    );
+
+    <span class="hljs-keyword">return</span> (
+        &lt;div&gt;
+            &lt;h1&gt;&#123;greeting&#125;&lt;h1&gt;
+            
+            &lt;input
+                type=<span class="hljs-string">&#x27;text&#x27;</span>
+                value=&#123;greeting&#125;
+                onChange=&#123;<span class="hljs-function"><span class="hljs-params">event</span> =&gt;</span> setGreeting(event.target.value)&#125;
+            /&gt;
+        &lt;/div&gt;
+    )
+&#125;;
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> App;</code></pre>
+
+<p>上述代码中，我们通过在input中添加一个event handler，这样当input中的值变化时我们就可以利用回调函数做一些事情。回调函数的参数event是一个拥有当前input域中value值的<a target="_blank" rel="noopener" href="https://reactjs.org/docs/events.html">synthetic React event</a>，亦即event.target.value，被用来更新函数组件的state。后续，我们会将这个onChange事件提取出来。</p>
+<p>🐖：这个input field 可以接受这个组件的state值。当我们想控制input的value（state）而不想让原生的HTML元素的内部状态接管input中的值时，我们可以使用组件的state值。这时，这个input就成为了”受控组件”<a target="_blank" rel="noopener" href="https://www.robinwieruch.de/react-controlled-components">controlled component</a>。</p>
+<h4 id="六、函数组件：event-handler"><a href="#六、函数组件：event-handler" class="headerlink" title="六、函数组件：event handler"></a>六、函数组件：event handler</h4><p>在第五节中，我们给input元素添加了一个onChange事件，这样我们随时可以观察到input内容的变化。但是上一节中我们使用的是内联的箭头函数给onChange事件赋值。我们可以把它抽取出来作为一个命名函数:</p>
+<pre><code class="hljs js"><span class="hljs-keyword">import</span> React, &#123;useState&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;
+
+<span class="hljs-keyword">const</span> App = <span class="hljs-function">() =&gt;</span>&#123;
+    <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Headline</span> /&gt;</span></span>;
+&#125;
+
+<span class="hljs-keyword">const</span> Headline = <span class="hljs-function">() =&gt;</span>&#123;
+    <span class="hljs-keyword">const</span> [greeting, setGreeting] = useState(<span class="hljs-string">&#x27;hello function component&#x27;</span>)
+&#125;
+<span class="hljs-comment">//这里就是提取出来的命名函数</span>
+<span class="hljs-keyword">const</span> handleChange = <span class="hljs-function"><span class="hljs-params">event</span> =&gt;</span>setGreeting(event.target.value);
+
+<span class="hljs-keyword">return</span>(
+    &lt;div&gt;
+        &lt;h1&gt;&#123;greeting&#125;&lt;/h1&gt;
+
+        &lt;input type=<span class="hljs-string">&#x27;text&#x27;</span> value=&#123;greeting&#125; onChange = &#123;handleChange&#125; /&gt;
+    &lt;/div&gt;
+)
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> App;</code></pre>
+
+<h4 id="七、父组件给子组件传值-包括callback-function"><a href="#七、父组件给子组件传值-包括callback-function" class="headerlink" title="七、父组件给子组件传值(包括callback function)"></a>七、父组件给子组件传值(包括callback function)</h4><p>在第六节中的例子中，我们把所有的逻辑（包括变量和函数）都放在了子组件，也就是Headline中。父组件没有向子组件传递props,。这一节，我们将把greeting和onChange事件的处理逻辑都放在父组件App中，再通过props传递给子组件Headline。如下所示：</p>
+<pre><code class="hljs js"><span class="hljs-keyword">import</span> React,&#123;useState&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;
+
+<span class="hljs-keyword">const</span> App = <span class="hljs-function">() =&gt;</span>&#123;
+    <span class="hljs-keyword">const</span> [greeting, setGreeting] = useState(<span class="hljs-string">&#x27;hello function component&#x27;</span>);
+
+    <span class="hljs-keyword">const</span> handleChange = <span class="hljs-function"><span class="hljs-params">event</span> =&gt;</span> setGreeting(event.target.value);
+
+    <span class="hljs-keyword">return</span> (
+        &lt;Headline headline = &#123;greeting&#125; onChangeHeadline = &#123;handleChange&#125; /&gt;
+    )
+&#125;
+
+<span class="hljs-keyword">const</span> Headline = <span class="hljs-function">(<span class="hljs-params">&#123;headline,onChangeHeadline&#125;</span>) =&gt;</span> (
+    &lt;div&gt;
+        &lt;h1&gt;&#123;headline&#125;&lt;/h1&gt;
+
+        &lt;input type=<span class="hljs-string">&#x27;text&#x27;</span> value=&#123;headline&#125; onChange=&#123;onChangeHeadline&#125;/&gt;
+    &lt;/div&gt;
+)
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> App;</code></pre>
+
+<p>进一步地，我们还可以把input抽取出来，使其到单独成为一个组件。从而，我们有个一个父组件App，两个子组件Headline和Input。父组件向两个子组件传递props:</p>
+<pre><code class="hljs js"><span class="hljs-keyword">import</span> React,&#123;useState&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;
+
+<span class="hljs-keyword">const</span> App = <span class="hljs-function">() =&gt;</span>&#123;
+    <span class="hljs-keyword">const</span> [greeting, setGreeting] = useState(<span class="hljs-string">&#x27;hello function component&#x27;</span>);
+
+    <span class="hljs-keyword">const</span> handleChange = <span class="hljs-function"><span class="hljs-params">event</span> =&gt;</span>setGreeting(event.target.value);
+
+    <span class="hljs-keyword">return</span> (
+        &lt;div&gt;
+            &lt;Headline headline=&#123;greeting&#125; /&gt;
+
+            &lt;Input value=&#123;greeting&#125; onChangeInput=&#123;handleChange&#125;&gt;<span class="hljs-built_in">Set</span> Greeting: &lt;/Input&gt;
+        &lt;/div&gt;
+    )
+&#125;;
+
+<span class="hljs-keyword">const</span> Headline = <span class="hljs-function">(<span class="hljs-params">&#123;headline&#125;</span>) =&gt;</span><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>&#123;headline&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span>
+
+<span class="hljs-keyword">const</span> Input = <span class="hljs-function">(<span class="hljs-params">&#123;value,onChangeInput, children&#125;</span>) =&gt;</span>(
+    &lt;label&gt;
+    &#123;children&#125;
+    &lt;input type=<span class="hljs-string">&#x27;text&#x27;</span> value=&#123;value&#125; onChange = &#123;onChangeInput&#125; /&gt;
+    &lt;/label&gt;
+)
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> App;</code></pre>
+
+<h4 id="八、设置props的默认值"><a href="#八、设置props的默认值" class="headerlink" title="八、设置props的默认值"></a>八、设置props的默认值</h4><p>当父组件给子组件传递props的时候，我们可以在子组件中为这些props设置默认值（default value）去override传递的值。亦即，当父组件传递的props不为空时，我们就使用传递过来的，否则我们就使用子组件的默认值。</p>
+<p>给子组件的props设置默认值,有以下三种方式：</p>
+<pre><code class="hljs js"><span class="hljs-comment">//第一种：</span>
+<span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;
+
+<span class="hljs-keyword">const</span> App = <span class="hljs-function">() =&gt;</span>&#123;
+    <span class="hljs-keyword">const</span> sayHello = <span class="hljs-function">() =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;hello&#x27;</span>);
+
+    <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Button</span> <span class="hljs-attr">handleClick</span>=<span class="hljs-string">&#123;sayHello&#125;</span> /&gt;</span></span>
+&#125;;
+
+<span class="hljs-keyword">const</span> Button = <span class="hljs-function">(<span class="hljs-params">&#123;handleClick&#125;</span>) =&gt;</span>&#123;
+    <span class="hljs-keyword">const</span> sayDefault = <span class="hljs-function">() =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;default&#x27;</span>);
+
+    <span class="hljs-keyword">const</span> onClick = handleClick || sayDefault;
+
+    <span class="hljs-keyword">return</span> (
+        &lt;button type=<span class="hljs-string">&#x27;button&#x27;</span> onClick=&#123;onClick&#125;&gt;
+            Button
+        &lt;/button&gt;
+    )
+&#125;;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> App;</code></pre>
+
+<p>我们也可以在子组件的函数签名（小括号内）为props设置默认值：</p>
+<pre><code class="hljs js"><span class="hljs-comment">//第二种：</span>
+<span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;
+
+<span class="hljs-keyword">const</span> App = <span class="hljs-function">() =&gt;</span> &#123;
+    <span class="hljs-keyword">const</span> sayHello = <span class="hljs-function">() =&gt;</span><span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;Hello&#x27;</span>);
+
+    <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Button</span> <span class="hljs-attr">handleClick</span> = <span class="hljs-string">&#123;sayHello&#125;</span> /&gt;</span></span>
+&#125;;
+
+<span class="hljs-keyword">const</span> Button = (&#123;handleClick = <span class="hljs-function">()=&gt;</span><span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;default&#x27;</span>)&#125;) =&gt; (
+    &lt;button onClick=&#123;handleClick&#125;&gt;
+        Button
+    &lt;/button&gt;
+)
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> App;</code></pre>
+
+<p>最后一种，我们也可以通过为函数组件增加defaultProps属性的方式来设置默认值：</p>
+<pre><code class="hljs js"><span class="hljs-comment">//第三种：</span>
+<span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;
+
+<span class="hljs-keyword">const</span> App = <span class="hljs-function">() =&gt;</span> &#123;
+  <span class="hljs-keyword">const</span> sayHello = <span class="hljs-function">() =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;Hello&#x27;</span>);
+ 
+  <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Button</span> <span class="hljs-attr">handleClick</span>=<span class="hljs-string">&#123;sayHello&#125;</span> /&gt;</span></span>;
+&#125;;
+ 
+<span class="hljs-keyword">const</span> Button = <span class="hljs-function">(<span class="hljs-params">&#123;handleClick&#125;</span>) =&gt;</span>(
+    &lt;button onClick=&#123;handleClick&#125;&gt;
+        Button
+    &lt;/button&gt;
+);
+
+Button.defaultProps = &#123;
+    handleClick: <span class="hljs-function">()=&gt;</span><span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;default&#x27;</span>);
+&#125;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> App;</code></pre>
+
+<h4 id="九、React组件中的异步函数"><a href="#九、React组件中的异步函数" class="headerlink" title="九、React组件中的异步函数"></a>九、React组件中的异步函数</h4><p>让我们先来看一个异步函数的例子：</p>
+<pre><code class="hljs js"><span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;
+
+<span class="hljs-keyword">const</span> App = <span class="hljs-function">() =&gt;</span>&#123;
+    <span class="hljs-comment">//通过setTimeout实现一个异步延迟执行</span>
+    <span class="hljs-keyword">const</span> sayHello = <span class="hljs-function">() =&gt;</span>
+        <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">()=&gt;</span><span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;hello&#x27;</span>),<span class="hljs-number">1000</span>);
+
+    <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Button</span> <span class="hljs-attr">handleClick</span> = <span class="hljs-string">&#123;sayHello&#125;</span> /&gt;</span></span>
+&#125;;
+
+<span class="hljs-keyword">const</span> Button = <span class="hljs-function">(<span class="hljs-params">&#123;handleClick&#125;</span>) =&gt;</span>(
+    &lt;button onClick=&#123;handleClick&#125;&gt;
+        Button
+    &lt;/button&gt;
+)
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> App;
+<span class="hljs-string">``</span><span class="hljs-string">` </span>
+<span class="hljs-string"></span>
+<span class="hljs-string">下面再看一个例子，通过使用setTimeout造成延迟执行的情况下，如何更新state。</span>
+<span class="hljs-string"></span>
+<span class="hljs-string">`</span><span class="hljs-string">``</span>js
+<span class="hljs-keyword">import</span> React, &#123;useState&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;
+
+<span class="hljs-keyword">const</span> App = <span class="hljs-function">() =&gt;</span> &#123;
+    <span class="hljs-keyword">const</span> [count, setCount] = useState(<span class="hljs-number">0</span>);
+
+    <span class="hljs-keyword">const</span> handleIncrement = <span class="hljs-function">() =&gt;</span>
+            <span class="hljs-built_in">setTimeout</span>(
+                <span class="hljs-comment">//这里很容易写成setCount(count+1),错！</span>
+                ()=&gt;setCount(<span class="hljs-function"><span class="hljs-params">count</span>=&gt;</span>count+<span class="hljs-number">1</span>),
+                <span class="hljs-number">1000</span>
+            );
+    
+    <span class="hljs-keyword">const</span> handleDecrement = <span class="hljs-function">() =&gt;</span>
+            <span class="hljs-built_in">setTimeout</span>(
+                <span class="hljs-comment">//这里很容易写成setCount(count-1),错！</span>
+                ()=&gt;setCount(<span class="hljs-function"><span class="hljs-params">count</span>=&gt;</span>count-<span class="hljs-number">1</span>),
+                <span class="hljs-number">1000</span>
+            );
+
+    <span class="hljs-keyword">return</span> (
+        &lt;div&gt;
+            &lt;h1&gt;&#123;count&#125;&lt;/h1&gt;
+            &lt;Button handleClick=&#123;handleIncrement&#125;&gt;增加<span class="hljs-number">1</span>&lt;/Button&gt;
+            &lt;Button handleClick=&#123;handleDecrement&#125;&gt;减少<span class="hljs-number">1</span>&lt;/Button&gt;
+        &lt;/div&gt;
+    );
+
+    <span class="hljs-keyword">const</span> Button = <span class="hljs-function">(<span class="hljs-params">&#123;handleClick,children&#125;</span>) =&gt;</span>(
+        &lt;button onClick=&#123;handleClick&#125;&gt;&#123;children&#125;&lt;/button&gt;
+    );
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> App;</code></pre>
+<p>注意观察上述代码是如何更新当前的count值的，我们通过使用setCount 状态函数来更新state。由于来源于useState的setter function 本质上是异步执行的，因此必须确保是对当前状态而不是任何过时状态执行更新。</p>
+<p>了解更多，可参考<a target="_blank" rel="noopener" href="https://www.robinwieruch.de/react-hooks-fetch-data"> how to fetch data with Function Components with React Hooks.</a></p>
+<h4 id="十、函数组件中的生命周期实现——LifeCyrcle"><a href="#十、函数组件中的生命周期实现——LifeCyrcle" class="headerlink" title="十、函数组件中的生命周期实现——LifeCyrcle"></a>十、函数组件中的生命周期实现——LifeCyrcle</h4><p>如果你之前使用过类组件，一定用过componentDidMout、componentWillUnmount、shouldComponentUpdate等生命周期方法。但是在函数组件中没有这些方法，让我们看看如何在函数式组件中实现它们。</p>
+<p>首先，在函数组件中没有constructor。在类组件中，constructor通常被用来设置initial state。但是在函数组件中我们使用useState hook就可以设置initial state，并且可以同时得到一个setter function 用于之后的业务逻辑。<br><img src="https://pic.downk.cc/item/5fd185883ffa7d37b3e1c35a.jpg" srcset="/img/loading.gif"></p>
+<p><strong>1.Funcitonal Component:  Mount</strong></p>
+<p>react组件在第一次渲染的时候，会有一个mounting的阶段。如果你想在函数式组件里，当组件<strong>did mount</strong>的时候执行一些逻辑，可以使用<strong>useEffect</strong> hook:</p>
+<pre><code class="hljs js"><span class="hljs-keyword">import</span> React ,&#123; useState, useEffect&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;
+
+<span class="hljs-keyword">const</span> App = <span class="hljs-function">() =&gt;</span>&#123;
+    <span class="hljs-keyword">const</span> [count, setCount] = useState(<span class="hljs-number">0</span>);
+
+    <span class="hljs-keyword">const</span> handleIncrement = <span class="hljs-function">() =&gt;</span>
+        setCount(<span class="hljs-function"><span class="hljs-params">currentCount</span> =&gt;</span> currntCount+<span class="hljs-number">1</span>);
+    
+    <span class="hljs-keyword">const</span> handleDecrement = <span class="hljs-function">() =&gt;</span>
+        setCount(<span class="hljs-function"><span class="hljs-params">currentCount</span> =&gt;</span> currntCount-<span class="hljs-number">1</span>);
+
+    useEffect(<span class="hljs-function">()=&gt;</span>setCount(<span class="hljs-function"><span class="hljs-params">currentCount</span> =&gt;</span> currentCount + <span class="hljs-number">1</span>),[]);
+
+    <span class="hljs-keyword">return</span> (
+        &lt;div&gt;
+            &lt;h1&gt;&#123;count&#125;&lt;/h1&gt;
+
+            &lt;button onClick=&#123;handleIncrement&#125;&gt;Increment&lt;/button&gt;
+
+            &lt;button onClick=&#123;handleDecrement&#125;&gt;Decrement&lt;/button&gt;
+        &lt;/div&gt;
+    )
+&#125;;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> App;</code></pre>
+<p>当我们运行这段代码的时候，这个组件第一次渲染时会显示count的初始状态值0，然后当component did mount后，Effect hook 会将count设置为1。</p>
+<p>🐖：Effect hook中的第二个参数（1个空数组）是非常重要的，它确保了只有在这个组件加载（mount)或者组件卸载（unmount)时才触发事件。如果不小心漏掉了这个空数组，我们会陷入count不断加1的死循环，因为当state更新了Effect hook总是会执行。然后Effect执行又会触发state更新，这样就会不停地对count+1<br><font color=green>todo: 这里为什么要用空数组而不是别的呢？？</font></p>
+<p><strong>2.Funcitonal Component:  Update</strong></p>
+<p>每次当入参props或者是组件本身的state变化时，react组件就会重新渲染以展示最新的status(from props and state)。在函数式组件中，一次render会执行函数体的所有内容。</p>
+<p>如果函数组件没有正确地按照预期更新，我们可以在组件中使用console.log控制台输出state和props的值来debug。如果这两者的值都没有发生变化，就不会有新的render执行。<br><img src="https://pic.downk.cc/item/5fd1ca843ffa7d37b32b3cee.jpg" srcset="/img/loading.gif"></p>
+<p>如果我们想对组件重新渲染进行操作，我们可以再一次使用 Effect Hook (在组件did update之后)：</p>
+<pre><code class="hljs js"><span class="hljs-keyword">import</span> React, &#123;useEffect, useState&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;
+
+<span class="hljs-keyword">const</span> App = <span class="hljs-function">() =&gt;</span>&#123;
+    <span class="hljs-comment">//count的初始值来源于本地存储中的值或0</span>
+    <span class="hljs-keyword">const</span> initialCount = +<span class="hljs-built_in">localStorage</span>.getItem(<span class="hljs-string">&#x27;storageCount&#x27;</span>)||<span class="hljs-number">0</span>;
+    <span class="hljs-keyword">const</span> [count,setCount]=useState(initialCount);
+
+    <span class="hljs-keyword">const</span> handleIncrement = <span class="hljs-function">() =&gt;</span>
+        setCount(<span class="hljs-function"><span class="hljs-params">currentCount</span> =&gt;</span> currentCount + <span class="hljs-number">1</span>);
+ 
+    <span class="hljs-keyword">const</span> handleDecrement = <span class="hljs-function">() =&gt;</span>
+        setCount(<span class="hljs-function"><span class="hljs-params">currentCount</span> =&gt;</span> currentCount - <span class="hljs-number">1</span>);
+    <span class="hljs-comment">//每次组件重新渲染时，count都会被存入浏览器的本地存储</span>
+    useEffect(<span class="hljs-function">()=&gt;</span><span class="hljs-built_in">localStorage</span>.setItem(<span class="hljs-string">&#x27;storageCount&#x27;</span>,count));
+
+    <span class="hljs-keyword">return</span> (
+        &lt;div&gt;
+            &lt;h1&gt;&#123;count&#125;&lt;/h1&gt;
+
+            &lt;button onClick=&#123;handleIncrement&#125;&gt;+<span class="hljs-number">1</span>&lt;/button&gt;
+
+            &lt;button onClick=&#123;handleDecrement&#125;&gt;-<span class="hljs-number">1</span>&lt;/button&gt;
+        &lt;/div&gt;
+    )
+&#125;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> App;</code></pre>
+
+<p>你还可以通过给Effect Hook 传递第二个参数（是个数组）的方式，来控制它什么时候运行。每当第二个参数中的变量发生变化时，Effect Hook就会run。下面这个例子，只有当count发生变化的时候，才将其存入localStorage:<br><img src="https://pic.downk.cc/item/5fd1cdb33ffa7d37b32ef914.jpg" srcset="/img/loading.gif"></p>
+<p>现在我们可以总结，Effect Hook函数中第二个参数值的用法：（通过第二个参数值来控制它何时run)</p>
+<ul>
+<li>every time(no argument，不传第二个参数)</li>
+<li>only on mount or unmount ([]argument, 空数组)</li>
+<li>only when a certain variable changes(例如[count]，数组中放入指定变量)</li>
+</ul>
+<p>🐖：forceUpdate API可以强制让组件重新渲染，但是我们应该谨慎使用 ，参考<a target="_blank" rel="noopener" href="https://zh-hans.reactjs.org/docs/react-component.html#forceupdate">forceUpdate</a>以及 <a target="_blank" rel="noopener" href="https://reactjs.org/docs/hooks-faq.html#is-there-something-like-forceupdate">Is there something like forceUpdate</a></p>
+<h4 id="十一、纯函数组件——Pure-React-Funtion-Component"><a href="#十一、纯函数组件——Pure-React-Funtion-Component" class="headerlink" title="十一、纯函数组件——Pure React Funtion Component"></a>十一、纯函数组件——Pure React Funtion Component</h4><p>类组件中，可以通过使用PureComponent 或者 shouldComponentUpdate 来避免重新渲染导致的性能瓶颈【<a target="_blank" rel="noopener" href="https://www.robinwieruch.de/react-prevent-rerender-component">avoid performance bottlenecks in React by preventing rereders</a>】。让我们先看一个例子：</p>
+<pre><code class="hljs js"><span class="hljs-keyword">import</span> React, &#123; useState &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;
+
+<span class="hljs-keyword">const</span> App =<span class="hljs-function">()=&gt;</span>&#123;
+    <span class="hljs-keyword">const</span> [greeting,setGreeting]=useState(<span class="hljs-string">&#x27;hello react&#x27;</span>);
+    <span class="hljs-keyword">const</span>[count,setCount]=useState(<span class="hljs-number">0</span>);
+
+    <span class="hljs-keyword">const</span> handleIncrement = <span class="hljs-function">()=&gt;</span>
+        setCount(<span class="hljs-function"><span class="hljs-params">currentCount</span>=&gt;</span>currentCount+<span class="hljs-number">1</span>);
+
+    <span class="hljs-keyword">const</span> handleDecrement = <span class="hljs-function">()=&gt;</span>
+        setCount(<span class="hljs-function"><span class="hljs-params">currentCount</span>=&gt;</span>currentCount-<span class="hljs-number">1</span>);
+    
+    <span class="hljs-keyword">const</span> handleChange = <span class="hljs-function"><span class="hljs-params">event</span> =&gt;</span> setGreeting(event.target.value);
+
+    <span class="hljs-keyword">return</span> (
+        &lt;div&gt;
+            &lt;input onChange=&#123;handleChange&#125; /&gt;
+
+            &lt;Count count=&#123;count&#125; /&gt;
+            &lt;button onClick=&#123;handleIncrement&#125;&gt;Increment&lt;/button&gt;
+            &lt;button onClick=&#123;handleDecrement&#125;&gt;Decrement&lt;/button&gt;
+        &lt;/div&gt;
+    )
+&#125;;
+
+<span class="hljs-keyword">const</span> Count=<span class="hljs-function">(<span class="hljs-params">&#123;count&#125;</span>)=&gt;</span>&#123;
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;Does it (re)render?&#x27;</span>);
+
+    <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>&#123;count&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span>
+&#125;
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> App;</code></pre>
+<p>在这个例子中，每当我们向input输入框输入内容时，这个App组件就会更新它的stater然后重新渲染。与此同时，Count组件也会重新渲染（在控制台中我们可以看到，每次我们在输入框里操作，就会打印“Does it (re)render?”这句）。为了避免这种情况，react函数组件使用React Memo【<a target="_blank" rel="noopener" href="https://reactjs.org/docs/react-api.html">React’s top level APIs</a>】来阻止当props没有变化时的重新渲染。</p>
+<pre><code class="hljs js"><span class="hljs-keyword">import</span> React,&#123;useState, memo&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;
+
+<span class="hljs-keyword">const</span> APP=<span class="hljs-function">()=&gt;</span>&#123;
+    <span class="hljs-keyword">const</span> [greeting,setGreeting] = useState(<span class="hljs-string">&#x27;hello react&#x27;</span>);
+    <span class="hljs-keyword">const</span> [count, setCount] = useState(<span class="hljs-number">0</span>);
+
+    <span class="hljs-keyword">const</span> handleIncrement = <span class="hljs-function">() =&gt;</span>
+        setCount(<span class="hljs-function"><span class="hljs-params">currentCount</span> =&gt;</span> currentCount + <span class="hljs-number">1</span>);
+ 
+    <span class="hljs-keyword">const</span> handleDecrement = <span class="hljs-function">() =&gt;</span>
+        setCount(<span class="hljs-function"><span class="hljs-params">currentCount</span> =&gt;</span> currentCount - <span class="hljs-number">1</span>);
+ 
+  <span class="hljs-keyword">const</span> handleChange = <span class="hljs-function"><span class="hljs-params">event</span> =&gt;</span> setGreeting(event.target.value);
+ 
+  <span class="hljs-keyword">return</span> (
+    &lt;div&gt;
+      &lt;input type=<span class="hljs-string">&quot;text&quot;</span> onChange=&#123;handleChange&#125; /&gt;
+ 
+      &lt;Count count=&#123;count&#125; /&gt;
+ 
+      &lt;button type=<span class="hljs-string">&quot;button&quot;</span> onClick=&#123;handleIncrement&#125;&gt;
+        Increment
+      &lt;/button&gt;
+      &lt;button type=<span class="hljs-string">&quot;button&quot;</span> onClick=&#123;handleDecrement&#125;&gt;
+        Decrement
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+&#125;
+
+<span class="hljs-comment">//memo时把整个箭头函数的内容包裹起来</span>
+<span class="hljs-keyword">const</span> Count = memo(<span class="hljs-function">(<span class="hljs-params">&#123;count&#125;</span>) =&gt;</span> &#123;
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;does it (re)render?&#x27;</span>);
+
+    <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>&#123;count&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span>
+&#125;);
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> App;</code></pre>
+
+<p>现在我们再来运行这个程序，当我们向input输入框输入内容时，只有App组件会rerender, Count组件不再rerender了！当然，这种性能优化不应该作为默认设置。当重新渲染组件时间过长遇到问题时可以进行类似的检查。（比如，rendering和updating Table组件中的大量内容）</p>
+<h4 id="十二、React-Function-Component-Ref"><a href="#十二、React-Function-Component-Ref" class="headerlink" title="十二、React Function Component: Ref"></a>十二、React Function Component: Ref</h4><p>refs一般只在少数场景下使用：</p>
+<ul>
+<li>管理焦点，文本选择或者时媒体播放</li>
+<li>触发强制动画</li>
+<li>集成第三方DOM库</li>
+</ul>
+<p>在函数式组件中使用refs，要引入useRef。下面这个例子，input输入框将获得焦点（after component did mount)</p>
+<pre><code class="hljs js"><span class="hljs-keyword">import</span> React,&#123;useState, useEffect, useRef&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;
+
+<span class="hljs-keyword">const</span> App=<span class="hljs-function">()=&gt;</span>&#123;
+    <span class="hljs-keyword">const</span> [greeting, setGreeting] = useState(<span class="hljs-string">&#x27;hello React！&#x27;</span>);
+
+    <span class="hljs-keyword">const</span> handleChange = <span class="hljs-function"><span class="hljs-params">event</span> =&gt;</span>setGreeting(event.target.value);
+
+    <span class="hljs-keyword">return</span>(
+        &lt;div&gt;
+            &lt;h1&gt;&#123;greeting&#125;&lt;/h1&gt;
+            &lt;Input value=&#123;greeting&#125; handleChange=&#123;handleChange&#125; /&gt;
+        &lt;/div&gt;
+    )
+&#125;;
+
+<span class="hljs-keyword">const</span> Input=<span class="hljs-function">(<span class="hljs-params">&#123;value,handleChange&#125;</span>)=&gt;</span>&#123;
+    <span class="hljs-keyword">const</span> ref=useRef();
+
+    useEffect(<span class="hljs-function">()=&gt;</span>ref.current.focus(),[]);
+
+    <span class="hljs-keyword">return</span> (
+        &lt;input 
+            type=<span class="hljs-string">&#x27;text&#x27;</span> 
+            value=&#123;value&#125; 
+            onChange=&#123;handleChange&#125; 
+            ref=&#123;ref&#125;
+        /&gt;
+    )
+&#125;;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> App;
+</code></pre>
+<p>但是不能给一个函数组件提供一个ref作为props的一部分！The ref will be assigned to the component but not to the actual DOM node!<br><img src="https://pic.downk.cc/item/5fd1e2873ffa7d37b34ab442.jpg" srcset="/img/loading.gif"></p>
+<p>这样写会报错！因为ref指代的不是一个真实的dom节点，而是一个组件实例。</p>
+<p><img src="https://pic.downk.cc/item/5fd1e2e03ffa7d37b34b4e87.jpg" srcset="/img/loading.gif"></p>
+<p>从上面的例子也可以看出，我们并不推荐父组件向子组件传递一个ref，这也就是为什么我们说”React function component can’t have  refs”。然而，如果我们不得不向一个函数组件传递一个ref(例如，我们想测量一个函数组件DOM节点的数量)，这种情况下我们可以<a target="_blank" rel="noopener" href="https://reactjs.org/docs/forwarding-refs.html">forward the ref</a></p>
+<p><img src="https://pic.downk.cc/item/5fd1e4643ffa7d37b3519759.jpg" srcset="/img/loading.gif" alt="forwardRef"></p>
+<p>想知道更多关于ref的问题，可以参考<a target="_blank" rel="noopener" href="https://www.robinwieruch.de/react-ref-attribute-dom-node">How to use Ref in React</a> 以及 <a target="_blank" rel="noopener" href="https://reactjs.org/docs/refs-and-the-dom.html">React 官方文档——Refs and the DOM</a></p>
+<p>全文参考：<a target="_blank" rel="noopener" href="https://www.robinwieruch.de/react-function-component">React Function Components</a></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/React%E5%AD%A6%E4%B9%A0/">React学习</a>
+                    
+                  </div>
+                
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/12/09/React05-%E5%8F%97%E6%8E%A7%E7%BB%84%E4%BB%B6%E4%B8%8E%E9%9D%9E%E5%8F%97%E6%8E%A7%E7%BB%84%E4%BB%B6/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">React05-受控组件与非受控组件</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/12/08/JS01-%E7%90%86%E8%A7%A3JavaScript%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E5%92%8Cthis/">
+                        <span class="hidden-mobile">JS01-理解JavaScript函数调用和this</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+
+  <script  src="https://cdn.staticfile.org/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":200})
+    NProgress.start()
+    document.addEventListener('DOMContentLoaded', function() {
+      window.NProgress && window.NProgress.inc();
+    })
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.5.3/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.12.0/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    (function () {
+      var path = "/local-search.xml";
+      var inputArea = document.querySelector("#local-search-input");
+      inputArea.onclick = function () {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+        this.onclick = null
+      }
+    })()
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+
+</body>
+</html>

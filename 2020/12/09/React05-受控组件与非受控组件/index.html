@@ -17,7 +17,7 @@
   <meta name="description" content="前端小白，升级打怪">
   <meta name="author" content="dorothy">
   <meta name="keywords" content="前端，js,h5,css,react">
-  <title>JS01-理解JavaScript函数调用和this - Dorothy的博客</title>
+  <title>React05-受控组件与非受控组件 - Dorothy的博客</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.5.3/css/bootstrap.min.css" />
 
@@ -162,7 +162,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="JS01-理解JavaScript函数调用和this">
+            <span class="h2" id="subtitle" title="React05-受控组件与非受控组件">
               
             </span>
 
@@ -172,8 +172,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2020-12-08 20:58" pubdate>
-        2020年12月8日 晚上
+      <time datetime="2020-12-09 19:56" pubdate>
+        2020年12月9日 晚上
       </time>
     </span>
   
@@ -184,7 +184,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      777 字
+      999 字
     </span>
   
 
@@ -194,7 +194,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      12
+      13
        分钟
     </span>
   
@@ -224,86 +224,106 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">JS01-理解JavaScript函数调用和this</h1>
+            <h1 style="display: none">React05-受控组件与非受控组件</h1>
             
             <div class="markdown-body">
-              <h4 id="理解JavaScript函数调用与this的语义"><a href="#理解JavaScript函数调用与this的语义" class="headerlink" title="理解JavaScript函数调用与this的语义"></a>理解JavaScript函数调用与this的语义</h4><p>&emsp;我们经常对JS的函数调用，以及this在函数调用中的指代有很多的困惑。通过理解核心函数调用的原语可能会有助于消除很多此类的疑惑，也可以把其他函数调用方式看成是最原始函数调用的语法糖。The basic idea is the same.</p>
-<h5 id="一、-The-Core-Primitive-核心原语："><a href="#一、-The-Core-Primitive-核心原语：" class="headerlink" title="一、 The Core Primitive 核心原语："></a>一、 The Core Primitive 核心原语：</h5><p>First, let’s look at the core function invocation primitive, a Function’s call method[1]. The call method is relatively straight forward.</p>
-<ol>
-<li>Make an argument list (<strong>argList</strong>) out of parameters 1 through the end</li>
-<li>The first parameter is <strong>thisValue</strong></li>
-<li>Invoke the function with <strong>this</strong> set to <strong>thisValue</strong> and the <strong>argList</strong> as its argument list<br>例子：<pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">hello</span>(<span class="hljs-params">thing</span>)</span>&#123;
+              <h3 id="Controlled-Components-VS-unControlled-Components"><a href="#Controlled-Components-VS-unControlled-Components" class="headerlink" title="Controlled Components VS unControlled Components"></a>Controlled Components VS unControlled Components</h3><h4 id="一、非受控组件"><a href="#一、非受控组件" class="headerlink" title="一、非受控组件"></a>一、非受控组件</h4><p>先看一个非受控组件的例子：</p>
+<pre><code class="hljs js"><span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;
 
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span> + <span class="hljs-string">&#x27;say hello&#x27;</span> + thing);
+<span class="hljs-keyword">const</span> App = <span class="hljs-function">() =&gt;</span>(
+    &lt;div&gt;
+        &lt;label&gt;
+            My uncontrolled Input:
+            &lt;input type=<span class="hljs-string">&#x27;text&#x27;</span>/&gt;
+        &lt;/label&gt;
+    &lt;/div&gt;
+)</code></pre>
 
-&#125;
-hello.call(<span class="hljs-string">&#x27;Yehuda&#x27;</span>,<span class="hljs-string">&#x27;world&#x27;</span>);<span class="hljs-comment">//Yehuda says hello world</span></code></pre>
+<p>上述代码中的input是不受控制的HTML元素，通常我们也将封装了这种元素的APP组件称为是 “非受控组件”。</p>
+<p>🐖：判断一个组件受控与否，跟它是函数组件还是类组件没有关系！</p>
+<p>这里的input是不受控的，因为当我们启动这个application后，我们可以在输入框种编辑任何内容，但是我们编辑出来的东西没有展示在其他任何地方，也没有任何行为看可以去改变我们打进去的值。毕竟，这里的input就是一个原生的HTML元素，它自己管理自己的内部状态，而不受任何外界的控制。</p>
+<p>我们再来看另外一个例子，这个例子更容易让我们混淆受控组件与非受控组件：</p>
+<pre><code class="hljs js"><span class="hljs-comment">//添加state management 和 React Hooks</span>
+<span class="hljs-keyword">import</span> React, &#123;useState&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;
 
-</li>
-</ol>
-<p>As you can see, we invoked the <strong>hello</strong> method with this set to “Yehuda” and a single argument “world”. This is the core primitive of JavaScript function invocation. You can think of all other function calls as desugaring to this primitive. (to “desugar” is to take a convenient syntax and describe it in terms of a more basic core primitive).</p>
-<h5 id="二、简单函数调用"><a href="#二、简单函数调用" class="headerlink" title="二、简单函数调用"></a>二、简单函数调用</h5><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">hello</span>(<span class="hljs-params">thing</span>)</span>&#123;
+<span class="hljs-keyword">const</span> App = <span class="hljs-function">()=&gt;</span>&#123;
+    <span class="hljs-keyword">const</span> [value, setValue] = useState(<span class="hljs-string">&#x27;&#x27;</span>);
 
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;Hello&#x27;</span> + thing);
-&#125;
-<span class="hljs-comment">//简单函数调用</span>
-hello(<span class="hljs-string">&#x27;world&#x27;</span>);
+    <span class="hljs-keyword">const</span> handleChange = <span class="hljs-function"><span class="hljs-params">event</span> =&gt;</span> setValue(event.target.value);
 
-<span class="hljs-comment">//desugars to:</span>
-hello.call(<span class="hljs-built_in">window</span>, <span class="hljs-string">&#x27;world&#x27;</span>)
+    <span class="hljs-keyword">return</span> (
+        &lt;div&gt;
+            &lt;label&gt;
+                My still uncontrolled Input:
+                &lt;input type=<span class="hljs-string">&#x27;text&#x27;</span> onChange=&#123;handleChange&#125; /&gt;
+            &lt;/label&gt;
 
-<span class="hljs-comment">//在ES5的严格模式中，desugars to:</span>
-hello.call(<span class="hljs-literal">undefined</span>, <span class="hljs-string">&#x27;world&#x27;</span>)</code></pre>
+            &lt;p&gt;
+                &lt;strong&gt;Output: &lt;/strong&gt; &#123;value&#125;
+            &lt;/p&gt;
+        &lt;/div&gt;
+    );
+&#125;;
 
-<p>在内联声明的函数中，也有相同的“解糖”：<br>(function() {})()  = (function() {}).call(window或undefined)</p>
-<h5 id="三、成员函数"><a href="#三、成员函数" class="headerlink" title="三、成员函数"></a>三、成员函数</h5><pre><code class="hljs js"><span class="hljs-keyword">var</span> person = &#123;
-    name: <span class="hljs-string">&#x27;Eich&#x27;</span>,
-    hello: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">thing</span>)</span>&#123;
-        <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span> + <span class="hljs-string">&#x27;say hello&#x27;</span> + thing)
-    &#125;
-&#125;
-<span class="hljs-comment">//成员函数调用</span>
-person.hello(<span class="hljs-string">&#x27;world&#x27;</span>);
-<span class="hljs-comment">//desugars to:</span>
-person.hello.call(person,<span class="hljs-string">&#x27;world&#x27;</span>)</code></pre>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> App;</code></pre>
 
-<p>如果为一个对象动态的添加成员函数，也有相同的“解糖”：</p>
-<pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">hello</span>(<span class="hljs-params">thing</span>)</span>&#123;
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span> + <span class="hljs-string">&#x27;say hello&#x27;</span> + thing);
-&#125;
-person = &#123;<span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Eich&#x27;</span>&#125;;
-person.hello = hello;
+<p>我们把在输入框编辑的内容展示到一个段落中（output的后面），当我们启动这个程序后，input输入框编辑什么，output后面也会展示什么。但是，它依然是个非受控组件。这是为什么呢？下面我们把initialState里面写入内容，来解释这个问题：</p>
+<pre><code class="hljs js"><span class="hljs-keyword">import</span> React, &#123;useState&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;
 
-person.hello(<span class="hljs-string">&#x27;world&#x27;</span>);
-<span class="hljs-comment">//still desugars to :</span>
-<span class="hljs-comment">//person.hello.call(person,&#x27;world&#x27;)</span>
+<span class="hljs-keyword">const</span> App = <span class="hljs-function">()=&gt;</span>&#123;
+    <span class="hljs-keyword">const</span> [value, setValue] = useState(<span class="hljs-string">&#x27;Hello React&#x27;</span>);
 
-hello(<span class="hljs-string">&#x27;world&#x27;</span>);<span class="hljs-comment">//&quot;[object DOMwindow] say hello world&quot;</span></code></pre>
-<p>🐖：Notice that the function doesn’t have a persistent notion of its ‘this’. It is always set at call time based upon the way it was invoked by its caller.</p>
-<h5 id="四、使用函数原型绑定-Function-prototype-bind"><a href="#四、使用函数原型绑定-Function-prototype-bind" class="headerlink" title="四、使用函数原型绑定 Function.prototype.bind"></a>四、使用函数原型绑定 Function.prototype.bind</h5><p>&emsp;因为有时使用持久化this值引用函数可能会很方便，所以人们一直以来都使用简单的闭包技巧将函数转换成不变的this值。</p>
-<pre><code class="hljs js"><span class="hljs-keyword">var</span> person = &#123;
-    name: <span class="hljs-string">&#x27;Eich&#x27;</span>,
-    hello: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"><span class="hljs-built_in">this</span></span>)</span>&#123;
-        <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.name + <span class="hljs-string">&#x27;says hello&#x27;</span> +thing);
-    &#125;
-&#125;
-<span class="hljs-keyword">var</span> boundHello = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">thing</span>)</span>&#123;
-    <span class="hljs-comment">//使用原始的call方法把this转换为我们想要它指代的值</span>
-    <span class="hljs-keyword">return</span> person.hello.call(person,thing)
-&#125;
-boundHello(<span class="hljs-string">&#x27;world&#x27;</span>);
-<span class="hljs-comment">//desugars to: boundHello.call(window, &#x27;world&#x27;)</span></code></pre>
+    <span class="hljs-keyword">const</span> handleChange = <span class="hljs-function"><span class="hljs-params">event</span> =&gt;</span> setValue(event.target.value);
 
-<p>我们还可以进一步改进，让上面的写法更加通用：</p>
-<pre><code class="hljs js"><span class="hljs-keyword">var</span> bind = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">func,thisValue</span>)</span>&#123;
-    <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>&#123;
-        <span class="hljs-keyword">return</span> func.apply(thisValue, <span class="hljs-built_in">arguments</span>);
-    &#125;
-&#125;
-<span class="hljs-keyword">var</span> boundHello = bind(person.hello, person);
-boundHello(<span class="hljs-string">&#x27;world&#x27;</span>)<span class="hljs-comment">//&#x27;Eich says hello world&#x27;</span></code></pre>
-<p>上述代码中，arguments是类数组对象，代表所有被传入函数的参数值。apply() 方法跟call类似，除了它接收的是类数组对象作为参数，而call接收的是一个一个参数组成的列表 call(thisArg, arg1,arg2,…)。<br>对上述代码的解释：Our <strong>bind</strong> method simply returns a new function. When it is invoked, our new function simply invokes the original function that was passed in, setting the original value as <strong>this</strong>. It also passes through the arguments.</p>
-<p>参考文章： <a target="_blank" rel="noopener" href="https://yehudakatz.com/2011/08/11/understanding-javascript-function-invocation-and-this/">Understanding JavaScript Function Invocation and “this”</a></p>
+    <span class="hljs-keyword">return</span> (
+        &lt;div&gt;
+            &lt;label&gt;
+                My still uncontrolled Input:
+                &lt;input type=<span class="hljs-string">&#x27;text&#x27;</span> onChange=&#123;handleChange&#125; /&gt;
+            &lt;/label&gt;
+
+            &lt;p&gt;
+                &lt;strong&gt;Output: &lt;/strong&gt; &#123;value&#125;
+            &lt;/p&gt;
+        &lt;/div&gt;
+    );
+&#125;;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> App;
+</code></pre>
+<p>运行这个程序后，我们可以看到区别了：<br><img src="https://pic.downk.cc/item/5fd0c0543ffa7d37b335df1a.jpg" srcset="/img/loading.gif"></p>
+<p>我们可以看到 input框里是空的，可是output后面却是有内容的（output后面展示的就是initial state）。只有当我们往输入框中输入东西时，二者才似乎重新开始保持“同步”。但其实，<strong>input框的内容仍然是它自己的内部状态，而output后面的内容却来自于真实的React state</strong>(from handler function)。所以when typing, output后面展示的内容虽然看起来似乎和我们在输入框打进去的一样，但其实它们俩的来源不同：</p>
+<ul>
+<li>input filed receives its value from internal DOM node state;</li>
+<li>output paragraph receives its value from React’s state。</li>
+</ul>
+<p>在我们的React应用中使用非受控组件，可能会导致很多意想不到的bug。如果想利用一种事实来源（one source of truth)来驱动UI，就应该使用props或者是state。对于一个组件来说，有相同的props和state，就应该渲染出相同的UI界面：<strong>（props, state) =&gt; view</strong></p>
+<h4 id="二、受控组件"><a href="#二、受控组件" class="headerlink" title="二、受控组件"></a>二、受控组件</h4><p>既然非受控组件可能导致bug, 那么我们就应该把input这种不受控制的元素改为受控元素。亦即，我们为input提供一个value (它的值来源于 React state)：</p>
+<pre><code class="hljs js"><span class="hljs-keyword">import</span> React, &#123; useState &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;
+ 
+<span class="hljs-keyword">const</span> App = <span class="hljs-function">() =&gt;</span> &#123;
+  <span class="hljs-keyword">const</span> [value, setValue] = useState(<span class="hljs-string">&#x27;Hello React&#x27;</span>);
+ 
+  <span class="hljs-keyword">const</span> handleChange = <span class="hljs-function"><span class="hljs-params">event</span> =&gt;</span> setValue(event.target.value);
+ 
+  <span class="hljs-keyword">return</span> (
+    &lt;div&gt;
+      &lt;label&gt;
+        My controlled Input:
+        &lt;input type=<span class="hljs-string">&quot;text&quot;</span> value=&#123;value&#125; onChange=&#123;handleChange&#125; /&gt;
+      &lt;/label&gt;
+ 
+      &lt;p&gt;
+        &lt;strong&gt;Output:&lt;/strong&gt; &#123;value&#125;
+      &lt;/p&gt;
+    &lt;/div&gt;
+  );
+&#125;;
+ 
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> App;</code></pre>
+
+<p>通过给input输入框提供一个来源于react state的value值，它就不再使用自己本身的内部状态了。现在，我们再来启动这个程序时，input输入框里的值和output后面展示的内容就完全一致了！（因为它们都来自于react state）<br><img src="https://pic.downk.cc/item/5fd0c4643ffa7d37b33a6f41.jpg" srcset="/img/loading.gif"></p>
+<p>参考：<a target="_blank" rel="noopener" href="https://www.robinwieruch.de/react-controlled-components">What are Controlled Components in React?</a></p>
 
             </div>
             <hr>
@@ -313,7 +333,7 @@ boundHello(<span class="hljs-string">&#x27;world&#x27;</span>)<span class="hljs-
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
                     
-                      <a class="hover-with-bg" href="/categories/JS%E5%AD%A6%E4%B9%A0/">JS学习</a>
+                      <a class="hover-with-bg" href="/categories/React%E5%AD%A6%E4%B9%A0/">React学习</a>
                     
                   </div>
                 
@@ -327,18 +347,12 @@ boundHello(<span class="hljs-string">&#x27;world&#x27;</span>)<span class="hljs-
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/12/09/React04-%E5%87%BD%E6%95%B0%E7%BB%84%E4%BB%B6/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">React04-函数组件</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/12/07/%E9%9D%A2%E8%AF%9503-%E5%A6%82%E4%BD%95%E9%81%BF%E5%85%8D%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E4%B8%AD%E7%9A%84%E5%9D%91%EF%BC%9F/">
-                        <span class="hidden-mobile">面试03-如何避免生命周期中的坑？</span>
+                      <a href="/2020/12/09/React04-%E5%87%BD%E6%95%B0%E7%BB%84%E4%BB%B6/">
+                        <span class="hidden-mobile">React04-函数组件</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
