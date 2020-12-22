@@ -1,0 +1,796 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#265734">
+  <meta name="description" content="前端小白，升级打怪">
+  <meta name="author" content="dorothy">
+  <meta name="keywords" content="前端，js,h5,css,react">
+  <title>面试06-setState是同步更新还是异步更新？ - Dorothy的博客</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.5.3/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.1.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.5","typing":{"enable":true,"typeSpeed":60,"cursorChar":"_","loop":false},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"copy_btn":true,"image_zoom":{"enable":true},"lazyload":{"enable":true,"onlypost":false},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>DorothyJay</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/cup.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="面试06-setState是同步更新还是异步更新？">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-12-22 19:20" pubdate>
+        2020年12月22日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.6k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      34
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">面试06-setState是同步更新还是异步更新？</h1>
+            
+            <div class="markdown-body">
+              <h4 id="面试场景6：setState是同步更新还是异步更新？"><a href="#面试场景6：setState是同步更新还是异步更新？" class="headerlink" title="面试场景6：setState是同步更新还是异步更新？"></a>面试场景6：setState是同步更新还是异步更新？</h4><p>分析问题：“是A还是B”是一个面试中经常问的问题，这种题可能在不同的场景中会有不同的选择：</p>
+<ul>
+<li>可能是A</li>
+<li>也可能是B</li>
+<li>甚至是A和B同时存在</li>
+</ul>
+<p>所以需要把问题放在具体的场景中探讨，一定不要想当然，不要觉得肯定是XXX啊。在面对类似的问题，要先把场景理清楚，再思考如何回答。</p>
+<p>回到setState本身上来，setState用于变更状态，触发组件重新渲染，更新试图UI。在分析场景之前，需要先了解一个概念<font color=blue>合成事件</font>，它也经常在React面试中被问到。合成事件与setState的触发有千丝万缕的联系。</p>
+<h4 id="一、合成事件"><a href="#一、合成事件" class="headerlink" title="一、合成事件"></a>一、合成事件</h4><p>在没有合成事件之前，大家是怎么处理事件的呢？先看一个很常见的场景：假设ul标签下有10000个li标签，现在需要添加点击事件，通过点击li获取当前li标签中的文本。之前大家的做法是：为每一个li标签添加onclick事件。</p>
+<pre><code class="hljs js">&lt;ul&gt;
+    &lt;li onclick=<span class="hljs-string">&#x27;getText(this&#x27;</span>)&gt;<span class="hljs-number">1</span>&lt;/li&gt;
+    &lt;li onclick=<span class="hljs-string">&#x27;getText(this&#x27;</span>)&gt;<span class="hljs-number">2</span>&lt;/li&gt;
+    &lt;li onclick=<span class="hljs-string">&#x27;getText(this&#x27;</span>)&gt;<span class="hljs-number">3</span>&lt;/li&gt;
+    ...
+    &lt;li onclick=<span class="hljs-string">&#x27;getText(this&#x27;</span>)&gt;<span class="hljs-number">10000</span>&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+<p>这是一种非常不友好的方式，会对页面的性能产生影响。</p>
+<p>如何优化呢?最恰当的处理方式是采用<font color=blue>事件委托</font>。通过将事件绑定在ul标签上，当li被点击的时候，由事件冒泡到父级的ul标签上触发，并在ul的onclick事件中，确认是哪一个li标签触发的点击事件。</p>
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">ul</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&#x27;test&#x27;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    ...
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>10000<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span>
+<span class="javascript">    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getEventTarget</span>(<span class="hljs-params">e</span>) </span>&#123;</span>
+<span class="javascript">        <span class="hljs-comment">//处理兼容性</span></span>
+<span class="javascript">        e = e||<span class="hljs-built_in">window</span>.event;</span>
+<span class="javascript">        <span class="hljs-keyword">return</span> e.target || e.srcElement;</span>
+    &#125;
+<span class="javascript">    <span class="hljs-keyword">var</span> ul = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">&#x27;test&#x27;</span>);</span>
+<span class="javascript">    ul.onclick = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">event</span>)</span>&#123;</span>
+<span class="javascript">        <span class="hljs-keyword">var</span> target = getEventTarget(event);</span>
+        alert(target.innerHTML);
+    &#125;
+<span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre>
+
+<p>同样地，出于性能考虑，合成事件也是类似的做法：</p>
+<ol>
+<li>React给document挂上事件监听</li>
+<li>DOM事件触发后冒泡到document</li>
+<li>React找到对应的组件，造成一个合成事件出来</li>
+<li>并按组件树模拟一遍事件冒泡</li>
+</ol>
+<p><img src="https://pic.downk.cc/item/5fe1dd603ffa7d37b37d3071.jpg" srcset="/img/loading.gif" alt="React17之前的事件冒泡流程图"></p>
+<p>由于事件挂在了document上，这样在一个页面中只能有一个版本的react。如果有多个版本，事件就乱套了。React17中解决了这个问题，事件委托不再挂在document上，而是挂在DOM容器上，也就是ReactDOM.render所调用的根节点上。<br><img src="https://pic.downk.cc/item/5fe1de423ffa7d37b37e2fb4.jpg" srcset="/img/loading.gif" alt="React17后的事件冒泡流程图"></p>
+<p>那么到底哪些事件会被捕获生成事件呢？可以从React的源码中一探究竟。下面的测试快照中罗列了大量的事件名，只有这些事件会被捕获成合成事件。</p>
+<pre><code class="hljs js"><span class="hljs-comment">// react/packages/react-dom/src/__tests__/__snapshots__/ReactTestUtils-test.js.snap</span>
+
+<span class="hljs-built_in">Array</span> [
+    	  <span class="hljs-string">&quot;abort&quot;</span>,
+	  <span class="hljs-string">&quot;animationEnd&quot;</span>,
+	  <span class="hljs-string">&quot;animationIteration&quot;</span>,
+	  <span class="hljs-string">&quot;animationStart&quot;</span>,
+	  <span class="hljs-string">&quot;auxClick&quot;</span>,
+	  <span class="hljs-string">&quot;beforeInput&quot;</span>,
+	  <span class="hljs-string">&quot;blur&quot;</span>,
+	  <span class="hljs-string">&quot;canPlay&quot;</span>,
+	  <span class="hljs-string">&quot;canPlayThrough&quot;</span>,
+	  <span class="hljs-string">&quot;cancel&quot;</span>,
+	  <span class="hljs-string">&quot;change&quot;</span>,
+	  <span class="hljs-string">&quot;click&quot;</span>,
+	  <span class="hljs-string">&quot;close&quot;</span>,
+	  <span class="hljs-string">&quot;compositionEnd&quot;</span>,
+	  <span class="hljs-string">&quot;compositionStart&quot;</span>,
+	  <span class="hljs-string">&quot;compositionUpdate&quot;</span>,
+	  <span class="hljs-string">&quot;contextMenu&quot;</span>,
+	  <span class="hljs-string">&quot;copy&quot;</span>,
+	  <span class="hljs-string">&quot;cut&quot;</span>,
+	  <span class="hljs-string">&quot;doubleClick&quot;</span>,
+	  <span class="hljs-string">&quot;drag&quot;</span>,
+	  <span class="hljs-string">&quot;dragEnd&quot;</span>,
+	  <span class="hljs-string">&quot;dragEnter&quot;</span>,
+	  <span class="hljs-string">&quot;dragExit&quot;</span>,
+	  <span class="hljs-string">&quot;dragLeave&quot;</span>,
+	  <span class="hljs-string">&quot;dragOver&quot;</span>,
+	  <span class="hljs-string">&quot;dragStart&quot;</span>,
+	  <span class="hljs-string">&quot;drop&quot;</span>,
+	  <span class="hljs-string">&quot;durationChange&quot;</span>,
+	  <span class="hljs-string">&quot;emptied&quot;</span>,
+	  <span class="hljs-string">&quot;encrypted&quot;</span>,
+	  <span class="hljs-string">&quot;ended&quot;</span>,
+	  <span class="hljs-string">&quot;error&quot;</span>,
+	  <span class="hljs-string">&quot;focus&quot;</span>,
+	  <span class="hljs-string">&quot;gotPointerCapture&quot;</span>,
+	  <span class="hljs-string">&quot;input&quot;</span>,
+	  <span class="hljs-string">&quot;invalid&quot;</span>,
+	  <span class="hljs-string">&quot;keyDown&quot;</span>,
+	  <span class="hljs-string">&quot;keyPress&quot;</span>,
+	  <span class="hljs-string">&quot;keyUp&quot;</span>,
+	  <span class="hljs-string">&quot;load&quot;</span>,
+	  <span class="hljs-string">&quot;loadStart&quot;</span>,
+	  <span class="hljs-string">&quot;loadedData&quot;</span>,
+	  <span class="hljs-string">&quot;loadedMetadata&quot;</span>,
+	  <span class="hljs-string">&quot;lostPointerCapture&quot;</span>,
+	  <span class="hljs-string">&quot;mouseDown&quot;</span>,
+	  <span class="hljs-string">&quot;mouseEnter&quot;</span>,
+	  <span class="hljs-string">&quot;mouseLeave&quot;</span>,
+	  <span class="hljs-string">&quot;mouseMove&quot;</span>,
+	  <span class="hljs-string">&quot;mouseOut&quot;</span>,
+	  <span class="hljs-string">&quot;mouseOver&quot;</span>,
+	  <span class="hljs-string">&quot;mouseUp&quot;</span>,
+	  <span class="hljs-string">&quot;paste&quot;</span>,
+	  <span class="hljs-string">&quot;pause&quot;</span>,
+	  <span class="hljs-string">&quot;play&quot;</span>,
+	  <span class="hljs-string">&quot;playing&quot;</span>,
+	  <span class="hljs-string">&quot;pointerCancel&quot;</span>,
+	  <span class="hljs-string">&quot;pointerDown&quot;</span>,
+	  <span class="hljs-string">&quot;pointerEnter&quot;</span>,
+	  <span class="hljs-string">&quot;pointerLeave&quot;</span>,
+	  <span class="hljs-string">&quot;pointerMove&quot;</span>,
+	  <span class="hljs-string">&quot;pointerOut&quot;</span>,
+	  <span class="hljs-string">&quot;pointerOver&quot;</span>,
+	  <span class="hljs-string">&quot;pointerUp&quot;</span>,
+	  <span class="hljs-string">&quot;progress&quot;</span>,
+	  <span class="hljs-string">&quot;rateChange&quot;</span>,
+	  <span class="hljs-string">&quot;reset&quot;</span>,
+	  <span class="hljs-string">&quot;scroll&quot;</span>,
+	  <span class="hljs-string">&quot;seeked&quot;</span>,
+	  <span class="hljs-string">&quot;seeking&quot;</span>,
+	  <span class="hljs-string">&quot;select&quot;</span>,
+	  <span class="hljs-string">&quot;stalled&quot;</span>,
+	  <span class="hljs-string">&quot;submit&quot;</span>,
+	  <span class="hljs-string">&quot;suspend&quot;</span>,
+	  <span class="hljs-string">&quot;timeUpdate&quot;</span>,
+	  <span class="hljs-string">&quot;toggle&quot;</span>,
+	  <span class="hljs-string">&quot;touchCancel&quot;</span>,
+	  <span class="hljs-string">&quot;touchEnd&quot;</span>,
+	  <span class="hljs-string">&quot;touchMove&quot;</span>,
+	  <span class="hljs-string">&quot;touchStart&quot;</span>,
+	  <span class="hljs-string">&quot;transitionEnd&quot;</span>,
+	  <span class="hljs-string">&quot;volumeChange&quot;</span>,
+	  <span class="hljs-string">&quot;waiting&quot;</span>,
+	  <span class="hljs-string">&quot;wheel&quot;</span>,
+]</code></pre>
+
+
+<h4 id="二、调用顺序"><a href="#二、调用顺序" class="headerlink" title="二、调用顺序"></a>二、调用顺序</h4><p>setState是不是异步的？我们从头梳理</p>
+<p><strong>异步场景</strong></p>
+<p>通常情况我们认为setState是异步的，看一个简单的例子：</p>
+<pre><code class="hljs js"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>&#123;
+
+    state = &#123;
+        count: <span class="hljs-number">0</span>
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-title">componentDidMount</span>(<span class="hljs-params"></span>)</span>&#123;
+
+        <span class="hljs-built_in">this</span>.setState(&#123;
+
+           count: <span class="hljs-number">1</span>
+
+         &#125;, <span class="hljs-function">() =&gt;</span> &#123;
+
+            <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.state.count) <span class="hljs-comment">//1</span>
+
+         &#125;);
+
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.state.count) <span class="hljs-comment">// 0</span>
+
+    &#125;
+    <span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params"></span>)</span>&#123;
+          ...
+    &#125;
+
+&#125;</code></pre>
+<p>由于我们认为setState是异步的，所以会认为回调函数是异步回调，控制台先输出0后输出1。<br>再看一个例子：</p>
+<pre><code class="hljs js"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>&#123;
+
+    state = &#123;
+
+        count: <span class="hljs-number">0</span>
+
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-title">componentDidMount</span>(<span class="hljs-params"></span>)</span>&#123;
+
+        <span class="hljs-built_in">this</span>.setState(&#123;
+
+           count: <span class="hljs-built_in">this</span>.state.count + <span class="hljs-number">1</span>
+
+         &#125;, <span class="hljs-function">() =&gt;</span> &#123;
+
+            <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.state.count) <span class="hljs-comment">//1</span>
+
+         &#125;);
+
+         <span class="hljs-built_in">this</span>.setState(&#123;
+
+           count: <span class="hljs-built_in">this</span>.state.count + <span class="hljs-number">1</span>
+
+         &#125;, <span class="hljs-function">() =&gt;</span> &#123;
+
+            <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.state.count) <span class="hljs-comment">//1</span>
+
+         &#125;);
+
+    &#125;
+    <span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params"></span>)</span>&#123;
+        ...
+    &#125;
+&#125;</code></pre>
+<p>在这个例子中，连续调用两次setState，但是React在同一个周期内会对多个setState进行批处理。相同于：</p>
+<pre><code class="hljs js"><span class="hljs-built_in">Object</span>.assign(
+    previousState,
+    &#123;<span class="hljs-attr">count</span>: state.count + <span class="hljs-number">1</span>&#125;,
+    &#123;<span class="hljs-attr">count</span>: state.count + <span class="hljs-number">1</span>&#125;
+)</code></pre>
+<p>后调用的setState()将覆盖同一周期内先调用setState的值，因此count其实只增加1次。如果后续状态取决于当前状态，setState(updater[,callback]) 中的第一个参数建议使用函数形式的代替。</p>
+<pre><code class="hljs js"><span class="hljs-built_in">this</span>.setState(<span class="hljs-function">(<span class="hljs-params">state</span>) =&gt;</span> &#123;
+    <span class="hljs-keyword">return</span> &#123;<span class="hljs-attr">count</span>: state.count + <span class="hljs-number">1</span>&#125;
+&#125;)</code></pre>
+<p>再看一个具有迷惑性的例子：</p>
+<pre><code class="hljs js"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>&#123;
+
+    state = &#123;
+
+        count: <span class="hljs-number">0</span>
+
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-title">componentDidMount</span>(<span class="hljs-params"></span>)</span>&#123;
+        <span class="hljs-comment">//第一次setState</span>
+        <span class="hljs-built_in">this</span>.setState(
+
+          preState=&gt; (&#123;
+
+            count:preState.count + <span class="hljs-number">1</span>
+
+        &#125;),<span class="hljs-function">()=&gt;</span>&#123;
+
+           <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.state.count);<span class="hljs-comment">//2</span>
+
+        &#125;);
+        <span class="hljs-comment">//第二次setState</span>
+        <span class="hljs-built_in">this</span>.setState(
+
+          preState=&gt;(&#123;
+
+            count:preState.count + <span class="hljs-number">1</span>
+
+        &#125;),<span class="hljs-function">()=&gt;</span>&#123;
+
+           <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.state.count);<span class="hljs-comment">//2</span>
+
+        &#125;);
+
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params"></span>)</span>&#123;
+
+        ...
+
+    &#125;
+&#125;
+</code></pre>
+
+<p>这里为什么又会输出2，2呢？当调用seState函数时，就会把当前的操作放入一个队列中。React根据队列内容，<strong>合并state数据</strong>，合并完成后再逐一执行回调，根据结果渲染虚拟DOM，触发渲染.所以回调时,state已经合并计算完成了,输出的结果就是2, 2了。</p>
+<p>为什么React团队采用这样一种行为模式，而不是同步进行呢？一种常见的说法是：为了优化。通过异步操作的方式，累计更新后批量合并处理，减少渲染次数，提升性能。但是同步就不能批量处理吗？github上有人提出了<a target="_blank" rel="noopener" href="https://github.com/facebook/react/issues/11527">为什么setState是异步的</a>这个问题，官方团队进行了回答：</p>
+<ol>
+<li><p>保持内部一致性。如果改为同步更新的方式，尽管setState变成了同步，但是props不是（you can’t know props until you rerender the parent component ,and if you do this synchronously, batching goes out of the window–props是同步的话，批处理将无法进行）</p>
+</li>
+<li><p>为后续的架构升级启用并发更新。为了完成异步渲染，react会在setState时，根据它们的数据来源分配不同的优先级，这些数据来源有：事件回调句柄、动画效果等，再根据优先级并发处理，提升渲染性能。</p>
+</li>
+</ol>
+<p>从React17的角度分析，异步的设计是合理的，它可以使得异步渲染等最终能在React落地。那什么情况下它是同步的呢？</p>
+<h4 id="三、同步场景"><a href="#三、同步场景" class="headerlink" title="三、同步场景"></a>三、同步场景</h4><p>上面的异步场景让我们觉得：setState是异步的，但是下面这个案例中，将setState放在setTimeout中，情况又完全不同了。</p>
+<pre><code class="hljs js"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>&#123;
+
+    state = &#123;
+
+        count: <span class="hljs-number">0</span>
+
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-title">componentDidMount</span>(<span class="hljs-params"></span>)</span>&#123;
+
+        <span class="hljs-built_in">this</span>.setState(&#123; <span class="hljs-attr">count</span>: <span class="hljs-built_in">this</span>.state.count + <span class="hljs-number">1</span> &#125;);
+
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.state.count);<span class="hljs-comment">//0</span>
+
+        <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> &#123;
+
+          <span class="hljs-built_in">this</span>.setState(&#123; <span class="hljs-attr">count</span>: <span class="hljs-built_in">this</span>.state.count + <span class="hljs-number">1</span> &#125;);
+
+          <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;setTimeout: &quot;</span> + <span class="hljs-built_in">this</span>.state.count); <span class="hljs-comment">//1</span>
+
+        &#125;, <span class="hljs-number">0</span>);
+
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params"></span>)</span>&#123;
+
+        ...
+
+    &#125;
+
+&#125;</code></pre>
+<p>为什么会输出0，1呢？因为setState并不是真正的异步函数，<strong>它实际上是通过队列延迟执行操作实现的</strong>，通过isBatchingUpdates来判断setState是先存进state队列还是直接更新。isBatchingUpdates值为true,则执行异步操作，isBatchingUpdates值为false,则直接更新。<br><img src="https://ae02.alicdn.com/kf/Hae4f7b71dba44f14b0405b74c565c191R.png" srcset="/img/loading.gif" alt="setState的执行机制"></p>
+<p>在onClick,onFocus等事件中，由于合成事件封装了一层，所以可以将isBatchingUpdates的状态更新为true; 在React自己的生命周期和合成事件中，可以拿到isBatchingUpdates的控制权，将状态放进队列，控制执行节奏。而在外部的原生事件中，并没有外层封装和拦截，无法更新isBatchingUpdates的状态为true。这就造成isBatchingUpdates的状态只会为false, 且立即执行。所以在addEventListener、setTimeout、setInterval这些原生事件中都会同步更新。</p>
+<h4 id="四、回答问题"><a href="#四、回答问题" class="headerlink" title="四、回答问题"></a>四、回答问题</h4><blockquote>
+<p>setState 并非真异步，只是看上去像异步。在源码中，通过isBatchingUpdates来判断setState 是先存进 state 队列还是直接更新，如果值为 true 则执行异步操作，为 false 则直接更新。</p>
+<p>那么什么情况下 isBatchingUpdates 会为 true 呢?</p>
+<p>A. 在 React 可以控制的地方，就为 true，比如在 React 生命周期事件和合成事件中，都会走合并操作，延迟更新的策略。</p>
+<p>B. 但在 React 无法控制的地方，比如原生事件，具体就是在 addEventListener 、setTimeout、setInterval 等事件中，就只能同步更新。</p>
+<p>一般认为，做异步设计是为了性能优化、减少渲染次数，React 团队还补充了两点。</p>
+<ol>
+<li><p>保持内部一致性。如果将 state 改为同步更新，那尽管 state 的更新是同步的，但是 props不是。</p>
+</li>
+<li><p>启用并发更新，完成异步渲染。</p>
+</li>
+</ol>
+</blockquote>
+<p>可以看出，setState是异步还是同步的关键在于：更新队列。将上述过程整理为思维导图如下：</p>
+<p><img src="https://ae02.alicdn.com/kf/Hac1e627114684a4db843b27cdfaf12edm.png" srcset="/img/loading.gif" alt="setState的执行场景"></p>
+<p><font color=green>进阶</font> — 再看一道题</p>
+<pre><code class="hljs js"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>&#123;
+
+  state  = &#123;
+
+      count: <span class="hljs-number">0</span>
+
+  &#125;;
+
+    <span class="hljs-function"><span class="hljs-title">componentDidMount</span>(<span class="hljs-params"></span>)</span> &#123;
+
+    <span class="hljs-built_in">this</span>.setState(&#123;<span class="hljs-attr">count</span>: <span class="hljs-built_in">this</span>.state.count + <span class="hljs-number">1</span>&#125;);
+
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.state.count);<span class="hljs-comment">//0</span>
+
+    <span class="hljs-built_in">this</span>.setState(&#123;<span class="hljs-attr">count</span>: <span class="hljs-built_in">this</span>.state.count + <span class="hljs-number">1</span>&#125;);
+
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.state.count);<span class="hljs-comment">//0</span>
+
+    <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> &#123;
+
+      <span class="hljs-built_in">this</span>.setState(&#123;<span class="hljs-attr">count</span>: <span class="hljs-built_in">this</span>.state.count + <span class="hljs-number">1</span>&#125;);
+
+      <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.state.count);<span class="hljs-comment">//2</span>
+
+      <span class="hljs-built_in">this</span>.setState(&#123;<span class="hljs-attr">count</span>: <span class="hljs-built_in">this</span>.state.count + <span class="hljs-number">1</span>&#125;);
+
+      <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.state.count);<span class="hljs-comment">//3</span>
+
+    &#125;, <span class="hljs-number">0</span>);
+
+  &#125;
+
+  <span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params"></span>)</span> &#123;
+
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+
+  &#125;
+
+&#125;;
+</code></pre>
+<p>输出：0 0 2 3</p>
+<p>分析：</p>
+<ul>
+<li>首先第一次和第二次的 console.log，都在 React 的生命周期事件中，所以是异步的处理方式，则输出都为 0；</li>
+<li>而在 setTimeout 中的 console.log 处于原生事件中，所以会同步的处理再输出结果，但需要注意，虽然 count 在前面经过了两次的 this.state.count + 1，但是由于前面说的批处理和覆盖的特点，setTimeout中拿到的值是1，那么后续在 setTimeout 中的输出则是 2 和 3</li>
+</ul>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E9%9D%A2%E8%AF%95%E5%AE%9D%E5%85%B8%E4%B9%8BReact%E7%AF%87/">面试宝典之React篇</a>
+                    
+                  </div>
+                
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/12/17/%E9%9D%A2%E8%AF%9505-%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1React%E7%BB%84%E4%BB%B6%EF%BC%9F/">
+                        <span class="hidden-mobile">面试05-如何设计React组件？</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+
+  <script  src="https://cdn.staticfile.org/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":200})
+    NProgress.start()
+    document.addEventListener('DOMContentLoaded', function() {
+      window.NProgress && window.NProgress.inc();
+    })
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.5.3/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.12.0/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    (function () {
+      var path = "/local-search.xml";
+      var inputArea = document.querySelector("#local-search-input");
+      inputArea.onclick = function () {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+        this.onclick = null
+      }
+    })()
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+
+</body>
+</html>
