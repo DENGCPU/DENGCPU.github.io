@@ -1,0 +1,500 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#265734">
+  <meta name="description" content="前端小白，升级打怪">
+  <meta name="author" content="dorothy">
+  <meta name="keywords" content="前端，js,h5,css,react">
+  <title>CSS布局01--正常布局流 - Dorothy的博客</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.5.3/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.1.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.5","typing":{"enable":true,"typeSpeed":60,"cursorChar":"_","loop":false},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"copy_btn":true,"image_zoom":{"enable":true},"lazyload":{"enable":true,"onlypost":false},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>DorothyJay</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/baking-page.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="CSS布局01--正常布局流">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-02-08 10:05" pubdate>
+        2021年2月8日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.4k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      15
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">CSS布局01--正常布局流</h1>
+            
+            <div class="markdown-body">
+              <p>在介绍正常布局流之前，我们需要先了解下用于布局的元素：盒子。</p>
+<h3 id="一、盒模型"><a href="#一、盒模型" class="headerlink" title="一、盒模型"></a>一、盒模型</h3><h4 id="1-1-块级盒子和内联盒子"><a href="#1-1-块级盒子和内联盒子" class="headerlink" title="1.1 块级盒子和内联盒子"></a>1.1 块级盒子和内联盒子</h4><p>在CSS中我们广泛的使用两种盒子——块级盒子（block box)和内联盒子（inline box），这两种盒子在页面流和元素之间的关系方面会表现出不同的行为：<br><img src="https://img.imgdb.cn/item/6020a0123ffa7d37b3684039.jpg" srcset="/img/loading.gif" alt="块级盒子vs内联盒子"></p>
+<p>默认情况下：</p>
+<ul>
+<li><p>常见的块级盒子：h1-h6、p、div、ul、ol、table、form<br>…详细见<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTML/Block-level_elements">MDN-块级元素</a></p>
+</li>
+<li><p>常见的内联盒子：a、span、em、strong、i、img、input、select、textarea…详细见<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTML/Inline_elements">MDN-行内元素</a></p>
+</li>
+</ul>
+<p>我们可以通过设置display属性，来控制盒子的外部显示类型。</p>
+<p><strong>补充：内部和外部显示类型</strong></p>
+<blockquote>
+<p>css的box模型有一个<strong>外部显示类型</strong>，来决定盒子是块级还是内联。<br>css的box模型有一个<strong>内部显示类型</strong>，来决定盒子内部元素的如何布局的（默认情况下是安装正常文档流布局）<br>但是我们可以通过使用display: flex的类似属性值来更改内部显示类型。例如，如果一个元素的外部显示类型是block，但是内部显示类型修改为flex，该盒子内的所有直接子元素都会成为flex元素，这些子元素会根据弹性盒子规则进行布局。</p>
+</blockquote>
+<p>接下来的内容我们专注于盒模型的外部显示类型。</p>
+<h4 id="1-2-盒模型的主要内容"><a href="#1-2-盒模型的主要内容" class="headerlink" title="1.2 盒模型的主要内容"></a>1.2 盒模型的主要内容</h4><p>完整的CSS盒模型主要应用与块级盒子，内联盒子只使用盒模型中定义的部分内容。盒模型定义了盒子的每个部分——margin，border，padding，content。常见的有标注盒模型和IE盒模型。</p>
+<h5 id="1-2-1-盒模型的各个部分"><a href="#1-2-1-盒模型的各个部分" class="headerlink" title="1.2.1 盒模型的各个部分"></a>1.2.1 盒模型的各个部分</h5><p>CSS中组成一个块级盒子需要以下几个部分：</p>
+<ul>
+<li>Content box: 内容区域，大小可通过width 和 height设置</li>
+<li>Padding box: 内边距（包围在内容区域外部的空白区域），大小可通过padding相关属性设置。</li>
+<li>Border box：边框盒（包裹内容和内边距），大小可通过border相关属性设置</li>
+<li>Margin box: 外边距（盒子和其他元素之间的空白区域），大小可通过margin相关属性设置。</li>
+</ul>
+<p>如下图所示：<br><img src="https://img.imgdb.cn/item/6020a4d63ffa7d37b36a644c.jpg" srcset="/img/loading.gif" alt="盒模型"></p>
+<h5 id="1-2-2-标准盒模型"><a href="#1-2-2-标准盒模型" class="headerlink" title="1.2.2 标准盒模型"></a>1.2.2 标准盒模型</h5><p>在标准盒模型中，如果你给盒设置width和height，实际设置的是Content box。padding 和 border再加上盒子的width height才一起决定了整个盒子的大小。</p>
+<p>举个栗子：</p>
+<pre><code class="hljs css"><span class="hljs-selector-class">.box</span> &#123;
+    <span class="hljs-attribute">width</span>: <span class="hljs-number">350px</span>;
+    <span class="hljs-attribute">height</span>: <span class="hljs-number">150px</span>;
+    <span class="hljs-attribute">margin</span>: <span class="hljs-number">26px</span>;
+    <span class="hljs-attribute">padding</span>: <span class="hljs-number">25px</span>;
+    <span class="hljs-attribute">border</span>: <span class="hljs-number">5px</span> solid black;
+&#125;</code></pre>
+<p>使用标准盒模型，该盒子的宽度width = 350px+25px+25px+5px+5px = 410px; 该盒子的高度height = 150px+25px+25px+5px+5px = 210px;(content+padding+border)</p>
+<p><img src="https://img.imgdb.cn/item/6020add03ffa7d37b36e6757.jpg" srcset="/img/loading.gif" alt="标准盒模型"></p>
+<p>🐖：margin不计入实际盒子的大小，当然，它会影响盒子在页面的所占空间，但是影响的是盒子外部空间。盒子的范围到border为止，不会延神到margin。</p>
+<h5 id="1-2-3-替代-IE-盒模型"><a href="#1-2-3-替代-IE-盒模型" class="headerlink" title="1.2.3 替代(IE)盒模型"></a>1.2.3 替代(IE)盒模型</h5><p>盒子的大小还得加上边框和内边距，这样有些麻烦。所以CSS还有一个替代盒模型，使用整个模型，所有宽度都是可见宽度，所以内容宽度 content= 该宽度-border-padding</p>
+<p><img src="https://img.imgdb.cn/item/6020afca3ffa7d37b36f258a.jpg" srcset="/img/loading.gif" alt="替代盒模型"></p>
+<p>默认情况下，浏览器会使用标准模型。如果需要使用替代模型，可以通过设置<code> box-sizing: border-box;</code> 来实现。这样你设置的width和height就是盒子的实际宽高。<br>如果你希望所以的元素都使用替代盒模型，可以像下面这样设置：</p>
+<pre><code class="hljs css"><span class="hljs-selector-tag">html</span> &#123;
+    <span class="hljs-attribute">box-sizing</span>: border-box;
+&#125;
+*,*<span class="hljs-selector-pseudo">::before</span>,*<span class="hljs-selector-pseudo">::after</span>&#123;
+    <span class="hljs-attribute">box-sizing</span>: inherit;
+&#125;</code></pre>
+
+<h3 id="二、正常布局流（Normal-flow）"><a href="#二、正常布局流（Normal-flow）" class="headerlink" title="二、正常布局流（Normal flow）"></a>二、正常布局流（Normal flow）</h3><p>正常布局流是指在不对页面进行任何布局控制时，浏览器默认的HTML布局方式。<br>举个例子：</p>
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>I love my cat<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>Buy cat food<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>Exercise<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>Cheer up friend<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>The end!<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></code></pre>
+
+<p>默认情况下，浏览器的显示如下:<br><img src="https://img.imgdb.cn/item/6020b1df3ffa7d37b36fec6b.jpg" srcset="/img/loading.gif"></p>
+<p>HTML元素完全安按照源码中出现的先后次序显示。<strong>块级元素</strong>出现在一个元素的下面，<strong>内联元素</strong>出现在另一个元素的旁边。对于页面上的多数元素，<strong>正常布局流</strong>完全足够创建一个你所需要的布局。所以，从一个结构良好的HTML文档开始非常重要，因为你可以按照默认的方式来搭建页面，而不是自造车轮！</p>
+<p>下面的布局技术会覆盖默认的正常流式布局：</p>
+<ul>
+<li>display属性——标准的value值如：block,inline,inline-block影响元素在正常布局流中的表现形式。还有一些全新的布局可以通过设置display的值实现，如CSS Grid 和 Flexbox。</li>
+<li>浮动——应用float值，例如left能让块级元素互相排成一行，而不是一个在另一个的下面。</li>
+<li>position属性——允许你精准设置盒子中的盒子的位置，正常布局流中默认为static，使用其他值会引起元素不同的布局方式。例如，将元素固定在浏览器视口的左上角。</li>
+<li>表格布局—— 使用<code>display: table</code>可以将表格的布局方式用在非表格内容上。</li>
+<li>多列布局—— 这个<a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Columns">Multi-column layout</a>属性，可以让块按列布局，比如报纸的布局就是一列一列排布的。</li>
+</ul>
+<p>参考：<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Learn/CSS/CSS_layout/Introduction">MDN–CSS布局</a></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/CSS%E5%B8%83%E5%B1%80/">CSS布局</a>
+                    
+                  </div>
+                
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/02/05/%E9%9D%A2%E8%AF%9508-%E5%88%97%E4%B8%BE%E4%B8%80%E7%A7%8D%E4%BD%A0%E4%BA%86%E8%A7%A3%E7%9A%84React%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E6%A1%86%E6%9E%B6/">
+                        <span class="hidden-mobile">面试08-列举一种你了解的React状态管理框架</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+
+  <script  src="https://cdn.staticfile.org/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":200})
+    NProgress.start()
+    document.addEventListener('DOMContentLoaded', function() {
+      window.NProgress && window.NProgress.inc();
+    })
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.5.3/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.12.0/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    (function () {
+      var path = "/local-search.xml";
+      var inputArea = document.querySelector("#local-search-input");
+      inputArea.onclick = function () {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+        this.onclick = null
+      }
+    })()
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+
+</body>
+</html>
