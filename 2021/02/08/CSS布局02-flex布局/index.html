@@ -17,7 +17,7 @@
   <meta name="description" content="前端小白，升级打怪">
   <meta name="author" content="dorothy">
   <meta name="keywords" content="前端，js,h5,css,react">
-  <title>CSS布局01--正常布局流 - Dorothy的博客</title>
+  <title>CSS布局02--flex布局 - Dorothy的博客</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.5.3/css/bootstrap.min.css" />
 
@@ -162,7 +162,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="CSS布局01--正常布局流">
+            <span class="h2" id="subtitle" title="CSS布局02--flex布局">
               
             </span>
 
@@ -172,8 +172,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-02-08 10:05" pubdate>
-        2021年2月8日 上午
+      <time datetime="2021-02-08 12:02" pubdate>
+        2021年2月8日 中午
       </time>
     </span>
   
@@ -184,7 +184,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.4k 字
+      680 字
     </span>
   
 
@@ -194,7 +194,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      15
+      8
        分钟
     </span>
   
@@ -224,76 +224,49 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">CSS布局01--正常布局流</h1>
+            <h1 style="display: none">CSS布局02--flex布局</h1>
             
             <div class="markdown-body">
-              <p>在介绍正常布局流之前，我们需要先了解下用于布局的元素：盒子。</p>
-<h3 id="一、盒模型"><a href="#一、盒模型" class="headerlink" title="一、盒模型"></a>一、盒模型</h3><h4 id="1-1-块级盒子和内联盒子"><a href="#1-1-块级盒子和内联盒子" class="headerlink" title="1.1 块级盒子和内联盒子"></a>1.1 块级盒子和内联盒子</h4><p>在CSS中我们广泛的使用两种盒子——块级盒子（block box)和内联盒子（inline box），这两种盒子在页面流和元素之间的关系方面会表现出不同的行为：<br><img src="https://img.imgdb.cn/item/6020a0123ffa7d37b3684039.jpg" srcset="/img/loading.gif" alt="块级盒子vs内联盒子"></p>
-<p>默认情况下：</p>
-<ul>
-<li><p>常见的块级盒子：h1-h6、p、div、ul、ol、table、form<br>…详细见<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTML/Block-level_elements">MDN-块级元素</a></p>
-</li>
-<li><p>常见的内联盒子：a、span、em、strong、i、img、input、select、textarea…详细见<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTML/Inline_elements">MDN-行内元素</a></p>
-</li>
-</ul>
-<p>我们可以通过设置display属性，来控制盒子的外部显示类型。</p>
-<p><strong>补充：内部和外部显示类型</strong></p>
-<blockquote>
-<p>css的box模型有一个<strong>外部显示类型</strong>，来决定盒子是块级还是内联。<br>css的box模型有一个<strong>内部显示类型</strong>，来决定盒子内部元素的如何布局的（默认情况下是安装正常文档流布局）<br>但是我们可以通过使用display: flex的类似属性值来更改内部显示类型。例如，如果一个元素的外部显示类型是block，但是内部显示类型修改为flex，该盒子内的所有直接子元素都会成为flex元素，这些子元素会根据弹性盒子规则进行布局。</p>
-</blockquote>
-<p>接下来的内容我们专注于盒模型的外部显示类型。</p>
-<h4 id="1-2-盒模型的主要内容"><a href="#1-2-盒模型的主要内容" class="headerlink" title="1.2 盒模型的主要内容"></a>1.2 盒模型的主要内容</h4><p>完整的CSS盒模型主要应用与块级盒子，内联盒子只使用盒模型中定义的部分内容。盒模型定义了盒子的每个部分——margin，border，padding，content。常见的有标注盒模型和IE盒模型。</p>
-<h5 id="1-2-1-盒模型的各个部分"><a href="#1-2-1-盒模型的各个部分" class="headerlink" title="1.2.1 盒模型的各个部分"></a>1.2.1 盒模型的各个部分</h5><p>CSS中组成一个块级盒子需要以下几个部分：</p>
-<ul>
-<li>Content box: 内容区域，大小可通过width 和 height设置</li>
-<li>Padding box: 内边距（包围在内容区域外部的空白区域），大小可通过padding相关属性设置。</li>
-<li>Border box：边框盒（包裹内容和内边距），大小可通过border相关属性设置</li>
-<li>Margin box: 外边距（盒子和其他元素之间的空白区域），大小可通过margin相关属性设置。</li>
-</ul>
-<p>如下图所示：<br><img src="https://img.imgdb.cn/item/6020a4d63ffa7d37b36a644c.jpg" srcset="/img/loading.gif" alt="盒模型"></p>
-<h5 id="1-2-2-标准盒模型"><a href="#1-2-2-标准盒模型" class="headerlink" title="1.2.2 标准盒模型"></a>1.2.2 标准盒模型</h5><p>在标准盒模型中，如果你给盒设置width和height，实际设置的是Content box。padding 和 border再加上盒子的width height才一起决定了整个盒子的大小。</p>
-<p>举个栗子：</p>
-<pre><code class="hljs css"><span class="hljs-selector-class">.box</span> &#123;
-    <span class="hljs-attribute">width</span>: <span class="hljs-number">350px</span>;
-    <span class="hljs-attribute">height</span>: <span class="hljs-number">150px</span>;
-    <span class="hljs-attribute">margin</span>: <span class="hljs-number">26px</span>;
-    <span class="hljs-attribute">padding</span>: <span class="hljs-number">25px</span>;
-    <span class="hljs-attribute">border</span>: <span class="hljs-number">5px</span> solid black;
+              <p>flex布局全称CSS弹性盒子布局（FlexBox），它定义了一种针对用户界面设计而优化的CSS盒子模型。在弹性布局模型种，弹性容器的子元素在任何方向上排布，也可以“弹性伸缩”其尺寸。既可以增加尺寸以填满未使用的空间，也可以收缩尺寸以避免父元素溢出。子元素的水平对齐和垂直对齐都很好控制，通过嵌套水平框和垂直框，可以在两个维度上构建布局。</p>
+<p>要想使用flex布局，只需要在父元素上应用<code>display: flex</code>，所有直接子元素都会按照flex进行布局。</p>
+<p>举个例子：<br>一个父元素wrapper，它的内部有三个div子元素，默认情况下会作为块元素从上到下显示。</p>
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;wrapper&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;box1&quot;</span>&gt;</span>One<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;box2&quot;</span>&gt;</span>Two<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;box3&quot;</span>&gt;</span>Three<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
+<p>现在我们给父元素wrapper加一个样式</p>
+<pre><code class="hljs css"><span class="hljs-selector-class">.wrapper</span>&#123;
+    <span class="hljs-attribute">display</span>: flex;
 &#125;</code></pre>
-<p>使用标准盒模型，该盒子的宽度width = 350px+25px+25px+5px+5px = 410px; 该盒子的高度height = 150px+25px+25px+5px+5px = 210px;(content+padding+border)</p>
-<p><img src="https://img.imgdb.cn/item/6020add03ffa7d37b36e6757.jpg" srcset="/img/loading.gif" alt="标准盒模型"></p>
-<p>🐖：margin不计入实际盒子的大小，当然，它会影响盒子在页面的所占空间，但是影响的是盒子外部空间。盒子的范围到border为止，不会延神到margin。</p>
-<h5 id="1-2-3-替代-IE-盒模型"><a href="#1-2-3-替代-IE-盒模型" class="headerlink" title="1.2.3 替代(IE)盒模型"></a>1.2.3 替代(IE)盒模型</h5><p>盒子的大小还得加上边框和内边距，这样有些麻烦。所以CSS还有一个替代盒模型，使用整个模型，所有宽度都是可见宽度，所以内容宽度 content= 该宽度-border-padding</p>
-<p><img src="https://img.imgdb.cn/item/6020afca3ffa7d37b36f258a.jpg" srcset="/img/loading.gif" alt="替代盒模型"></p>
-<p>默认情况下，浏览器会使用标准模型。如果需要使用替代模型，可以通过设置<code> box-sizing: border-box;</code> 来实现。这样你设置的width和height就是盒子的实际宽高。<br>如果你希望所以的元素都使用替代盒模型，可以像下面这样设置：</p>
-<pre><code class="hljs css"><span class="hljs-selector-tag">html</span> &#123;
-    <span class="hljs-attribute">box-sizing</span>: border-box;
+<p>那么布局会如下：<br><img src="https://img.imgdb.cn/item/6020ba8c3ffa7d37b37489f3.jpg" srcset="/img/loading.gif" alt="flex布局例子"><br>可以看到三个子元素自动按列排列。这是由于它们变成了flex项（flex items),按照flex容器（即父元素）的一些flex相关的默认初始值排布：</p>
+<ul>
+<li>它们整整齐齐排成一行，是因为父元素上flex-direction的初值是row</li>
+<li>它们全都被拉伸至和最高的元素高度相同，是因为父元素上align-items属性的初值是stretch</li>
+</ul>
+<p>上述的flex-direction和align-items属性都是用在<strong>flex容器</strong>，即父元素上的。还有很多属性是用在<strong>flex项</strong>（flex items)上的，这些属性可以改变flex项在flex布局种占用宽、高的方式，允许它们通过伸缩来适应可用空间。</p>
+<p>再举个例子：<br>我们在所有的子元素上添加一个样式：</p>
+<pre><code class="hljs css"><span class="hljs-selector-class">.wrapper</span> &#123;
+    <span class="hljs-attribute">display</span>: flex;
 &#125;
-*,*<span class="hljs-selector-pseudo">::before</span>,*<span class="hljs-selector-pseudo">::after</span>&#123;
-    <span class="hljs-attribute">box-sizing</span>: inherit;
+<span class="hljs-selector-class">.wrapper</span> &gt; <span class="hljs-selector-tag">div</span> &#123;
+    <span class="hljs-attribute">flex</span>: <span class="hljs-number">1</span>;
 &#125;</code></pre>
-
-<h3 id="二、正常布局流（Normal-flow）"><a href="#二、正常布局流（Normal-flow）" class="headerlink" title="二、正常布局流（Normal flow）"></a>二、正常布局流（Normal flow）</h3><p>正常布局流是指在不对页面进行任何布局控制时，浏览器默认的HTML布局方式。<br>举个例子：</p>
-<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>I love my cat<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>Buy cat food<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>Exercise<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>Cheer up friend<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
-
-<span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>The end!<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></code></pre>
-
-<p>默认情况下，浏览器的显示如下:<br><img src="https://img.imgdb.cn/item/6020b1df3ffa7d37b36fec6b.jpg" srcset="/img/loading.gif"></p>
-<p>HTML元素完全安按照源码中出现的先后次序显示。<strong>块级元素</strong>出现在一个元素的下面，<strong>内联元素</strong>出现在另一个元素的旁边。对于页面上的多数元素，<strong>正常布局流</strong>完全足够创建一个你所需要的布局。所以，从一个结构良好的HTML文档开始非常重要，因为你可以按照默认的方式来搭建页面，而不是自造车轮！</p>
-<p>下面的布局技术会覆盖默认的正常流式布局：</p>
+<p>那么三个子元素的排布会变成如下样式：<br><img src="https://img.imgdb.cn/item/6020bc6b3ffa7d37b3756831.jpg" srcset="/img/loading.gif"></p>
+<p>所有的子元素上都添加了<code>flex:1</code>，这会使得所有的子元素都伸展并填充flex容器，而不是尾部留下空白。如果有更多空间，子元素们会变得更宽；反之会变得更窄。如果你在HTML中追加了一个新元素，它们也会变得更小来为新元素创造空间——不管怎样，最终它们会调整自己直到占用向他宽度的空间。</p>
+<p>相关的CSS属性：</p>
 <ul>
-<li>display属性——标准的value值如：block,inline,inline-block影响元素在正常布局流中的表现形式。还有一些全新的布局可以通过设置display的值实现，如CSS Grid 和 Flexbox。</li>
-<li>浮动——应用float值，例如left能让块级元素互相排成一行，而不是一个在另一个的下面。</li>
-<li>position属性——允许你精准设置盒子中的盒子的位置，正常布局流中默认为static，使用其他值会引起元素不同的布局方式。例如，将元素固定在浏览器视口的左上角。</li>
-<li>表格布局—— 使用<code>display: table</code>可以将表格的布局方式用在非表格内容上。</li>
-<li>多列布局—— 这个<a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Columns">Multi-column layout</a>属性，可以让块按列布局，比如报纸的布局就是一列一列排布的。</li>
+<li>flex,flex-basis,flex-direction</li>
+<li>flex-flow, flex-grow, flex-shrink,flex-wrap</li>
+<li>order</li>
 </ul>
-<p>参考：<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Learn/CSS/CSS_layout/Introduction">MDN–CSS布局</a></p>
+<p>对齐属性：</p>
+<ul>
+<li>align-content,align-items,align-self</li>
+<li>justify-content,place-content,row-gap</li>
+<li>column-gap,gap</li>
+</ul>
+<p>参考：<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Flexible_Box_Layout">MDN–FlexBox弹性盒子布局</a></p>
 
             </div>
             <hr>
@@ -317,9 +290,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/02/08/CSS%E5%B8%83%E5%B1%8002-flex%E5%B8%83%E5%B1%80/">
+                      <a href="/2021/02/08/CSS%E5%B8%83%E5%B1%8003-Grid%E5%B8%83%E5%B1%80/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">CSS布局02--flex布局</span>
+                        <span class="hidden-mobile">CSS布局03--Grid布局</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -327,8 +300,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/02/05/%E9%9D%A2%E8%AF%9508-%E5%88%97%E4%B8%BE%E4%B8%80%E7%A7%8D%E4%BD%A0%E4%BA%86%E8%A7%A3%E7%9A%84React%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E6%A1%86%E6%9E%B6/">
-                        <span class="hidden-mobile">面试08-列举一种你了解的React状态管理框架</span>
+                      <a href="/2021/02/08/CSS%E5%B8%83%E5%B1%8001-%E6%AD%A3%E5%B8%B8%E5%B8%83%E5%B1%80%E6%B5%81/">
+                        <span class="hidden-mobile">CSS布局01--正常布局流</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
