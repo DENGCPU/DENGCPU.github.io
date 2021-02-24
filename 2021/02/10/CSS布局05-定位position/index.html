@@ -1,0 +1,624 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#265734">
+  <meta name="description" content="前端小白，升级打怪">
+  <meta name="author" content="dorothy">
+  <meta name="keywords" content="前端，js,h5,css,react">
+  <title>CSS布局05-定位position - Dorothy的博客</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.5.3/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.1.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.5","typing":{"enable":true,"typeSpeed":60,"cursorChar":"_","loop":false},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"copy_btn":true,"image_zoom":{"enable":true},"lazyload":{"enable":true,"onlypost":false},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>DorothyJay</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/baking-page.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="CSS布局05-定位position">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-02-10 11:43" pubdate>
+        2021年2月10日 中午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.5k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      43
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">CSS布局05-定位position</h1>
+            
+            <div class="markdown-body">
+              <p><strong>定位</strong>允许你从正常的文档流中取出元素，并使他们具有不同的行为，例如放在另一个元素的上面，或者始终保持在浏览器视窗内的同一位置。</p>
+<p>定位允许我们覆盖正常的文档流行为，以产生更多的布局可能。如果我们想要创建一个浮动在页面其他部分的UI元素，并始终停留在浏览器窗口内的相同位置（无论页面滚动多少），我们就可以使用“定位”这种布局工具。</p>
+<p>有许多不同类型的定位，即position属性有很多取值：<br><img src="https://img.imgdb.cn/item/6024e5083ffa7d37b33471bf.jpg" srcset="/img/loading.gif" alt="position的取值"></p>
+<h4 id="一、静态定位"><a href="#一、静态定位" class="headerlink" title="一、静态定位"></a>一、静态定位</h4><p>静态定位是每个元素获取的默认值——它只表示“将元素放入它在文档布局流中的正常位置”，没什么特别的。</p>
+<p>静态定位是默认行为！</p>
+<h4 id="二、相对定位"><a href="#二、相对定位" class="headerlink" title="二、相对定位"></a>二、相对定位</h4><p>相对定位与静态定位非常相似，占据在正常的文档流中。仅仅使用<code>position: relative</code>，文档布局不会发生任何变化，它一般和top、bottom、left和right属性搭配使用。</p>
+<p><strong>介绍top,bottom,left和right属性</strong></p>
+<p>top、bottom、left和right用来精确指定元素移动到的位置。这些属性的值可以采用逻辑上期望的任何单位：px、rems、% 等</p>
+<p>举个例子：现在有俩上下排列的盒子<br>HTML文件</p>
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;box1&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;box2&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
+
+<p>CSS文件</p>
+<pre><code class="hljs css"><span class="hljs-selector-class">.box1</span> &#123;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">100px</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">100px</span>;
+  <span class="hljs-attribute">background-color</span>: skyblue;
+&#125;
+<span class="hljs-selector-class">.box2</span> &#123;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">100px</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">100px</span>;
+  <span class="hljs-attribute">background-color</span>: pink;
+&#125;</code></pre>
+<p>排版如下：<br><img src="https://img.imgdb.cn/item/6024e80e3ffa7d37b335c2ff.jpg" srcset="/img/loading.gif"><br>现在我们将box1设置一个相对定位：</p>
+<pre><code class="hljs css"><span class="hljs-selector-class">.box1</span> &#123;
+    <span class="hljs-attribute">position</span>: relative;
+    <span class="hljs-attribute">top</span>: <span class="hljs-number">50px</span>;
+    <span class="hljs-attribute">left</span>: <span class="hljs-number">50px</span>;
+&#125;</code></pre>
+<p>现在排版如下：<br><img src="https://img.imgdb.cn/item/6024e9203ffa7d37b3363c48.jpg" srcset="/img/loading.gif"></p>
+<p>🐖 <code>top:50px;</code>指距离顶部50px, <code>left:50px;</code>指距离左边50px;</p>
+<h4 id="三、绝对定位"><a href="#三、绝对定位" class="headerlink" title="三、绝对定位"></a>三、绝对定位</h4><p>绝对定位absolute和浮动float有相似之处：<strong>包裹性</strong>和<strong>高度欺骗</strong></p>
+<h5 id="3-1-包裹性"><a href="#3-1-包裹性" class="headerlink" title="3.1 包裹性"></a>3.1 包裹性</h5><p>看一个例子：</p>
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;border:4px solid blue;&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;img/25/1.jpg&quot;</span> /&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;border:4px solid red; position: absolute;&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;img/25/2.jpg&quot;</span> /&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
+<p>效果如下：<br><img src="https://img.imgdb.cn/item/60331a065f4313ce257124f8.jpg" srcset="/img/loading.gif" alt="绝对定位的包裹性"></p>
+<p>一旦给元素加上absolute和float，就相当于给元素加上了<code>display: block;</code> 比如一个内联元素span，本身是无法直接指定高度的，但是给span加上absolute或者是float后，span的属性就自动变为block了。</p>
+<h5 id="3-2-高度欺骗"><a href="#3-2-高度欺骗" class="headerlink" title="3.2 高度欺骗"></a>3.2 高度欺骗</h5><p>上例中给图片外层的div加上absolute，现在将absolute移到内部图片上，高度欺骗的效果就出来了：</p>
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;border:4px solid blue;&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;img/25/1.jpg&quot;</span> /&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;border:4px solid red;&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;position: absolute;&quot;</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;img/25/2.jpg&quot;</span> /&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
+<p><img src="https://img.imgdb.cn/item/60331c9b5f4313ce2572810e.jpg" srcset="/img/loading.gif" alt="绝对定位的高度欺骗效果"></p>
+<p>参照<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/07eb19957991">博客-CSS浮动float详解</a>,会发现float和absolute的效果是一样的，但是两者背后的原理是有区别的。加点文字就看出来了：</p>
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;border:4px solid blue;&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;img/25/1.jpg&quot;</span> /&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;border:4px solid red;&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;position: absolute;&quot;</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;img/25/2.jpg&quot;</span> /&gt;</span>
+  我是一个绝对定位的absolute元素
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
+<p><img src="https://img.imgdb.cn/item/60331d7f5f4313ce2573161a.jpg" srcset="/img/loading.gif"></p>
+<p>显然，文字被图片遮盖了，这点和float不同。float是欺骗父元素，让其父元素误以为其高度塌陷了，但float元素本身仍处于文档流中，文字会环绕着float元素，不会被遮蔽。</p>
+<p>但是absolute不算是欺骗父元素了，而是出现了<strong>层级</strong>关系。处于正常文档流中的父元素和设置了absolute的元素已经不是一个次元上的，从父元素的视点看，设置为absolute的图片已经完全消失不见了，因此从最左边开始显示文字。而absolute的层级高，所以图片遮盖了文字。<br>有了以上基础之后，还需要了解absolute的以下特点：</p>
+<ul>
+<li>如何确定定位点</li>
+<li>和relative相爱相杀</li>
+<li>和z-index的关系</li>
+<li>减少重绘和回流的开销</li>
+</ul>
+<ol>
+<li><strong>如何确定定位点？</strong></li>
+</ol>
+<p>由于设置了absolute之后会出现分层，那么该让浏览器在何处显示该元素呢？普通文档流里的元素，浏览器可以根据父子兄弟的大小和位置，计算出该元素的位置。但是分层之后改怎么办？基本思路如下：</p>
+<p><font color=green>第一种情况：</font>用户只给元素指定了absolute，未指定left/top/right/bottom。此时absolute元素的左上角定位点位置就是该元素正常文档流的位置。如上图例子中，图片熊猫是父元素的第一个孩子，因此左上角定位到就是父元素的content的左上角。</p>
+<p>如果将熊猫图片和下面的文字顺序改一下，让其成为父元素的第二个孩子：</p>
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;border:4px solid red;&quot;</span>&gt;</span>
+  我是一个绝对定位的absolute元素
+  <span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;position: absolute;&quot;</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;img/25/2.jpg&quot;</span> /&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
+<p>那么排版就成了这样：<br><img src="https://img.imgdb.cn/item/6034eb355f4313ce25554119.jpg" srcset="/img/loading.gif" alt="定位点"></p>
+<p><font color=green>第二种情况：</font>用户给absolute元素指定了left/right/top/bottom</p>
+<p>首先最简单的一种，absolute元素的父元素均是默认的position：static布局，此时absolute所处的层是铺满全屏的，即铺满body。这时，会根据用户指定位置在body上进行定位。</p>
+<p>只指定left时,元素的左上角定位点的left值会变成用户指定值，但是top值仍旧是该元素在正常文档流中的top值：</p>
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;border:4px solid red;&quot;</span>&gt;</span>
+  我是一个绝对定位的absolute元素
+  <span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;position: absolute;left:50px;&quot;</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;img/25/2.jpg&quot;</span> /&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
+<p><img src="https://img.imgdb.cn/item/6034eca35f4313ce2555e0f3.jpg" srcset="/img/loading.gif" alt="只指定left的定位点"></p>
+<p>只指定top时，元素的左上角定位点的top值会变成用户指定值，但是left值仍旧是该元素在正常文档中的left值。</p>
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;border:4px solid red;&quot;</span>&gt;</span>
+  我是一个绝对定位的absolute元素
+  <span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;position: absolute;top:50px;&quot;</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;img/25/2.jpg&quot;</span> /&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
+<p><img src="https://img.imgdb.cn/item/6034ed405f4313ce25561b0d.jpg" srcset="/img/loading.gif" alt="只指定top的定位点"></p>
+<p>只指定bottom时，元素的<strong>左下角</strong>定位点的bottom值会变成用户指定值，但是left值仍旧是该元素在正常文档流中的left值。</p>
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;border:4px solid red;&quot;</span>&gt;</span>
+  我是一个绝对定位的absolute元素
+  <span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;position: absolute;bottom:50px;&quot;</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;img/25/2.jpg&quot;</span> /&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
+<p><img src="https://img.imgdb.cn/item/6034ee165f4313ce25567fbb.jpg" srcset="/img/loading.gif" alt="只指定bottom时的定位点"></p>
+<p>通过对left/top/right/bottom的组合设置，由于没有position：static以外的父元素，此时absolute元素可以去任意想去的地方。</p>
+<ol start="2">
+<li><strong>和relative相爱相杀</strong></li>
+</ol>
+<p>通常我们对relative的认识是：它用于限制absolute，所谓“子绝（absolute）父相(relative)”。上面说了，如果absolute元素的父元素都是position：static，那么它就相对body定位，天空才是它的极限。一旦父元素被设置为relative，那么absolute子元素将<strong>相对于其父元素定位</strong>，就像是脚被绑了绳子的鸟。</p>
+<p>举个栗子：<br>比如你要实现下图APP右上角的红圈圈：<br><img src="https://img.imgdb.cn/item/6035b1735f4313ce259f29b6.jpg" srcset="/img/loading.gif"><br>通常的做法是将app图片所处的div设为relative，然后将红色圈设成absolute，再设置top/right调整即可。这样无论用户怎么改变app图片的位置，红色圈圈永远固定再右上角。<br>例如：</p>
+<pre><code class="hljs css"><span class="hljs-selector-class">.tipIcon</span> &#123;
+  <span class="hljs-attribute">background-color</span>: <span class="hljs-number">#f00</span>;
+  <span class="hljs-attribute">color</span>: <span class="hljs-number">#fff</span>;
+  <span class="hljs-attribute">border-radius</span>:<span class="hljs-number">50%</span>;
+  <span class="hljs-attribute">text-align</span>: center;
+  <span class="hljs-attribute">position</span>: absolute;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">20px</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">20px</span>;
+  right:-10px;  //负值为自身体积的一半
+  <span class="hljs-selector-tag">top</span><span class="hljs-selector-pseudo">:-10px</span>;
+&#125;</code></pre>
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;display: inline-block;position:relative;&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;img/25/2.jpg&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;tipIcon&quot;</span>&gt;</span>6<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
+<p><img src="https://img.imgdb.cn/item/6035b25a5f4313ce259f99ba.jpg" srcset="/img/loading.gif"></p>
+<p>这种实现方法是可行的，兼容性也ok。但是CSS世界里要实现一个效果可以有很多种方式，具体选哪个方案要视情况而定。一般遵循的原则是：1.简洁 2.尽量让每个属性干其本职工作。用这两个标准看上诉实现，其实是可以改进的。首先外层div多了relative未能简洁到极致。其次<strong>relative的本职工作是让元素在相对其正常文档流位置进行偏移</strong>，但是父层div并不需要任何位置偏移，之所以设成relative的唯一目的是限制absolute子元素的定位点。这其实并没有让relative干本职工作。</p>
+<p>那么怎么改进呢？其实在上面探讨absolute定位点时说了：在未指定top/right/bottom/left的absolute元素，其在所处层级的定位点就是正常文档流中该元素的定位点。因此改进如下：</p>
+<pre><code class="hljs css"><span class="hljs-selector-class">.tipIcon2</span> &#123;
+  <span class="hljs-attribute">background-color</span>: <span class="hljs-number">#f00</span>;
+  <span class="hljs-attribute">color</span>: <span class="hljs-number">#fff</span>;
+  <span class="hljs-attribute">border-radius</span>:<span class="hljs-number">50%</span>;
+  <span class="hljs-attribute">text-align</span>: center;
+  <span class="hljs-attribute">position</span>: absolute;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">20px</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">20px</span>;
+  margin:-10px 0 0 -10px;   //不需要top和right了，改用margin来进行偏移
+&#125;
+
+&lt;div style=&quot;display: inline-block;&quot;&gt;  //父元素不需要relative了
+  &lt;img src=&quot;img/25/2.jpg&quot; /&gt;&lt;!--
+ --&gt;&lt;span class=&quot;tipIcon2&quot;&gt;6&lt;/span&gt; 
+&lt;/div&gt;
+//img和soan间的HTML注释的目的是消除换行符，你也可以将span紧跟在img后面写到一行里</code></pre>
+<p>更深入一点看，多一个属性意味着多一层维护。如果父relative+子absolute来实现定位，万一将来页面需要调整，父元素的尺寸需要变化呢？</p>
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;display: inline-block; position:relative;width: 200px;&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;img/25/2.jpg&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;tipIcon&quot;</span>&gt;</span>6<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
+<p><img src="https://img.imgdb.cn/item/6035b4ec5f4313ce25a0ca9b.jpg" srcset="/img/loading.gif"></p>
+<p>可以看到，仅仅是父元素的width变了就导致右上角absolute图标错位了。由于absolute和relative耦合在一起了，父元素有任何风吹草动，子元素就需要重新寻找定位点。但是如果用上例中absolute自身的定位特点，无论父元素怎么折腾，红色的圈圈都牢牢靠在图片的右上角。</p>
+<p>但是absolute和relative也不应该因此断绝关系，它俩在某些功能实现上依然相爱。例如，用absolute常见的一个案例是透明层覆盖元素，要实现对全屏加一层滤镜等效果，这时应该怎么办呢?<br><img src="https://img.imgdb.cn/item/6035b67e5f4313ce25a18a40.jpg" srcset="/img/loading.gif" alt="全屏滤镜"></p>
+<pre><code class="hljs css"><span class="hljs-selector-class">.cover</span> &#123;
+    <span class="hljs-attribute">position</span>: absolute;
+    <span class="hljs-attribute">left</span>: <span class="hljs-number">0</span>;<span class="hljs-attribute">right</span>: <span class="hljs-number">0</span>;<span class="hljs-attribute">top</span>: <span class="hljs-number">0</span>;<span class="hljs-attribute">bottom</span>: <span class="hljs-number">0</span>;
+    <span class="hljs-attribute">background-color</span>: <span class="hljs-number">#fff</span>;
+    <span class="hljs-attribute">opacity</span>: .<span class="hljs-number">5</span>;
+    <span class="hljs-attribute">filter</span>: <span class="hljs-built_in">alpha</span>(opacity=<span class="hljs-number">50</span>);
+&#125;
+
+&lt;div style=&quot;display: inline-block;&quot;&gt;
+  &lt;img src=&quot;img/25/2.jpg&quot; /&gt;&lt;!--
+  --&gt;&lt;span class=&quot;tipIcon2&quot;&gt;6&lt;/span&gt;
+&lt;/div&gt;
+现在是全屏滤镜时间
+&lt;span class=&quot;cover&quot;&gt;&lt;/span&gt;</code></pre>
+<p>CSS里个细节需要关注：用absolute的<code>left:0; right:0; top:0; bottom:0;</code> 来实现全屏拉伸。对于absolute元素来说，如果同时设置left和right会水平拉伸，同时设置top和bottom会垂直拉伸。（为何不设置width/height为100%呢？前面说了，不设top/right/bottom/left的话absolute元素会从正常文档流应处的位置开始定位，因此做不到全屏。除非设置width/height为100%后，再设置left:0; top:0; 但这样会显得啰嗦。</p>
+<p>那我如果不想全屏滤镜，只想对图片部分加滤镜呢？这时就可以使用relative了。</p>
+<pre><code class="hljs html">//CSS部分不变
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;display: inline-block;position: relative;&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;cover&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;img/25/2.jpg&quot;</span> /&gt;</span><span class="hljs-comment">&lt;!--</span>
+<span class="hljs-comment">  --&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;tipIcon2&quot;</span>&gt;</span>6<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+现在是图片滤镜时间</code></pre>
+<p>效果如下：<br><img src="https://img.imgdb.cn/item/6035b8985f4313ce25a26ab8.jpg" srcset="/img/loading.gif" alt="图片加滤镜"></p>
+<p><font color=red>结论：</font><br>（1）相对定位时，不必拘泥于relative+absolute，尝试去掉relative，充分利用absolute自身定位的特点，将relative+absolute解耦，耦合度越低越容易维护。<br>（2）拉伸平铺时，用relative可以有效控制子absolute元素的拉伸平铺范围（注意是拉伸，不是缩小，缩小需要再加上width/height：100%）</p>
+<ol start="3">
+<li><strong>和z-index的关系</strong></li>
+</ol>
+<p>z-index经常被滥用，很多人思维定势只要设了absolute就需要同步设置z-index。其实不是这样的，上面所有例子都没有用到z-index,同样正常分层覆盖。</p>
+<p>以下情况根本不需要设置z-index:</p>
+<ul>
+<li>让absolute元素覆盖正常文档流内元素（不用设z-index，自然覆盖）</li>
+<li>让后一个absolute元素覆盖前一个absolute元素（不用设z-index，只要在html中按先后顺序正确放置两个元素即可）</li>
+</ul>
+<p>什么情况下需要设置z-index呢？<br>当absolute元素覆盖另一个absolute元素，且html中不方便调整DOM的先后顺序时，需要设置z-index：1; 非常少见的情况下多个absolute交错覆盖，或者需要显示最高层次的模态对话框时，可以设置z-index&gt;1。</p>
+<p>查看京东的首页源码，设置z-index的地方也只设了1，2，3。少数地方设置了11，12，13。像是一种内部潜规则，表明更高层级的需要。</p>
+<p>查看新浪微博的源码，发现设置了z-index:999; 如果设置了z-index:99;那如果现在需要一个更高的层级怎么办？重构页面代码，将99等数值重构成1，2，3？ 不会，通常为了省事就再设一个z-index:999;</p>
+<p><img src="https://img.imgdb.cn/item/6035bdbc5f4313ce25a4ae0c.jpg" srcset="/img/loading.gif" alt="新浪微博源码"></p>
+<ol start="4">
+<li><strong>减少重绘和回流的开销</strong></li>
+</ol>
+<p>例如将元素隐藏，你或许会用<code>display: none;</code>。但是使用display：none隐藏容易显示难。比如，A隐藏前是display:block;B隐藏前display:inline;A和B都改成none隐藏后，要显示出来时，必须事先保存元素的display的属性，否则做不到显示后display仍旧是原先的值。</p>
+<p>其实使用absolute控制隐藏和显示很好用，<strong>方法是：使用absolute+top: -9999em; 或者absolute+ visibility：hidden;</strong> 这样实现隐藏和显示的优点是：absolute由于层级关系，隐藏和显示只会重绘，但不会回流。（或者说absolute的回流开销小于正常DOM流中回流的开销） 而用display:none 会导致render tree重绘和回流。</p>
+<p>另外，考虑到重绘和回流的开销，可以将动效果放在absolute元素中，避免浏览器将render tree回流。</p>
+<p>参考：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/a3da5e27d22b">博客-CSS绝对定位absolute详解</a></p>
+<p>关于重绘和回流：参考<a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903569087266823#comment">掘金-浏览器的回流与重绘 (Reflow &amp; Repaint)</a></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/CSS%E5%B8%83%E5%B1%80/">CSS布局</a>
+                    
+                  </div>
+                
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/02/09/CSS%E5%B8%83%E5%B1%8004-%E6%B5%AE%E5%8A%A8float/">
+                        <span class="hidden-mobile">CSS布局04-浮动float</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+
+  <script  src="https://cdn.staticfile.org/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":200})
+    NProgress.start()
+    document.addEventListener('DOMContentLoaded', function() {
+      window.NProgress && window.NProgress.inc();
+    })
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.5.3/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.12.0/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    (function () {
+      var path = "/local-search.xml";
+      var inputArea = document.querySelector("#local-search-input");
+      inputArea.onclick = function () {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+        this.onclick = null
+      }
+    })()
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+
+</body>
+</html>
