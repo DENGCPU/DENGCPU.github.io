@@ -1,0 +1,524 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#265734">
+  <meta name="description" content="前端小白，升级打怪">
+  <meta name="author" content="dorothy">
+  <meta name="keywords" content="前端，js,h5,css,react">
+  <title>面试10-React的diff算法有何特点？ - Dorothy的博客</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.5.3/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.1.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.5","typing":{"enable":true,"typeSpeed":60,"cursorChar":"_","loop":false},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"copy_btn":true,"image_zoom":{"enable":true},"lazyload":{"enable":true,"onlypost":false},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>DorothyJay</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/baking-page.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="面试10-React的diff算法有何特点？">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-07-03 19:55" pubdate>
+        2021年7月3日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.4k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      25
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">面试10-React的diff算法有何特点？</h1>
+            
+            <div class="markdown-body">
+              <h3 id="面试场景10：与其他框架相比，React的diff算法有何不同？"><a href="#面试场景10：与其他框架相比，React的diff算法有何不同？" class="headerlink" title="面试场景10：与其他框架相比，React的diff算法有何不同？"></a>面试场景10：与其他框架相比，React的diff算法有何不同？</h3><p><strong>破题</strong>：<br>一般说到前端框架，主要有两个：</p>
+<ul>
+<li>Vue，国内用的比较广泛</li>
+<li>类React框架（React-like框架），通常指Preact/inferno等兼容React API的框架，它们与react设计相似、使用相似。</li>
+</ul>
+<p>所以我们就拿Vue以及Preact与React的diff算法进行比较。</p>
+<p><strong>承题</strong>：<br>如上，我们可以整理出一个答题框架：</p>
+<ol>
+<li>就React diff算法完成“讲概率，说用途，理思路，优缺点，列一遍”的组合拳</li>
+<li>横向对比React、React-like框架以及Vue的diff算法</li>
+</ol>
+<p><img src="https://pic.imgdb.cn/item/60e052645132923bf82f0ed1.jpg" srcset="/img/loading.gif" alt="diff算法对比思维导图"></p>
+<h4 id="一、React的Diff算法"><a href="#一、React的Diff算法" class="headerlink" title="一、React的Diff算法"></a>一、React的Diff算法</h4><p>diff算法探讨的是虚拟DOM树发生变化后，生成DOM树更新补丁的方式。塔通过对比新旧两棵虚拟DOM树的变更差异，将更新补丁作用于真实DOM，以最小成本完成视图更新。</p>
+<p><img src="https://pic.imgdb.cn/item/60e053385132923bf8332c28.jpg" srcset="/img/loading.gif" alt="diff算法的流程"></p>
+<p>具体的流程是这样的：</p>
+<ul>
+<li>真实DOM与虚拟DOM之间存在一个映射关系。这个映射关系依靠初始化时的JSX建立完成。</li>
+<li>当虚拟DOM发生变化后，就会根据差距计算生成一个patch，这个patch是一个结构化的数据，内容包含了增加、更新、移除等。</li>
+<li>最后再根据patch去更新真实的DOM，反馈到用户的界面上。</li>
+</ul>
+<p><img src="https://pic.imgdb.cn/item/60e054885132923bf839c0c3.jpg" srcset="/img/loading.gif" alt="diff算法的具体流程"></p>
+<p><strong>生成补丁、更新差异</strong>的过程统称为diff算法。</p>
+<p>在整个过程中最重要的三点:<strong>更新时机、遍历算法、优化策略</strong>。（也是面试中经常问的点）</p>
+<p><font color='red'>1、更新时机</font></p>
+<p>更新时机就是触发更新、进行差异对比的时机。更新一般发生在setState、Hooks调用等操作以后。此时，树的结点发生变化，开始进行对比。<br><br/><br>那么新旧两颗树是如何进行对比差异的呢？这里就需要使用遍历算法。</p>
+<p><font color='red'>2、遍历算法</font></p>
+<p>遍历算法是指沿着某条搜索线路，依次对树的每个节点进行访问。通常有两种：</p>
+<ul>
+<li>深度优先遍历，是从根节点出发，沿着左子树方向进行纵向遍历，直到找到叶子节点为止。然后回溯到前一个节点，进行右子树节点的遍历，直到遍历完所有可达节点。</li>
+<li>广度优先遍历，则是从根节点出发，在横向遍历二叉树层段节点的基础上，纵向遍历二叉树的层次。</li>
+</ul>
+<p>React的diff算法采用的是<strong>深度优先遍历算法</strong>。因为广度优先遍历可能会导致组件的生命周期时序错乱。</p>
+<p><font color='red'>3、优化策略</font></p>
+<p>优化策略是指React对diff算法做的优化手段。</p>
+<p>虽然深度优先遍历保证了组件的生命周期时序不错乱，但传统的 diff 算法也带来了一个严重的性能瓶颈，复杂程度为 O(n^3)，其中 n 表示树的节点总数。正如计算机科学中常见的优化方案一样，React 用了一个非常经典的手法将复杂度降低为 O(n)，也就是分治，即通过“分而治之”这一巧妙的思想分解问题。</p>
+<p>具体来说，React分别从<strong>树、组件、元素</strong>三个层面进行复杂度的优化，并诞生了与之对应的策略。</p>
+<p><strong>策略一：忽略节点跨层级操作场景，提升对比效率</strong></p>
+<p>树对比的处是很暴力的：两棵树只对同一层次的节点进行比较，如果发现节点已经不存在了，则该节点及其子节点会被完全删除，不会再进一步比较。这就提升了对比效率</p>
+<p><strong>策略二：如果组件的类型（classComponent）一致，则默认为相似的树结构，否则默认为不同的结构</strong></p>
+<p>在组件对比的过程中：</p>
+<ul>
+<li>如果组件是同一类型则进行树对比；</li>
+<li>如果不是则直接放入补丁中。</li>
+</ul>
+<p>只要父组件类型不同，就会被重新渲染。这也就是为什么shouldComponentUpdate、PureComponent及React.memo可以提升性能的原因。</p>
+<p><strong>策略三：同一层级的子节点，可以通过标记key的方式进行列表对比</strong></p>
+<p>元素的比对主要发生在同一层级中，通过<strong>标记节点操作生成补丁</strong>。节点操作包含了插入、移动、删除等。其中节点重新排序同时涉及插入、移动、删除三个操作，所以效率消耗最大，此时策略三起重要作用。</p>
+<p>通过标记key的方式，React可以直接移动DOM节点，降低内耗。操作代码如下：</p>
+<pre><code class="hljs js">&lt;ul&gt;
+    &lt;li key=<span class="hljs-string">&#x27;a&#x27;</span>&gt;a&lt;/li&gt;
+    &lt;li key=<span class="hljs-string">&#x27;b&#x27;</span>&gt;b&lt;/li&gt;
+    &lt;li key=<span class="hljs-string">&#x27;c&#x27;</span>&gt;c&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+<p>以上就是React diff算法的基本内容。 除此之外，React16还引入了Fiber设计，所以还需要了解Fiber对diff算法带来的影响。</p>
+<p>Fiber机制下节点与树分别采用FiberNode与FiberTree进行重构。<strong>FiberNode使用了双链表结构，可以直接找到兄弟节点与子节点，使得整个更新过程可以随时暂停恢复。</strong>FiberTree则是通过FiberNode构成的树。</p>
+<p>Fiber机制下，整个更新过程由current与workInProgress两颗树双缓冲完成。当workInProgress更新完成后，通过修改current相关指针指向的节点，直接抛弃老树，虽然非常简单粗暴，但是很合理。</p>
+<h4 id="二、其他框架中的diff算法"><a href="#二、其他框架中的diff算法" class="headerlink" title="二、其他框架中的diff算法"></a>二、其他框架中的diff算法</h4><h5 id="2-1-Preact"><a href="#2-1-Preact" class="headerlink" title="2.1 Preact"></a>2.1 Preact</h5><p>在众多的react-like框架中，Preact使用范围最广，生命力最强。它仅以3kb的小巧特点应用于对体积追求非常极致的场景。也正因为体积受限，Preact在diff算法上做了裁剪。</p>
+<p>以下是Preact的diff算法图示，可以看到它将diff分为三个类型：Fragment、Component及DOM Node</p>
+<p><img src="https://pic.imgdb.cn/item/60e06b375132923bf8b8d672.jpg" srcset="/img/loading.gif" alt="Preact的diff算法"></p>
+<ul>
+<li>Fragment对应React的树比较</li>
+<li>Component对应组件比较，它们在原理上是相通的。</li>
+<li>最大的不同在于DOM Node这一层，Preact并没有patch的过程，而是直接更新DOM节点属性。</li>
+</ul>
+<h5 id="2-1-Vue"><a href="#2-1-Vue" class="headerlink" title="2.1 Vue"></a>2.1 Vue</h5><p>Vue 2.0 因为使用了<a target="_blank" rel="noopener" href="https://github.com/snabbdom/snabbdom/tree/8079ba78685b0f0e0e67891782c3e8fb9d54d5b8">snabbdom</a>，整体思路和React相同。但是在元素对比时，如果新旧两个元素是同一个元素，且没有设置key时，snabbdom在diff子元素中会一次性对比<strong>旧节点、新节点</strong>以及它们的<strong>首尾元素</strong>四个节点，以及验证列表是否有变化。依然没有引入Fiber等设计，也没有时间切片等功能。</p>
+<p><strong>答题：</strong></p>
+<blockquote>
+<p>首先说明下什么是diff算法：diff算法是指生成更新补丁的方式，主要应用于虚拟DOM树变化后，更新真实DOM。所以diff算法一定存在这样一个过程：触发更新-&gt;生成补丁-&gt;应用补丁。</p>
+</blockquote>
+<blockquote>
+<p>React的diff算法，触发更新的时机主要是在state变化与hooks调用之后。此时触发虚拟DOM树变更遍历，采用了深度优先遍历算法。但是传统的树遍历方式，效率低。为了优化效率，使用了分治的方法。将单一节点对比转化为了3种类型的节点对比，分别是树、组件、元素，以此提升效率。<br/><br>1、树对比：由于网页视图中较少有跨层级节点移动，两颗虚拟DOM树只对同一层级的节点进行对比。<br/><br>2、组件对比：如果组件是同一类型，则进行树对比；如果不是，则直接放入补丁中。<br/><br>3、元素对比：主要发生在同层级中，通过标记节点操作生成补丁，节点操作对应真实的DOM剪裁操作。</p>
+</blockquote>
+<blockquote>
+<p>自React 16起，引入了Fiber架构。为了使整个更新过程可以随时暂停恢复，节点与树分别采用了FiberNode与FiberTree进行重构。FiberNode使用了双链表的结构，可以直接找到兄弟节点与子节点。  整个更新过程由current和workInProgress两棵树双缓冲完成。workInProgress更新完成后，再通过修改current相关指针指向新节点。</p>
+</blockquote>
+<blockquote>
+<p>Preact的diff算法相较于React，整体思路相似。但最底层的元素采用了真实DOM对比操作，也没有采用Fiber设计。<br/><br>Vue的diff算法整体也与React相似，同样未实现Fiber设计。</p>
+</blockquote>
+<blockquote>
+<p>最后，关于适用场景：<br/><br>React拥有完整的diff算法策略，且拥有随时中断更新的时间切片能力，在大批量节点更新的极端情况下，拥有更友好的交互体验。<br/><br>Preact可以在一些对性能要求不高，仅需要渲染框架的简单场景下适用。<br/><br>Vue的整体diff策略与React对齐，虽然缺乏时间切片能力，但并不意味着Vue的性能更差。（Vue3初期其实引用过，后面因为收益不高除掉了）除了高帧率动画，在Vue中其他的场景机会都可以适用防抖和节流去提高响应性能。</p>
+</blockquote>
+<p>备注：回答时切忌踩一捧一！</p>
+<p><img src="https://pic.imgdb.cn/item/60e11ac65132923bf83aefac.jpg" srcset="/img/loading.gif" alt="diff算法的对比答题思维导图"></p>
+<p><font color='blue'>补充：</font></p>
+<p><strong>如何根据React diff算法原理优化代码呢？</strong></p>
+<p>答：</p>
+<ul>
+<li>根据diff算法的设计原则，应尽量避免跨层级节点移动</li>
+<li>通过设置唯一key进行优化，尽量减少组件层级深度。因为过深的层级会加深遍历深度，带来性能问题。</li>
+<li>设置shouldComponentUpdate或者React.pureComponent减少diff次数。</li>
+</ul>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E9%9D%A2%E8%AF%95%E5%AE%9D%E5%85%B8%E4%B9%8BReact%E7%AF%87/">面试宝典之React篇</a>
+                    
+                  </div>
+                
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/03/21/%E9%9D%A2%E8%AF%9509-%E8%99%9A%E6%8B%9Fdom%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F/">
+                        <span class="hidden-mobile">面试09-虚拟dom的工作原理是什么？</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+
+  <script  src="https://cdn.staticfile.org/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":200})
+    NProgress.start()
+    document.addEventListener('DOMContentLoaded', function() {
+      window.NProgress && window.NProgress.inc();
+    })
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.5.3/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.12.0/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    (function () {
+      var path = "/local-search.xml";
+      var inputArea = document.querySelector("#local-search-input");
+      inputArea.onclick = function () {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+        this.onclick = null
+      }
+    })()
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+
+</body>
+</html>
