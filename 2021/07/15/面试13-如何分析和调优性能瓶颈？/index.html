@@ -1,0 +1,565 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#265734">
+  <meta name="description" content="前端小白，升级打怪">
+  <meta name="author" content="dorothy">
+  <meta name="keywords" content="前端，js,h5,css,react">
+  <title>面试13-如何分析和调优性能瓶颈？ - Dorothy的博客</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.5.3/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.1.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.5","typing":{"enable":true,"typeSpeed":60,"cursorChar":"_","loop":false},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"copy_btn":true,"image_zoom":{"enable":true},"lazyload":{"enable":true,"onlypost":false},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>DorothyJay</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/baking-page.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="面试13-如何分析和调优性能瓶颈？">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-07-15 09:19" pubdate>
+        2021年7月15日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.7k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      29
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">面试13-如何分析和调优性能瓶颈？</h1>
+            
+            <div class="markdown-body">
+              <h3 id="面试场景13：如何分析和调优性能瓶颈？"><a href="#面试场景13：如何分析和调优性能瓶颈？" class="headerlink" title="面试场景13：如何分析和调优性能瓶颈？"></a>面试场景13：如何分析和调优性能瓶颈？</h3><p><strong>破题</strong>：</p>
+<p>做优化应该是一个<strong>有指标、有比较、有数据</strong>的过程。一个完整的解决方案应该说清楚标准，讲清楚缘由，理清楚结果，最后用数据与收益来说明你的工作成果。</p>
+<ul>
+<li>建立衡量标准：这样可以为优化后计算收益提供指标。衡量标准应该是可量化的，在确认指标之后，还需要有数据积累。</li>
+<li>确认优化原因：有了数据基础，还需要根据具体场景分析优化能转化多少价值，确认是否需要优化</li>
+<li>实施方案：在有了优化点之后，需要制定具体的提升方案并实施</li>
+<li>计算收益：通过数据描述收益效果</li>
+</ul>
+<p><img src="https://pic.imgdb.cn/item/60ef8f2f5132923bf8676ccd.jpg" srcset="/img/loading.gif"></p>
+<h4 id="一、衡量"><a href="#一、衡量" class="headerlink" title="一、衡量"></a>一、衡量</h4><h5 id="1-1-理论基础"><a href="#1-1-理论基础" class="headerlink" title="1.1 理论基础"></a>1.1 理论基础</h5><p>分析调优的第一步是要知道问题出现在哪儿？ Google 的 DoubleClick 小组做过一个研究，证明了网页性能在一定程度上影响用户留存率。他们的研究显示，如果一个移动端页面加载时长超过 3 秒，用户就会放弃而离开。这很有意思，结论非常简单，却是可量化的。</p>
+<p>显然，数字在沟通上可以降低理解成本，加强印象的魔力。在此基础上，Google的chrome组提出了以用户为核心的RAIL模型，用更多的数字维度去解释网页性能：</p>
+<ul>
+<li>Resonse 响应： 应在50毫秒内完成事件处理并反馈给用户</li>
+<li>Animation 动画：10毫秒内生产一帧</li>
+<li>Idle 浏览器空闲时间：最大化利用浏览器空闲时间</li>
+<li>Load 加载： 在5秒内完成页面资源加载且使页面可交互</li>
+</ul>
+<h5 id="1-2-衡量工具"><a href="#1-2-衡量工具" class="headerlink" title="1.2 衡量工具"></a>1.2 衡量工具</h5><p>Chrome浏览器里内置了Lighthouse的测量工具：</p>
+<p><img src="https://pic.imgdb.cn/item/60ef91cc5132923bf8750fd2.jpg" srcset="/img/loading.gif" alt="开发者工具里的Lighthouse"></p>
+<p>点击<strong>generate report</strong>，就可以直接生成一份网站性能报告：</p>
+<p><img src="https://pic.imgdb.cn/item/60ef92845132923bf878ddcd.jpg" srcset="/img/loading.gif" alt="例：React官方网站的性能报告"></p>
+<p>在报告中会对诸如初次内容渲染、可交互时间、加载等进行具体的数值量化打分，最后还会给整体的性能一个总体分数，这里是88分：<br><img src="https://pic.imgdb.cn/item/60ef937e5132923bf87e1bf3.jpg" srcset="/img/loading.gif"></p>
+<ul>
+<li>黄色代表当前处于一个用户尚可接受的状态</li>
+<li>绿色代表了表现优异</li>
+</ul>
+<p>拉到最底部会有如何优化当前性能指标的指导意见，整份报告不仅包含了当前页面的性能数据，还囊括了最佳实践指南，如下图所示：<br><img src="https://pic.imgdb.cn/item/60ef94405132923bf88246ec.jpg" srcset="/img/loading.gif"></p>
+<p>那既然有了lighthouse，直接根据它去优化不就完事了么？但是，有一个问题还需要解决，lighthouse是否可以反映用户的真实情况呢？</p>
+<p><strong>真实情况：</strong></p>
+<p>我们经常会遇到一种情况，测试说她的电脑打开网页很慢，而在你自己电脑上打开加载速度却很快。同一个网页在不同的环境下，是否存在性能差异？是否需要根据不同的网络环境，不同的浏览器单独衡量呢？<br>另外一种情况，对于管理后台而言，需要对标C端的加载速度么？显然是不需要的。</p>
+<p>由此可以看出：</p>
+<ul>
+<li>Lighthouse 并不能真实地反映出每个用户的设备实际性能数据</li>
+<li>Lighthouse 的分数反映的是业界的标准，而非项目实际需求的标准</li>
+</ul>
+<p>基于以上原因，我们需要自行完成性能指标的采集。一般在大厂，有现成的工具可以用。如果没有，可以考虑使用网页APM工具：</p>
+<ul>
+<li>国际上老牌的New Relic</li>
+<li>国内阿里云的ARMS，可参考其<a target="_blank" rel="noopener" href="https://help.aliyun.com/document_detail/170905.html?spm=a2c4g.11186623.6.633.281f29ddxOQN8g">开发文档</a></li>
+</ul>
+<p>无论什么工具，它们都会对齐lighthouse这样一个行业标准，所以完全不用担心指标会有差异。</p>
+<h5 id="1-3-采集过程"><a href="#1-3-采集过程" class="headerlink" title="1.3 采集过程"></a>1.3 采集过程</h5><p>以阿里云的ARMS为例，采集通常是由一个JavaScript SDK完成的，就像下面这样一个在script标签里引入bl.js的示例一样。</p>
+<pre><code class="hljs js">&lt;script&gt;
+
+!(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">c,b,d,a</span>)</span>&#123;c[a]||(c[a]=&#123;&#125;);c[a].config=&#123;<span class="hljs-attr">pid</span>:<span class="hljs-string">&quot;xxx&quot;</span>,<span class="hljs-attr">appType</span>:<span class="hljs-literal">undefined</span>,<span class="hljs-attr">imgUrl</span>:<span class="hljs-string">&quot;https://arms-retcode.aliyuncs.com/r.png?&quot;</span>, <span class="hljs-attr">uid</span>: <span class="hljs-string">&quot;xxxx&quot;</span>&#125;;
+
+<span class="hljs-keyword">with</span>(b)<span class="hljs-keyword">with</span>(body)<span class="hljs-keyword">with</span>(insertBefore(createElement(<span class="hljs-string">&quot;script&quot;</span>),firstChild))setAttribute(<span class="hljs-string">&quot;crossorigin&quot;</span>,<span class="hljs-string">&quot;&quot;</span>,src=d)
+
+&#125;)(<span class="hljs-built_in">window</span>,<span class="hljs-built_in">document</span>,<span class="hljs-string">&quot;https://retcode.alicdn.com/retcode/bl.js&quot;</span>,<span class="hljs-string">&quot;__bl&quot;</span>);
+
+&lt;/script&gt;
+</code></pre>
+
+<p>接下来就是<strong>指标采集工作</strong>，指标需要根据业务需求增减或修改，所以经常会有变化，常用的指标一般有：</p>
+<ol>
+<li><p><strong>FCP</strong>（First Contentful Paint），首次绘制内容的耗时。首屏统计的方式一直在变，现在通常是记录<strong>初次加载</strong>并<strong>绘制内容</strong>的时间。<br><img src="https://pic.imgdb.cn/item/60efe0d75132923bf87ba3e4.jpg" srcset="/img/loading.gif"></p>
+</li>
+<li><p><strong>TTI</strong>（Time to Interact），页面可交互的时间。一般是通过记录window.performance.timing中的domInteractive与fetchStart的时间差来完成。</p>
+</li>
+<li><p><strong>Page Load</strong>，页面完全加载时间。通常通过记录window.performance.timing中的loadEventStart与fetchStart的时间差来完成</p>
+</li>
+<li><p><strong>FPS</strong>，前端页面帧率。通常是在主线程打点完成记录，其原理是requestAnimationFrame会在页面重绘前被调用，而FPS就是计算两次之间的时间差。</p>
+</li>
+</ol>
+<pre><code class="hljs js"><span class="hljs-keyword">let</span> lastTime = performance.now();
+<span class="hljs-keyword">let</span> frame = <span class="hljs-number">0</span>;
+<span class="hljs-keyword">let</span> lastFrameTime = performance.now();
+
+<span class="hljs-keyword">const</span> loop = <span class="hljs-function">(<span class="hljs-params">time</span>) =&gt;</span> &#123;
+    <span class="hljs-keyword">const</span> now = performance.now();
+    lastFrameTime = now;
+    frame++;
+    <span class="hljs-function"><span class="hljs-title">if</span>(<span class="hljs-params">now &gt; <span class="hljs-number">1000</span> + lastTime</span>)</span> &#123;
+        <span class="hljs-keyword">let</span> fps = <span class="hljs-built_in">Math</span>.round(frame / ((now - lastTime) / <span class="hljs-number">1000</span>));
+        frame = <span class="hljs-number">0</span>;
+        lastTime = now;
+        <span class="hljs-built_in">console</span>.log(fps);
+    &#125;
+    <span class="hljs-built_in">window</span>.requestAnimationFrame(loop);
+&#125;</code></pre>
+<ol start="5">
+<li><strong>静态资源</strong>及<strong>API请求成功率</strong>。通常是通过window.performance.getEntries()来获取相关信息。</li>
+</ol>
+<p><img src="https://pic.imgdb.cn/item/60efe44d5132923bf897c1c4.jpg" srcset="/img/loading.gif"></p>
+<h4 id="二、排查"><a href="#二、排查" class="headerlink" title="二、排查"></a>二、排查</h4><p>优化最难的地方在于定目标。</p>
+<p>制定目标有一个前提，对象是谁？需要明确的是，如果我们要提升网页的加载速度，应该把关注点放在整个用户群，而不是只有自己。</p>
+<p>假设我们已经收集到了用户页面的性能数据，比如FCP的数据是1秒、3秒、4秒、6秒、7秒、8秒、65秒。那么提升性能是去提升他的平均值吗？平均数约39秒，并不能反映整体情况。</p>
+<p>在性能监控中有一个概念叫TP（Top Percentile），如TP50指50的用户打开页面绘制的时间不超过6秒，90%的用户不超过8秒。如果要提升FCP，那么就需要提升TP50，TP90，TP99下的数据，这才是正确方向的目标。</p>
+<p>其次是场景，如果是C端页面，那么FCP、TIL、FPS、Page Load、静态资源及Api请求成功率等几个目标都很重要，会直接影响关键业务的转化率。而管理后台，更关注的是使用功能是否完整，运行是否流畅，对加载速度并没有很高的要求，所以通常只对FPS、静态资源及Api请求成功率这三个指标更关注。显然，指标的选择取决于你的业务形态。</p>
+<h4 id="三、实施"><a href="#三、实施" class="headerlink" title="三、实施"></a>三、实施</h4><p>这部分，拿FCP、TIL、Page Load、FPS、静态资源及Api请求成功率这几个指标来进行讲解。</p>
+<ol>
+<li><p><strong>FCP</strong><br>加载一个 React页面，通常是白屏到直接显示内容。那么，如果白屏时间过长，用户可能会流失，就需要在<strong>页面上绘制内容</strong>，给出一些反馈。</p>
+<p>最早的优化方案是绘制一个<strong>Loading</strong>的图标，写死在HTML的CSS中，当JS开始执行的时候再移除它。</p>
+<p>后来有了<strong>骨架屏</strong>的概念，如下面的Facebook的网页显示。在内容还没有就绪的时候，先通过渲染骨架屏，给予用户反馈。</p>
+<p><img src="https://pic.imgdb.cn/item/60eff7665132923bf8197b72.jpg" srcset="/img/loading.gif" alt="Facebook骨架屏"></p>
+<p>还有一种解决方案是<strong>SSR</strong>，也就行服务端渲染，常用的方案有next.js等</p>
+</li>
+</ol>
+<ol start="2">
+<li><p><strong>TIL</strong><br>TIL在实现上，可以优先加载让用户关注的内容，让用户先用起来。主要策略是<strong>异步加载</strong>与<strong>懒加载</strong>相结合。比如：</p>
+<ul>
+<li><b>核心内容</b>在React中同步加载</li>
+<li><b>非核心内容</b>采取异步加载的方式延迟加载</li>
+<li><b>内容中的图片</b>采用懒加载的方式避免占用网络资源</li>
+</ul>
+</li>
+<li><p><strong>Page Load</strong></p>
+<p><strong>页面完整加载时间</strong>同样可以通过异步加载的方式完成。异步加载主要由webpack打包common chunk与异步组件的方式完成。</p>
+</li>
+<li><p><strong>FPS</strong></p>
+<p>FPS主要代表了卡顿的情况，在React中引起卡顿的主要原因是<strong>长列表</strong>与<strong>重渲染</strong>。长列表的解决方案已经很成熟，直接使用react-virtualied 或者 react-window就可以；重渲染的问题较复杂，下一讲会详细说明。</p>
+</li>
+<li><p><strong>静态资源及API请求成功率</strong></p>
+<p>静态资源及API请求成功率都有可能在用户的机器上失败，而在自己的电脑上没有问题。导致这个问题的原因有很多：</p>
+<ul>
+<li>你是直接从前端服务器拉取JS与CSS资源，还是从CDN拉取的？</li>
+<li>解析CDN与API域名存在失败的情况</li>
+<li>运营商对静态资源及API请求做了篡改，导致请求失败。</li>
+</ul>
+<p>那么如何解决呢？</p>
+<ul>
+<li>对于静态资源而言，能用CDN就用CDN，可以大幅度提升静态资源的成功率</li>
+<li>如果域名解析失败，就可以采取静态资源域名自动切换的方案；或者直接寻求SRE的帮助</li>
+<li>如果有运营商对内容做了篡改，推荐使用 HTTPS。</li>
+</ul>
+</li>
+</ol>
+<h4 id="四、收益"><a href="#四、收益" class="headerlink" title="四、收益"></a>四、收益</h4><p>技术必须服务于业务。从技术角度讲收益，需要从业务实际收益出发。就像开篇所说的：“如果一个移动端页面加载时长超过 3 秒，用户就会放弃而离开。”那么将 TP999 从 5 秒优化到 3 秒以内，就可以得出具体的用户转化率数据。这样的技术优化才是对公司有帮助的。</p>
+<p><strong>答题</strong>：</p>
+<blockquote>
+<p>我负责的业务是 CRM 管理后台，用户付费进入操作使用，有一套非常标准的业务流程。在我做完性能优化后，整个付费率一下提升了 17%，效果还可以。</p>
+<p>前期管理后台的基础性能数据是没有的，我接手后接入了一套 APM 工具，才有了基础的性能数据。然后我对指标观察了一周多，思考了业务形态，发现其实用户对后台系统的加载速度要求并不高，但对系统的稳定性要求比较高。我也发现静态资源的加载成功率并不高，TP99 的成功率大约在 91%，这是因为静态资源直接从服务器拉取，服务器带宽形成了瓶颈，导致加载失败。我对 Webpack 的构建工作流做了改造，支持发布到 CDN，改造后 TP99 提升到了 99.9%</p>
+</blockquote>
+<p><img src="https://pic.imgdb.cn/item/60effb455132923bf82f8d01.jpg" srcset="/img/loading.gif"></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E9%9D%A2%E8%AF%95%E5%AE%9D%E5%85%B8%E4%B9%8BReact%E7%AF%87/">面试宝典之React篇</a>
+                    
+                  </div>
+                
+                
+              </div>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/07/12/CSS06-50%E9%81%93CSS%E5%9F%BA%E7%A1%80%E9%9D%A2%E8%AF%95%E9%A2%98/">
+                        <span class="hidden-mobile">CSS06-50道CSS基础面试题</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+
+  <script  src="https://cdn.staticfile.org/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":200})
+    NProgress.start()
+    document.addEventListener('DOMContentLoaded', function() {
+      window.NProgress && window.NProgress.inc();
+    })
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.5.3/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.12.0/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    (function () {
+      var path = "/local-search.xml";
+      var inputArea = document.querySelector("#local-search-input");
+      inputArea.onclick = function () {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+        this.onclick = null
+      }
+    })()
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+
+</body>
+</html>
