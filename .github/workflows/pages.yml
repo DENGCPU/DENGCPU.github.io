@@ -23,9 +23,13 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 20
       - name: Install
-        run: npm ci --no-audit --no-fund --foreground-scripts
+        run: |
+          if ! timeout 120s npm ci --no-audit --no-fund; then
+            rm -rf node_modules
+            npm install --no-audit --no-fund
+          fi
       - name: Build
         run: npm run build
       - name: Upload artifact
