@@ -102,8 +102,19 @@ import Base from '../../layouts/Base.astro';
       </div>
     </div>
     <p class="composer-status" id="composer-status" role="status"></p>
-    <button class="publish" type="button" id="publish">发布</button>
+    <div class="composer-actions">
+      <button class="publish" type="button" id="publish">发布</button>
+      <button class="text-button" type="button" id="delete-post" hidden>删除</button>
+    </div>
   </form>
+  <dialog class="delete-dialog" id="delete-dialog">
+    <h2>删除这篇文章？</h2>
+    <p id="delete-copy"></p>
+    <div class="dialog-actions">
+      <button type="button" id="delete-cancel">取消</button>
+      <button class="danger" type="button" id="delete-confirm">确认删除</button>
+    </div>
+  </dialog>
   <script is:inline src="/vendor/markdown-it.js"></script>
   <script is:inline src="/vendor/turndown.js"></script>
   <script is:inline src="/vendor/turndown-plugin-gfm.js"></script>
@@ -120,6 +131,10 @@ import Base from '../../layouts/Base.astro';
     const form = document.querySelector('#composer');
     const status = document.querySelector('#composer-status');
     const publishButton = document.querySelector('#publish');
+    const deleteButton = document.querySelector('#delete-post');
+    const deleteDialog = document.querySelector('#delete-dialog');
+    const deleteCopy = document.querySelector('#delete-copy');
+    const deleteConfirm = document.querySelector('#delete-confirm');
 
     const headers = (token) => {
       const result = {
@@ -214,6 +229,7 @@ import Base from '../../layouts/Base.astro';
     let fileSha = '';
     let originalDate = '';
     let isPrivatePost = false;
+    let removed = false;
     let cipherText = '';
     let privatePassword = '';
     let publishedDay = '';
@@ -230,6 +246,7 @@ import Base from '../../layouts/Base.astro';
       if (heading) heading.textContent = '修改文章';
       if (lede) lede.textContent = '改完点保存。大约一分钟后，网站上会换成新的内容。网址不变。';
       if (publishButton) publishButton.textContent = '保存';
+      if (deleteButton) deleteButton.hidden = false;
       document.title = '修改文章 · DorothyJay';
       if (datedPost.test(editId) && privateBlock) privateBlock.hidden = true;
     }
@@ -391,7 +408,80 @@ import Base from '../../layouts/Base.astro';
       } catch (error) {
         say(error instanceof Error ? error.message : '没有发布。');
       } finally {
-        publishButton.disabled = isPrivatePost && !privatePassword;
+        if (!removed) publishButton.disabled = isPrivatePost && !privatePassword;
+      }
+    });
+
+    function articleName() {
+      const title = (form.querySelector('[name="title"]').value || '').trim();
+      if (title) return title;
+      const remembered = readPrivateList().find((item) => item.id === editId);
+      return remembered && remembered.title ? remembered.title : '';
+    }
+
+    function forgetPrivate(id) {
+      const next = readPrivateList().filter((item) => item.id !== id);
+      localStorage.setItem(privateListKey, JSON.stringify(next));
+      renderPrivateList();
+    }
+
+    deleteButton?.addEventListener('click', () => {
+      if (removed) return;
+      const token = (tokenInput?.value || '').trim() || savedToken();
+      if (!token) {
+        say('先把 GitHub 令牌粘贴到上面。');
+        return;
+      }
+      if (!fileSha) {
+        say('还没读到这篇文章，稍后再删。');
+        return;
+      }
+      const name = articleName();
+      if (deleteCopy) {
+        deleteCopy.textContent = (name ? '「' + name + '」' : '这篇文章') + '会从网站上去掉，删了找不回来。大约一分钟后生效。';
+      }
+      if (deleteConfirm) {
+        deleteConfirm.disabled = false;
+        deleteConfirm.textContent = '确认删除';
+      }
+      deleteDialog?.showModal();
+    });
+
+    document.querySelector('#delete-cancel')?.addEventListener('click', () => {
+      deleteDialog?.close();
+    });
+
+    deleteDialog?.addEventListener('click', (event) => {
+      if (event.target === deleteDialog) deleteDialog.close();
+    });
+
+    deleteConfirm?.addEventListener('click', async () => {
+      if (removed) return;
+      const token = (tokenInput?.value || '').trim() || savedToken();
+      if (!token || !fileSha) {
+        deleteDialog?.close();
+        say('先把 GitHub 令牌粘贴到上面。');
+        return;
+      }
+      deleteConfirm.disabled = true;
+      deleteConfirm.textContent = '正在删除…';
+      if (publishButton) publishButton.disabled = true;
+      try {
+        localStorage.setItem(tokenKey, token);
+        await identify(token);
+        await removePost(token);
+        removed = true;
+        if (isPrivatePost || readPrivateList().some((item) => item.id === editId)) forgetPrivate(editId);
+        deleteDialog?.close();
+        if (deleteButton) deleteButton.hidden = true;
+        say('已删除。大约一分钟后，网站上就没有这篇文章了。');
+        showConnected(owner);
+      } catch (error) {
+        deleteConfirm.disabled = false;
+        deleteConfirm.textContent = '确认删除';
+        if (publishButton) publishButton.disabled = isPrivatePost && !privatePassword;
+        deleteDialog?.close();
+        say(error instanceof Error ? error.message : '没有删除。');
       }
     });
 
@@ -478,6 +568,27 @@ import Base from '../../layouts/Base.astro';
       if (response.status === 401 || response.status === 403) throw new Error('令牌没有写入这个仓库的权限。生成时要勾选 public_repo。');
       if (response.status === 409 || response.status === 422) throw new Error('文章刚被改过，请重新打开这一页再保存。');
       throw new Error('没有保存。');
+    }
+
+    async function removePost(token) {
+      const filePath = 'src/content/posts/' + editId + '.md';
+      const title = (form.querySelector('[name="title"]').value || '').trim();
+      const response = await fetch(
+        'https://api.github.com/repos/' + repo + '/contents/' + filePath.split('/').map(encodeURIComponent).join('/'),
+        {
+          method: 'DELETE',
+          headers: { ...headers(token), 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            message: isPrivatePost ? 'Delete private post' : 'Delete post: ' + (title || editId),
+            sha: fileSha,
+            branch: 'master',
+          }),
+        },
+      );
+      if (response.ok) return;
+      if (response.status === 401 || response.status === 403) throw new Error('令牌没有写入这个仓库的权限。生成时要勾选 public_repo。');
+      if (response.status === 409 || response.status === 422) throw new Error('文章刚被改过，请重新打开这一页再删除。');
+      throw new Error('没有删除。');
     }
 
     function parseFrontmatter(markdown) {
@@ -1045,6 +1156,77 @@ import Base from '../../layouts/Base.astro';
     font: inherit;
     cursor: pointer;
     padding: 0;
+  }
+
+  .composer-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    margin-top: 1.1rem;
+  }
+
+  .composer-actions .publish,
+  .composer-actions .text-button {
+    margin-top: 0;
+  }
+
+  #delete-post[hidden] {
+    display: none !important;
+  }
+
+  .delete-dialog {
+    width: min(22rem, calc(100vw - 2rem));
+    margin: auto;
+    border: 0;
+    border-radius: 14px;
+    padding: 1.3rem 1.35rem 1.15rem;
+    background: var(--bg);
+    color: var(--ink);
+    box-shadow: 0 18px 48px rgba(36, 28, 20, 0.22);
+  }
+
+  .delete-dialog::backdrop {
+    background: rgba(28, 23, 18, 0.46);
+  }
+
+  .delete-dialog h2 {
+    margin: 0;
+    font-family: var(--serif);
+    font-size: 1.35rem;
+    font-weight: 560;
+  }
+
+  .delete-dialog p {
+    margin: 0.75rem 0 0;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.85rem;
+    margin-top: 1.15rem;
+  }
+
+  .dialog-actions button {
+    border: 0;
+    background: transparent;
+    color: var(--ink);
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .dialog-actions .danger {
+    color: var(--bg);
+    background: var(--accent);
+    border-radius: 999px;
+    padding: 0.35rem 0.95rem;
+  }
+
+  .dialog-actions .danger:disabled {
+    opacity: 0.55;
   }
 
   .publish {
