@@ -1,0 +1,86 @@
+---
+// 首页角落的松树水印：极淡、静止、可穿透，纯装饰。
+// 树形取自用户提供的松树图标（viewBox 0 0 1024 1024），只保留 5 段填充路径
+// （树干 + 四层树冠），统一 currentColor 单色剪影，跟随 --ink 适配深浅色主题。
+---
+
+<svg
+  class="watermark-tree"
+  viewBox="0 0 1024 1024"
+  xmlns="http://www.w3.org/2000/svg"
+  aria-hidden="true"
+>
+  <g fill="currentColor">
+    <!-- 树干 -->
+    <path d="M478.25 655.5h90.35v237.07h-90.35z" />
+    <!-- 树冠第 4 层（最下） -->
+    <path d="M523.43 353.39L210.74 749.95l312.69-37.16 312.69 37.16-312.69-396.56z" />
+    <!-- 树冠第 3 层 -->
+    <path d="M523.43 277.55l-261 331.01 261-37.17 261 37.17-261-331.01z" />
+    <!-- 树冠第 2 层 -->
+    <path d="M523.43 210.47L327.93 458.4l195.5-37.17 195.49 37.17-195.49-247.93z" />
+    <!-- 树冠第 1 层（顶） -->
+    <path d="M523.43 151L378.37 334.96l145.06-37.93 145.05 37.93L523.43 151z" />
+  </g>
+</svg>
+
+<style>
+  .watermark-tree {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    height: min(48vh, 28rem);
+    width: auto;
+    color: var(--ink);
+    --wm-opacity: 0.08;
+    opacity: var(--wm-opacity);
+    pointer-events: none;
+    z-index: -1;
+    /* 底部和左侧略微出画，让树「从角落长出来」，比完整悬浮更自然 */
+    transform: translate(-12%, 8%);
+    transform-origin: bottom center;
+    clip-path: inset(0 0 0 0);
+    /* 页面加载时从地面「长出来」，长成后停住，不循环 */
+    animation: watermark-grow 3.2s ease-out forwards;
+  }
+
+  /* 从底部向上揭示 + 由矮到高轻微拔起，模拟树生长 */
+  @keyframes watermark-grow {
+    0% {
+      opacity: 0;
+      clip-path: inset(100% 0 0 0);
+      transform: translate(-12%, 8%) scaleY(0.1);
+    }
+    60% {
+      opacity: var(--wm-opacity);
+    }
+    100% {
+      opacity: var(--wm-opacity);
+      clip-path: inset(0 0 0 0);
+      transform: translate(-12%, 8%) scaleY(1);
+    }
+  }
+
+  [data-theme='dark'] .watermark-tree {
+    --wm-opacity: 0.12;
+  }
+
+  @media (max-width: 640px) {
+    .watermark-tree {
+      height: min(36vh, 16rem);
+      --wm-opacity: 0.06;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .watermark-tree {
+      animation: none;
+    }
+  }
+
+  @media print {
+    .watermark-tree {
+      display: none;
+    }
+  }
+</style>

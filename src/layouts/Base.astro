@@ -2,7 +2,6 @@
 import '../styles/global.css';
 import { site } from '../data/site';
 import TreeLogo from '../components/TreeLogo.astro';
-import SideTrees from '../components/SideTrees.astro';
 
 interface Props {
   title?: string;
@@ -43,7 +42,7 @@ function isCurrent(href: string) {
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600&family=Noto+Serif+SC:wght@600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400..700&display=swap"
       rel="stylesheet"
     />
     <link rel="canonical" href={new URL(path, Astro.site)} />
@@ -59,7 +58,6 @@ function isCurrent(href: string) {
     </script>
   </head>
   <body class={wide ? 'wide' : undefined}>
-    {path === '/' && <SideTrees />}
     <header class="site-header">
       <div class="bar">
         <a class="brand" href="/"><TreeLogo class="brand-logo" /><span>{site.name}</span></a>

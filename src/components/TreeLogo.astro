@@ -38,12 +38,12 @@ const { class: className } = Astro.props;
     stroke-dashoffset: 1px;
     stroke-dasharray: 350 0;
     transform-origin: 50%;
-    animation: 10s infinite forwards tree-grow;
+    animation: tree-grow 2.5s ease-out forwards;
   }
 
   .tree-dot {
     opacity: 0;
-    animation: 10s infinite forwards tree-dot-in;
+    animation: tree-dot-in 2.5s ease-out forwards;
   }
 
   @keyframes tree-grow {
@@ -55,31 +55,19 @@ const { class: className } = Astro.props;
     10% {
       opacity: 1;
     }
-    40% {
-      stroke-dasharray: 350 0;
-    }
-    85% {
-      stroke-dasharray: 350 0;
-    }
-    95%,
     100% {
-      stroke-dasharray: 0 350;
-      opacity: 0;
+      stroke-dasharray: 350 0;
+      opacity: 1;
     }
   }
 
   @keyframes tree-dot-in {
     0%,
-    20% {
+    55% {
       opacity: 0;
     }
-    30%,
-    90% {
-      opacity: 1;
-    }
-    95%,
     100% {
-      opacity: 0;
+      opacity: 1;
     }
   }
 

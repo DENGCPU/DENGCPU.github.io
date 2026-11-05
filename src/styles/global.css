@@ -5,22 +5,22 @@
   --ink: #241c14;
   --muted: #6e5c49;
   --line: #ddcfb8;
-  --accent: #9c3b24;
+  --accent: #8a3a2e;
   --code-bg: #efe4d2;
   --page: 46rem;
   --wide: 66rem;
-  --serif: "Noto Serif SC", "Songti SC", "Source Han Serif SC", "STSong", serif;
-  --sans: "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --serif: "Source Serif 4", "Noto Serif SC", "Songti SC", "STSong", serif;
+  --sans: system-ui, -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
 }
 
 :root[data-theme='dark'] {
   color-scheme: dark;
-  --bg: #1c1712;
-  --bg-deep: #14110e;
+  --bg: #161412;
+  --bg-deep: #100e0d;
   --ink: #f4eadc;
   --muted: #c4b19a;
   --line: #3a3127;
-  --accent: #e7a07a;
+  --accent: #d9a08a;
   --code-bg: #2a231c;
 }
 
@@ -37,28 +37,9 @@ body {
   font-family: var(--sans);
   font-size: 18px;
   font-weight: 400;
-  line-height: 1.85;
+  line-height: 1.7;
   text-rendering: optimizeLegibility;
   background: var(--bg);
-}
-
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background:
-    radial-gradient(900px 420px at 0% -10%, #fff7ea 0%, transparent 60%),
-    radial-gradient(720px 380px at 100% 0%, #ecdcc4 0%, transparent 55%),
-    var(--bg);
-}
-
-:root[data-theme='dark'] body::before {
-  background:
-    radial-gradient(820px 380px at 0% -10%, #3a2c22 0%, transparent 58%),
-    radial-gradient(680px 320px at 100% 0%, #2a2118 0%, transparent 52%),
-    var(--bg);
 }
 
 .home-name,
@@ -137,7 +118,7 @@ body.wide {
   align-items: center;
   gap: 0.55rem;
   font-size: 1.15rem;
-  font-weight: 700;
+  font-weight: 600;
   text-decoration: none;
 }
 
@@ -210,8 +191,9 @@ main { padding: 3.25rem 0 4.5rem; }
 .home-name {
   margin: 0.4rem 0 0.85rem;
   font-size: 2.45rem;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1.2;
+  letter-spacing: -0.01em;
 }
 
 .intro,
@@ -310,8 +292,9 @@ main { padding: 3.25rem 0 4.5rem; }
 .page-title {
   margin: 0 0 0.7rem;
   font-size: 2rem;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1.3;
+  letter-spacing: -0.01em;
 }
 
 .about-block { margin-top: 2rem; }
