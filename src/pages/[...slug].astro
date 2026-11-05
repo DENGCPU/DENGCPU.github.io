@@ -45,7 +45,10 @@ const toc = headings.filter((heading) => heading.depth >= 2 && heading.depth <= 
         }
       </nav>
       <h1 class="page-title">{post.data.title}</h1>
-      <p class="post-date">{formatDate(post.data.date)}</p>
+      <p class="post-date">
+        {formatDate(post.data.date)}
+        <a href={`/write/?post=${encodeURIComponent(id)}`}>修改</a>
+      </p>
       {
         toc.length > 0 && (
           <details class="toc-mobile">
@@ -104,3 +107,10 @@ const toc = headings.filter((heading) => heading.depth >= 2 && heading.depth <= 
     }
   </div>
 </Base>
+
+<style>
+  .post-date a {
+    margin-left: 0.75rem;
+    color: var(--accent);
+  }
+</style>

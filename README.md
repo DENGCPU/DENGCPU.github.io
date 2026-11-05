@@ -52,6 +52,8 @@ featured: true
 
 第一次要把一个只属于这个仓库的 GitHub 令牌贴进去，它只保存在这台手机上。之后填写标题和正文，点发布就会自动出现在网站上。
 
+改已经发布的文章：打开那篇文章，点日期旁边的「修改」。
+
 也可以继续用 GitHub issue：https://github.com/DENGCPU/DENGCPU.github.io/issues/new?template=new-post.yml
 
 ## 部署
