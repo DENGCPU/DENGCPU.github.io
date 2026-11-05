@@ -48,13 +48,11 @@ featured: true
 
 ## 从手机写文章
 
-用浏览器打开这个页面，登录 GitHub 后填写并提交。可以把它加到手机主屏幕：
+打开网站里的「新文章」：https://dengcpu.github.io/write/
 
-https://github.com/DENGCPU/DENGCPU.github.io/issues/new?template=new-post.yml
+第一次要把一个只属于这个仓库的 GitHub 令牌贴进去，它只保存在这台手机上。之后填写标题和正文，点发布就会自动出现在网站上。
 
-只有这个仓库的主人提交才会写成文章。大约一分钟后出现在网站上，issue 里会留下文章地址。
-
-改已经发布的文章：在 GitHub 里打开 `src/content/posts/` 下对应的 Markdown，保存并提交。
+也可以继续用 GitHub issue：https://github.com/DENGCPU/DENGCPU.github.io/issues/new?template=new-post.yml
 
 ## 部署
 
