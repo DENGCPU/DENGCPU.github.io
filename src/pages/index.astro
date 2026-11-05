@@ -1,0 +1,55 @@
+---
+import { channels } from '../data/channels';
+import { site } from '../data/site';
+import { countByChannel, getPosts, getWorks } from '../lib/posts';
+import Base from '../layouts/Base.astro';
+import PostList from '../components/PostList.astro';
+
+const posts = await getPosts();
+const counts = countByChannel(posts);
+const works = await getWorks();
+const featured = works.filter((item) => item.data.featured);
+const picked = (featured.length > 0 ? featured : works).slice(0, 3);
+const recent = posts.slice(0, 8);
+---
+
+<Base description={site.description}>
+  <h1 class="home-name">{site.name}</h1>
+  <p class="intro">{site.intro}</p>
+
+  {
+    picked.length > 0 && (
+      <section>
+        <p class="kicker">作品</p>
+        <div class="post-list">
+          {picked.map((item) => (
+            <a class="post-row" href="/work/">
+              <span class="post-title">{item.data.title}</span>
+              <span class="post-meta">{item.data.role}</span>
+            </a>
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  <section>
+    <p class="kicker">大类</p>
+    <div class="channel-list">
+      {
+        channels.map((channel) => (
+          <a class="channel-row" href={`/writing/${channel.id}/`}>
+            <span class="channel-name">{channel.title}</span>
+            <span class="channel-count">{counts.get(channel.id) ?? 0}</span>
+            <span class="channel-desc">{channel.description}</span>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <section>
+    <p class="kicker">最近</p>
+    <PostList posts={recent} showChannel />
+  </section>
+</Base>

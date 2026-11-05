@@ -1,0 +1,19 @@
+---
+import { channels, type ChannelId } from '../../data/channels';
+import WritingIndex from '../../components/WritingIndex.astro';
+
+export function getStaticPaths() {
+  return channels.map((channel) => ({
+    params: { channel: channel.id },
+    props: { channelId: channel.id },
+  }));
+}
+
+interface Props {
+  channelId: ChannelId;
+}
+
+const { channelId } = Astro.props;
+---
+
+<WritingIndex active={channelId} />

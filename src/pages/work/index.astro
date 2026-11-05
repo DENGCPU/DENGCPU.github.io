@@ -1,0 +1,37 @@
+---
+import { getWorks } from '../../lib/posts';
+import { site } from '../../data/site';
+import Base from '../../layouts/Base.astro';
+
+const works = await getWorks();
+---
+
+<Base title="作品" description={`${site.name} 的作品。`}>
+  <h1 class="page-title">作品</h1>
+  {
+    works.length === 0 ? (
+      <p class="empty">还没有放上作品。有可以公开的项目时，会列在这里。</p>
+    ) : (
+      <div>
+        {works.map((item) => (
+          <article class="work-item">
+            <h2>{item.data.title}</h2>
+            <p>{item.data.summary}</p>
+            {item.data.role && <p class="post-meta">{item.data.role}</p>}
+            {item.data.stack.length > 0 && <p class="post-meta">{item.data.stack.join(' · ')}</p>}
+            {(item.data.url || item.data.repo) && (
+              <p class="work-links">
+                {item.data.url && (
+                  <a href={item.data.url}>站点</a>
+                )}
+                {item.data.repo && (
+                  <a href={item.data.repo}>代码</a>
+                )}
+              </p>
+            )}
+          </article>
+        ))}
+      </div>
+    )
+  }
+</Base>

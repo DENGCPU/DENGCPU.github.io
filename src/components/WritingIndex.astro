@@ -1,0 +1,84 @@
+---
+import { channels, type ChannelId } from '../data/channels';
+import {
+  channelById,
+  getPosts,
+  seriesAnchor,
+  seriesGroups,
+  type Post,
+} from '../lib/posts';
+import Base from '../layouts/Base.astro';
+import PostList from './PostList.astro';
+
+interface Props {
+  active?: ChannelId;
+}
+
+const { active } = Astro.props;
+const posts = await getPosts();
+const activeChannel = active ? channelById(active) : undefined;
+
+function postsFor(id: ChannelId) {
+  return posts.filter((post) => post.data.channel === id);
+}
+
+const sections: { title: string; posts: Post[]; grouped: boolean }[] = active
+  ? [
+      {
+        title: activeChannel?.title ?? active,
+        posts: postsFor(active),
+        grouped: active === 'frontend',
+      },
+    ]
+  : channels
+      .map((channel) => ({
+        title: channel.title,
+        posts: postsFor(channel.id),
+        grouped: channel.id === 'frontend',
+      }))
+      .filter((section) => section.posts.length > 0);
+---
+
+<Base title="文章" description="按大类查阅笔记。前端学习里保留原来的系列。">
+  <h1 class="page-title">文章</h1>
+  <p class="lede">五个大类。前端学习里的旧分类收成系列，按课程顺序排。</p>
+  <div class="chips" role="navigation" aria-label="大类">
+    <a class="chip" href="/writing/" aria-current={!active ? 'page' : undefined}>全部</a>
+    {
+      channels.map((channel) => (
+        <a
+          class="chip"
+          href={`/writing/${channel.id}/`}
+          aria-current={active === channel.id ? 'page' : undefined}
+        >
+          {channel.title}
+        </a>
+      ))
+    }
+  </div>
+
+  {
+    active && sections[0]?.posts.length === 0 ? (
+      <p class="empty">还在写。</p>
+    ) : (
+      sections.map((section) => (
+        <div>
+          {!active && <h2 class="series-heading">{section.title}</h2>}
+          {section.grouped ? (
+            seriesGroups(section.posts).map((group) => (
+              <section class="series" id={seriesAnchor(group.name)}>
+                <h2>
+                  {group.name}
+                  <span class="post-meta">{group.posts.length}</span>
+                </h2>
+                <PostList posts={group.posts} />
+              </section>
+            ))
+          ) : (
+            <PostList posts={section.posts} />
+          )}
+        </div>
+      ))
+    )
+  }
+</Base>

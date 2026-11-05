@@ -1,0 +1,87 @@
+---
+import '../styles/global.css';
+import { site } from '../data/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+  wide?: boolean;
+}
+
+const { title, description = site.description, wide = false } = Astro.props;
+const pageTitle = title ? `${title} · ${site.name}` : site.name;
+const path = Astro.url.pathname;
+
+const nav = [
+  { href: '/', label: '首页' },
+  { href: '/writing/', label: '文章' },
+  { href: '/work/', label: '作品' },
+  { href: '/about/', label: '关于' },
+];
+
+function isCurrent(href: string) {
+  if (href === '/') return path === '/';
+  return path === href || path.startsWith(href);
+}
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="canonical" href={new URL(path, Astro.site)} />
+    <script is:inline>
+      const stored = localStorage.getItem('theme');
+      const theme =
+        stored === 'light' || stored === 'dark'
+          ? stored
+          : matchMedia('(prefers-color-scheme: dark)').matches
+            ? 'dark'
+            : 'light';
+      document.documentElement.dataset.theme = theme;
+    </script>
+  </head>
+  <body class={wide ? 'wide' : undefined}>
+    <header class="site-header">
+      <div class="bar">
+        <a class="brand" href="/">{site.name}</a>
+        <div class="nav-group">
+          <nav class="site-nav" aria-label="主导航">
+            {
+              nav.map((item) => (
+                <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+                  {item.label}
+                </a>
+              ))
+            }
+          </nav>
+          <button class="theme-toggle" type="button" id="theme-toggle">
+            <span class="when-light">深色</span>
+            <span class="when-dark">浅色</span>
+          </button>
+        </div>
+      </div>
+    </header>
+    <main>
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="site-footer-inner">
+        <a href={site.about.github}>{site.name}</a>
+      </div>
+    </footer>
+    <script>
+      const button = document.getElementById('theme-toggle');
+      button?.addEventListener('click', () => {
+        const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+        document.documentElement.dataset.theme = next;
+        localStorage.setItem('theme', next);
+      });
+    </script>
+  </body>
+</html>

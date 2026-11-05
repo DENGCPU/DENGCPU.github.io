@@ -1,0 +1,106 @@
+---
+import { render } from 'astro:content';
+import { channelById, formatDate, getPosts, postHref, seriesAnchor, seriesNeighbors } from '../lib/posts';
+import Base from '../layouts/Base.astro';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { id: post.id },
+  }));
+}
+
+interface Props {
+  id: string;
+}
+
+const { id } = Astro.props;
+const posts = await getPosts();
+const post = posts.find((item) => item.id === id);
+if (!post) {
+  throw new Error(`Missing post ${id}`);
+}
+
+const channel = channelById(post.data.channel);
+const { previous, next } = seriesNeighbors(posts, post);
+const { Content, headings } = await render(post);
+const toc = headings.filter((heading) => heading.depth >= 2 && heading.depth <= 4);
+---
+
+<Base title={post.data.title} description={post.data.summary ?? post.data.title} wide>
+  <div class="post-layout">
+    <article>
+      <nav class="crumb" aria-label="面包屑">
+        <a href={`/writing/${post.data.channel}/`}>{channel?.title}</a>
+        {
+          post.data.series && (
+            <>
+              {' / '}
+              <a href={`/writing/${post.data.channel}/#${seriesAnchor(post.data.series)}`}>
+                {post.data.series}
+              </a>
+            </>
+          )
+        }
+      </nav>
+      <h1 class="page-title">{post.data.title}</h1>
+      <p class="post-date">{formatDate(post.data.date)}</p>
+      {
+        toc.length > 0 && (
+          <details class="toc-mobile">
+            <summary>目录</summary>
+            <nav class="toc" aria-label="目录">
+              <ol>
+                {toc.map((heading) => (
+                  <li class={`depth-${heading.depth}`}>
+                    <a href={`#${heading.slug}`}>{heading.text}</a>
+                  </li>
+                ))}
+              </ol>
+            </nav>
+          </details>
+        )
+      }
+      <div class="prose">
+        <Content />
+      </div>
+      {
+        (previous || next) && (
+          <nav class="post-pager" aria-label="系列内的前后篇">
+            <div>
+              {previous && (
+                <a href={postHref(previous)}>
+                  <small>上一篇</small>
+                  {previous.data.title}
+                </a>
+              )}
+            </div>
+            <div class="next">
+              {next && (
+                <a href={postHref(next)}>
+                  <small>下一篇</small>
+                  {next.data.title}
+                </a>
+              )}
+            </div>
+          </nav>
+        )
+      }
+    </article>
+    {
+      toc.length > 0 && (
+        <nav class="toc toc-desktop" aria-label="目录">
+          <p>目录</p>
+          <ol>
+            {toc.map((heading) => (
+              <li class={`depth-${heading.depth}`}>
+                <a href={`#${heading.slug}`}>{heading.text}</a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      )
+    }
+  </div>
+</Base>

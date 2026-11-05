@@ -1,0 +1,29 @@
+---
+import type { Post } from '../lib/posts';
+import { channelById, formatDate, postHref } from '../lib/posts';
+
+interface Props {
+  posts: Post[];
+  showChannel?: boolean;
+}
+
+const { posts, showChannel = false } = Astro.props;
+---
+
+<div class="post-list">
+  {
+    posts.map((post) => {
+      const channel = channelById(post.data.channel);
+      const label = post.data.series
+        ? `${channel?.title} · ${post.data.series}`
+        : channel?.title;
+      return (
+        <a class="post-row" href={postHref(post)}>
+          <span class="post-title">{post.data.title}</span>
+          <span class="post-meta">{formatDate(post.data.date)}</span>
+          {showChannel && label && <span class="channel-desc">{label}</span>}
+        </a>
+      );
+    })
+  }
+</div>

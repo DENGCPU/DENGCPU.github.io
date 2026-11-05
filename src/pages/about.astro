@@ -1,0 +1,24 @@
+---
+import { site } from '../data/site';
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="关于" description={site.about.now}>
+  <h1 class="page-title">关于</h1>
+  <section class="about-block">
+    <h2>现在</h2>
+    <p>{site.about.now}</p>
+  </section>
+  <section class="about-block">
+    <h2>技术</h2>
+    <p>{site.about.skills}</p>
+  </section>
+  <section class="about-block">
+    <h2>笔记</h2>
+    <p>{site.about.archive}</p>
+  </section>
+  <section class="about-block">
+    <h2>联系</h2>
+    <p><a href={site.about.github}>GitHub</a></p>
+  </section>
+</Base>
