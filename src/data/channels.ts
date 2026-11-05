@@ -43,5 +43,4 @@ export const seriesOrder = [
   'HTML',
   'npm',
   'bug',
-  '年度总结',
 ];
