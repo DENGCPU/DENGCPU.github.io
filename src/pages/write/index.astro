@@ -23,7 +23,7 @@ import Base from '../../layouts/Base.astro';
   </section>
 
   <section class="private-list" id="private-list" hidden>
-    <p>这台手机上的加密文章</p>
+    <p id="private-list-label">这台手机上的加密文章</p>
     <div id="private-items"></div>
   </section>
 
@@ -86,10 +86,10 @@ import Base from '../../layouts/Base.astro';
     <div id="private-block">
       <label class="check">
         <input id="private-toggle" type="checkbox" />
-        仅自己可见
+        加密正文
       </label>
       <div id="private-fields" hidden>
-        <p>不会出现在首页和文章列表。密码只在打开这篇文章时用，网站不保存。</p>
+        <p>标题会出现在这台浏览器的首页和文章列表里，并标成加密。正文要密码才能看，网站不保存密码。</p>
         <label>
           密码
           <input id="private-password" type="password" autocomplete="new-password" />
@@ -205,7 +205,9 @@ import Base from '../../layouts/Base.astro';
       try {
         const login = await identify(token);
         localStorage.setItem(tokenKey, token);
+        window.dorothyAuthor?.markAuthor();
         showConnected(login);
+        refreshPrivateList();
         if (editId && !fileSha) await loadPost();
         else if (!editId) say('已保存在这台手机。');
       } catch (error) {
@@ -272,7 +274,15 @@ import Base from '../../layouts/Base.astro';
       say('正在打开…');
       try {
         const payload = await window.dorothyLock.decryptPayload(password, cipherText);
+        window.dorothyAuthor?.markAuthor();
         privatePassword = password;
+        rememberPrivate({
+          id: editId,
+          title: payload.title || '',
+          date: String(payload.date || originalDate || '').slice(0, 10),
+          channel: payload.channel || '',
+          series: payload.series || '',
+        });
         form.querySelector('[name="title"]').value = payload.title || '';
         if (payload.channel) form.querySelector('[name="channel"]').value = payload.channel;
         form.querySelector('[name="series"]').value = payload.series || '';
@@ -312,7 +322,14 @@ import Base from '../../layouts/Base.astro';
         if (confirmLabel) confirmLabel.hidden = true;
         if (openButton) openButton.hidden = false;
         if (publishButton) publishButton.disabled = true;
-        say('输入密码，打开原文后再改。');
+        const knownTitle = parsed.data.title && parsed.data.title !== 'private';
+        if (knownTitle) {
+          form.querySelector('[name="title"]').value = parsed.data.title;
+          if (parsed.data.channel) form.querySelector('[name="channel"]').value = parsed.data.channel;
+          form.querySelector('[name="series"]').value = parsed.data.series || '';
+          form.querySelector('[name="summary"]').value = parsed.data.summary || '';
+        }
+        say(knownTitle ? '标题已经在。输入密码后才能改正文。' : '输入密码，打开原文后再改。');
         return;
       }
       form.querySelector('[name="title"]').value = parsed.data.title || '';
@@ -383,6 +400,7 @@ import Base from '../../layouts/Base.astro';
       say(editId ? '正在保存…' : '正在发布…');
       try {
         localStorage.setItem(tokenKey, token);
+        window.dorothyAuthor?.markAuthor();
         await identify(token);
         const post = { title, channel, series, summary, content };
         const filePath = editId
@@ -392,11 +410,14 @@ import Base from '../../layouts/Base.astro';
             : await createPost(token, post);
         const id = filePath.replace(/^src\/content\/posts\//, '').replace(/\.md$/, '');
         const url = 'https://dengcpu.github.io/' + id + '/';
-        if (wantsPrivate) rememberPrivate({ id, title, date: publishedDay || originalDate.slice(0, 10) });
+        if (wantsPrivate) {
+          rememberPrivate({ id, title, date: publishedDay || originalDate.slice(0, 10), channel, series });
+          refreshPrivateList();
+        }
         status.textContent = '';
         status.append(
           (editId ? '已保存。大约一分钟后打开：' : '已发布。大约一分钟后打开：') +
-            (wantsPrivate ? '它不会出现在首页和文章列表里。' : ''),
+            (wantsPrivate ? '这台浏览器的首页和文章列表能看到标题，打开需要密码。' : ''),
           Object.assign(document.createElement('a'), { href: url, textContent: url }),
         );
         if (!editId) {
@@ -515,7 +536,7 @@ import Base from '../../layouts/Base.astro';
     async function createPrivatePost(token, post, password) {
       const stamp = shanghaiStamp();
       const envelope = await window.dorothyLock.encryptPayload(password, { ...post, date: stamp.iso });
-      const markdown = renderPrivate(stamp.iso, envelope);
+      const markdown = renderPrivate({ ...post, iso: stamp.iso }, envelope);
       for (let attempt = 0; attempt < 3; attempt += 1) {
         const filePath = 'src/content/posts/private/' + randomId() + '.md';
         const response = await fetch(
@@ -545,7 +566,7 @@ import Base from '../../layouts/Base.astro';
       const filePath = 'src/content/posts/' + editId + '.md';
       const iso = originalDate || shanghaiStamp().iso;
       const markdown = password
-        ? renderPrivate(iso, await window.dorothyLock.encryptPayload(password, { ...post, date: iso }))
+        ? renderPrivate({ ...post, iso }, await window.dorothyLock.encryptPayload(password, { ...post, date: iso }))
         : render({ ...post, iso });
       const response = await fetch(
         'https://api.github.com/repos/' + repo + '/contents/' + filePath.split('/').map(encodeURIComponent).join('/'),
@@ -615,8 +636,12 @@ import Base from '../../layouts/Base.astro';
       return new TextDecoder().decode(bytes);
     }
 
-    function renderPrivate(iso, envelope) {
-      return ['---', 'title: "private"', 'date: ' + iso, 'channel: other', 'private: true', '---', '', envelope, ''].join('\n');
+    function renderPrivate(post, envelope) {
+      const lines = ['---', 'title: ' + yamlString(post.title), 'date: ' + post.iso, 'channel: ' + post.channel];
+      if (post.series) lines.push('series: ' + yamlString(post.series));
+      if (post.summary) lines.push('summary: ' + yamlString(post.summary));
+      lines.push('private: true', '---', '', envelope, '');
+      return lines.join('\n');
     }
 
     function randomId() {
@@ -655,7 +680,7 @@ import Base from '../../layouts/Base.astro';
         const li = document.createElement('li');
         const link = document.createElement('a');
         link.href = '/' + entry.id + '/';
-        link.textContent = entry.title || '加密文章';
+        link.textContent = (entry.title || '加密文章') + (entry.date ? ' · ' + String(entry.date).slice(0, 10) : '');
         const edit = document.createElement('a');
         edit.href = '/write/?post=' + encodeURIComponent(entry.id);
         edit.textContent = '修改';
@@ -665,7 +690,29 @@ import Base from '../../layouts/Base.astro';
       items.append(ul);
     }
 
+    async function refreshPrivateList() {
+      if (!window.dorothyAuthor || !window.dorothyAuthor.isAuthor()) {
+        renderPrivateList();
+        return;
+      }
+      const label = document.querySelector('#private-list-label');
+      if (label && !readPrivateList().length) {
+        const section = document.querySelector('#private-list');
+        if (section) section.hidden = false;
+        label.textContent = '正在读取加密文章…';
+      }
+      try {
+        await window.dorothyAuthor.list();
+        if (label) label.textContent = '加密文章';
+      } catch (error) {
+        if (label) label.textContent = '这台手机上的加密文章';
+      }
+      renderPrivateList();
+    }
+
     renderPrivateList();
+    if (window.dorothyAuthor) refreshPrivateList();
+    else document.addEventListener('dorothy-author-ready', () => { refreshPrivateList(); });
 
     function render(post) {
       const lines = ['---', 'title: ' + yamlString(post.title), 'date: ' + post.iso, 'channel: ' + post.channel];

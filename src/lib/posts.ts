@@ -22,6 +22,11 @@ export async function getPosts() {
   return posts.filter((post) => !post.data.private);
 }
 
+export function postTitle(post: Post) {
+  if (post.data.private && post.data.title === 'private') return '加密文章';
+  return post.data.title;
+}
+
 export async function getWorks() {
   const works = await getCollection('work');
   return works.sort((a, b) => {

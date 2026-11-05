@@ -1,6 +1,6 @@
 ---
 import type { Post } from '../lib/posts';
-import { channelById, formatDate, postHref } from '../lib/posts';
+import { channelById, formatDate, postHref, postTitle } from '../lib/posts';
 
 interface Props {
   posts: Post[];
@@ -19,7 +19,10 @@ const { posts, showChannel = false } = Astro.props;
         : channel?.title;
       return (
         <a class="post-row" href={postHref(post)}>
-          <span class="post-title">{post.data.title}</span>
+          <span class="post-title">
+            {postTitle(post)}
+            {post.data.private && <span class="lock-mark">加密</span>}
+          </span>
           <span class="post-meta">{formatDate(post.data.date)}</span>
           {showChannel && label && <span class="channel-desc">{label}</span>}
         </a>

@@ -22,9 +22,10 @@ function postsFor(id: ChannelId) {
   return posts.filter((post) => post.data.channel === id);
 }
 
-const sections: { title: string; posts: Post[]; grouped: boolean }[] = active
+const sections: { id: ChannelId; title: string; posts: Post[]; grouped: boolean }[] = active
   ? [
       {
+        id: active,
         title: activeChannel?.title ?? active,
         posts: postsFor(active),
         grouped: active === 'frontend',
@@ -32,6 +33,7 @@ const sections: { title: string; posts: Post[]; grouped: boolean }[] = active
     ]
   : channels
       .map((channel) => ({
+        id: channel.id,
         title: channel.title,
         posts: postsFor(channel.id),
         grouped: channel.id === 'frontend',
@@ -57,28 +59,30 @@ const sections: { title: string; posts: Post[]; grouped: boolean }[] = active
     }
   </div>
 
-  {
-    active && sections[0]?.posts.length === 0 ? (
-      <p class="empty">还在写。</p>
-    ) : (
-      sections.map((section) => (
-        <div>
-          {!active && <h2 class="series-heading">{section.title}</h2>}
-          {section.grouped ? (
-            seriesGroups(section.posts).map((group) => (
-              <section class="series" id={seriesAnchor(group.name)}>
-                <h2>
-                  {group.name}
-                  <span class="post-meta">{group.posts.length}</span>
-                </h2>
-                <PostList posts={group.posts} />
-              </section>
-            ))
-          ) : (
-            <PostList posts={section.posts} />
-          )}
-        </div>
-      ))
-    )
-  }
+  <div id="writing-index" data-active={active ?? ''}>
+    {
+      active && sections[0]?.posts.length === 0 ? (
+        <p class="empty">还在写。</p>
+      ) : (
+        sections.map((section) => (
+          <div data-channel={section.id}>
+            {!active && <h2 class="series-heading">{section.title}</h2>}
+            {section.grouped ? (
+              seriesGroups(section.posts).map((group) => (
+                <section class="series" id={seriesAnchor(group.name)} data-series={group.name}>
+                  <h2>
+                    {group.name}
+                    <span class="post-meta">{group.posts.length}</span>
+                  </h2>
+                  <PostList posts={group.posts} />
+                </section>
+              ))
+            ) : (
+              <PostList posts={section.posts} />
+            )}
+          </div>
+        ))
+      )
+    }
+  </div>
 </Base>

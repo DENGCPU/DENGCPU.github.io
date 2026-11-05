@@ -1,6 +1,6 @@
 ---
 import { render } from 'astro:content';
-import { channelById, formatDate, getAllPosts, postHref, seriesAnchor, seriesNeighbors } from '../lib/posts';
+import { channelById, formatDate, getAllPosts, postHref, postTitle, seriesAnchor, seriesNeighbors } from '../lib/posts';
 import Base from '../layouts/Base.astro';
 
 export async function getStaticPaths() {
@@ -23,6 +23,7 @@ if (!post) {
 }
 
 const locked = post.data.private === true;
+const lockedTitle = postTitle(post);
 const publicPosts = allPosts.filter((item) => !item.data.private);
 const channel = channelById(post.data.channel);
 const { previous, next } = locked
@@ -36,16 +37,16 @@ const cipher = locked ? (post.body ?? '').trim().replaceAll('<', '\\u003c') : ''
 ---
 
 <Base
-  title={locked ? '加密文章' : post.data.title}
-  description={locked ? '这篇文章上了锁。' : (post.data.summary ?? post.data.title)}
+  title={locked ? lockedTitle : post.data.title}
+  description={locked ? '输入密码后才能阅读正文。' : (post.data.summary ?? post.data.title)}
   wide={!locked}
   noindex={locked}
 >
   {
     locked ? (
       <article class="lock">
-        <h1 class="page-title" id="private-title">加密文章</h1>
-        <p class="lede" id="private-lede">输入密码后才能阅读。这篇文章不在首页和文章列表里。</p>
+        <h1 class="page-title" id="private-title">{lockedTitle}</h1>
+        <p class="lede" id="private-lede">输入密码后才能阅读正文。</p>
         <div id="lock-box">
           <label>
             密码
@@ -54,7 +55,7 @@ const cipher = locked ? (post.body ?? '').trim().replaceAll('<', '\\u003c') : ''
           <p id="lock-status" role="status"></p>
           <button type="button" id="lock-open">打开</button>
         </div>
-        <p class="post-date" id="private-date" hidden></p>
+        <p class="post-date" id="private-date">{formatDate(post.data.date)}</p>
         <div class="prose" id="private-body" hidden></div>
         <p id="private-meta" data-id={post.id} hidden></p>
         <textarea id="cipher" hidden>{cipher}</textarea>
@@ -78,8 +79,17 @@ const cipher = locked ? (post.body ?? '').trim().replaceAll('<', '\\u003c') : ''
             openButton.disabled = true;
             try {
               const payload = await window.dorothyLock.decryptPayload(password, cipherField.value.trim());
-              document.querySelector('#private-title').textContent = payload.title || '加密文章';
-              document.title = (payload.title || '加密文章') + ' · DorothyJay';
+              const openedTitle = payload.title && payload.title !== 'private' ? payload.title : document.querySelector('#private-title').textContent;
+              localStorage.setItem('dorothyjay-author', '1');
+              window.dorothyAuthor?.remember({
+                id: document.querySelector('#private-meta').dataset.id,
+                title: openedTitle,
+                date: payload.date,
+                channel: payload.channel,
+                series: payload.series,
+              });
+              document.querySelector('#private-title').textContent = openedTitle;
+              document.title = openedTitle + ' · DorothyJay';
               const date = document.querySelector('#private-date');
               date.hidden = false;
               date.textContent = String(payload.date || '').slice(0, 10);
