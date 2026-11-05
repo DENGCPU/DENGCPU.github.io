@@ -163,16 +163,34 @@ body.wide {
 .site-nav a:hover { color: var(--ink); }
 
 .theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.7rem;
+  height: 1.7rem;
   border: 0;
   background: transparent;
   color: var(--muted);
-  font: inherit;
-  font-size: 0.95rem;
   padding: 0;
   cursor: pointer;
 }
 
+.theme-toggle svg {
+  width: 1.15rem;
+  height: 1.15rem;
+  display: block;
+}
+
 .theme-toggle:hover { color: var(--ink); }
+
+.side-trees {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
 
 [data-theme='dark'] .when-light,
 [data-theme='light'] .when-dark { display: none; }
@@ -521,8 +539,8 @@ main { padding: 3.25rem 0 4.5rem; }
     gap: 0.75rem 0.9rem;
     justify-content: flex-start;
   }
-  .site-nav a,
-  .theme-toggle { font-size: 0.92rem; }
+  .site-nav a { font-size: 0.92rem; }
+  .side-trees { display: none; }
   main { padding-top: 2.2rem; }
   .home-name { font-size: 2rem; }
   .post-row,
