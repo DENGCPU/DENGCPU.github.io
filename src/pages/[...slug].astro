@@ -65,7 +65,7 @@ const cipher = locked ? (post.body ?? '').trim().replaceAll('<', '\\u003c') : ''
           const openButton = document.querySelector('#lock-open');
           const passwordInput = document.querySelector('#lock-password');
           const lockStatus = document.querySelector('#lock-status');
-          const markdown = window.markdownit({ html: false, linkify: true });
+          const markdown = window.markdownit({ html: true, linkify: true });
           markdown.validateLink = (url) => /^(https?:|mailto:|\/|#)/.test(url);
 
           async function openPost() {

@@ -46,10 +46,43 @@ import Base from '../../layouts/Base.astro';
       摘要
       <input name="summary" placeholder="一句话，可以留空" />
     </label>
-    <label>
-      正文
-      <textarea name="content" rows="14"></textarea>
-    </label>
+    <div class="editor-field">
+      <p class="field-name">正文</p>
+      <div class="md-editor" id="md-editor">
+        <div class="md-bar" role="toolbar" aria-label="正文格式">
+          <button type="button" data-cmd="undo" aria-label="撤销"><svg viewBox="0 0 24 24"><path d="M9 14L5 10l4-4" /><path d="M5 10h8a5 5 0 1 1 0 8h-2" /></svg></button>
+          <button type="button" data-cmd="redo" aria-label="重做"><svg viewBox="0 0 24 24"><path d="M15 14l4-4-4-4" /><path d="M19 10h-8a5 5 0 1 0 0 8h2" /></svg></button>
+          <span class="md-gap"></span>
+          <select id="md-style" aria-label="段落样式">
+            <option value="P">常规</option>
+            <option value="H2">标题</option>
+            <option value="H3">小标题</option>
+            <option value="H4">小节</option>
+          </select>
+          <span class="md-gap"></span>
+          <button type="button" data-cmd="bold" aria-label="加粗"><b>B</b></button>
+          <button type="button" data-cmd="italic" aria-label="斜体"><i>I</i></button>
+          <button type="button" data-cmd="underline" aria-label="下划线"><u>U</u></button>
+          <button type="button" data-cmd="strikeThrough" aria-label="删除线"><s>S</s></button>
+          <span class="md-gap"></span>
+          <button type="button" data-cmd="insertUnorderedList" aria-label="无序列表"><svg viewBox="0 0 24 24"><path d="M10 7h10M10 12h10M10 17h10" /><circle cx="5.5" cy="7" r="1.6" /><circle cx="5.5" cy="12" r="1.6" /><circle cx="5.5" cy="17" r="1.6" /></svg></button>
+          <button type="button" data-cmd="insertOrderedList" aria-label="有序列表"><svg viewBox="0 0 24 24"><path d="M10 7h10M10 12h10M10 17h10" /><path d="M4 8V5l-1 .5M3.5 12h2M3.5 10.5c.8 0 1.5.4 1.5 1.2S4.2 13 3.2 13M4 16c.8.4 1.2.9 1.2 1.5 0 .8-.7 1.5-1.7 1.5H3" /></svg></button>
+          <span class="md-gap"></span>
+          <button type="button" data-cmd="link" aria-label="链接"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1.2 1.2" /><path d="M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1.2-1.2" /></svg></button>
+          <button type="button" data-cmd="image" aria-label="图片"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="1.5" /><circle cx="9" cy="10" r="1.3" /><path d="M4 16l4.5-4 3.5 3 2.5-2L20 16" /></svg></button>
+          <button type="button" data-cmd="quote" aria-label="引用"><svg viewBox="0 0 24 24"><path d="M8 16c-2 0-3-1.4-3-3.2V9h4v4H7.2c.2 1.4.8 2 1.8 2.2" /><path d="M16 16c-2 0-3-1.4-3-3.2V9h4v4h-1.8c.2 1.4.8 2 1.8 2.2" /></svg></button>
+          <button type="button" data-cmd="hr" aria-label="分隔线"><svg viewBox="0 0 24 24"><path d="M5 12h14" /></svg></button>
+          <button type="button" data-cmd="code" aria-label="代码"><svg viewBox="0 0 24 24"><path d="M9 8l-4 4 4 4M15 8l4 4-4 4" /></svg></button>
+        </div>
+        <div class="md-pop" id="md-pop" hidden>
+          <input id="md-pop-input" type="text" inputmode="url" autocomplete="off" placeholder="https://" />
+          <button type="button" id="md-pop-ok">插入</button>
+        </div>
+        <div id="md-surface" class="md-surface" contenteditable="true" role="textbox" aria-multiline="true" aria-label="正文" data-placeholder="开始写"></div>
+        <div class="md-foot"><span id="md-count">0</span></div>
+      </div>
+      <textarea class="md-source" name="content" hidden></textarea>
+    </div>
     <div id="private-block">
       <label class="check">
         <input id="private-toggle" type="checkbox" />
@@ -71,6 +104,9 @@ import Base from '../../layouts/Base.astro';
     <p class="composer-status" id="composer-status" role="status"></p>
     <button class="publish" type="button" id="publish">发布</button>
   </form>
+  <script is:inline src="/vendor/markdown-it.js"></script>
+  <script is:inline src="/vendor/turndown.js"></script>
+  <script is:inline src="/vendor/turndown-plugin-gfm.js"></script>
   <script is:inline src="/lock.js"></script>
   <script is:inline>
     const repo = 'DENGCPU/DENGCPU.github.io';
@@ -224,7 +260,7 @@ import Base from '../../layouts/Base.astro';
         if (payload.channel) form.querySelector('[name="channel"]').value = payload.channel;
         form.querySelector('[name="series"]').value = payload.series || '';
         form.querySelector('[name="summary"]').value = payload.summary || '';
-        form.querySelector('[name="content"]').value = payload.content || '';
+        setEditorMarkdown(payload.content || '');
         if (publishButton) publishButton.disabled = false;
         if (privateFields) privateFields.hidden = true;
         say('已打开。改完点保存，仍用这个密码。');
@@ -266,7 +302,7 @@ import Base from '../../layouts/Base.astro';
       if (parsed.data.channel) form.querySelector('[name="channel"]').value = parsed.data.channel;
       form.querySelector('[name="series"]').value = parsed.data.series || '';
       form.querySelector('[name="summary"]').value = parsed.data.summary || '';
-      form.querySelector('[name="content"]').value = parsed.body.replace(/^\n/, '').replace(/\n$/, '');
+      setEditorMarkdown(parsed.body.replace(/^\n/, '').replace(/\n$/, ''));
       say('');
     }
 
@@ -286,6 +322,7 @@ import Base from '../../layouts/Base.astro';
     }
 
     publishButton?.addEventListener('click', async () => {
+      if (editorDirty) contentField.value = currentMarkdown();
       const typed = (tokenInput?.value || '').trim();
       const token = typed || savedToken();
       if (!token) {
@@ -347,6 +384,7 @@ import Base from '../../layouts/Base.astro';
         );
         if (!editId) {
           form.reset();
+          setEditorMarkdown('');
           if (privateFields) privateFields.hidden = true;
           showConnected(owner);
         }
@@ -559,6 +597,205 @@ import Base from '../../layouts/Base.astro';
       const parts = text.split(' ');
       return { day: parts[0], iso: parts[0] + 'T' + parts[1] };
     }
+
+    let editorDirty = false;
+    let mdEditor = null;
+    let mdSurface = null;
+    let contentField = null;
+    let turndownService = null;
+    let savedRange = null;
+
+    function setEditorMarkdown(markdown) {
+      const value = markdown || '';
+      editorDirty = false;
+      if (contentField) contentField.value = value;
+      if (!mdSurface || !mdEditor) return;
+      mdSurface.innerHTML = value ? mdEditor.render(value) : '';
+      updateEditorCount();
+    }
+
+    function currentMarkdown() {
+      if (!mdSurface || !turndownService) return contentField ? contentField.value : '';
+      const clone = mdSurface.cloneNode(true);
+      clone.querySelectorAll('[style]').forEach((node) => node.removeAttribute('style'));
+      return turndownService
+        .turndown(clone.innerHTML)
+        .replace(/\n{3,}/g, '\n\n')
+        .replace(/^(\s*)([-*+]|\d+\.) {2,}/gm, '$1$2 ')
+        .trim();
+    }
+
+    function updateEditorCount() {
+      const count = document.querySelector('#md-count');
+      if (!count || !mdSurface) return;
+      count.textContent = String(mdSurface.innerText.replace(/\n$/, '').trim().length);
+    }
+
+    function saveSelection() {
+      const selection = getSelection();
+      if (!selection || !selection.rangeCount || !mdSurface.contains(selection.anchorNode)) return;
+      savedRange = selection.getRangeAt(0);
+    }
+
+    function restoreSelection() {
+      mdSurface.focus();
+      if (!savedRange) return;
+      const selection = getSelection();
+      selection.removeAllRanges();
+      selection.addRange(savedRange);
+    }
+
+    function escapeHtml(value) {
+      return value.replace(/[&<>"]/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[char]);
+    }
+
+    function safeUrl(value) {
+      const url = value.trim();
+      if (/^(https?:\/\/|mailto:|\/)/.test(url)) return url;
+      return '';
+    }
+
+    function formatBlock(tag) {
+      document.execCommand('formatBlock', false, '<' + tag.toLowerCase() + '>');
+    }
+
+    function insertCode() {
+      const selection = getSelection();
+      const text = selection && mdSurface.contains(selection.anchorNode) ? selection.toString() : '';
+      const block = text.includes('\n') || !text;
+      const html = block
+        ? '<pre><code>' + escapeHtml(text || '代码') + '</code></pre>'
+        : '<code>' + escapeHtml(text) + '</code>';
+      document.execCommand('insertHTML', false, html);
+    }
+
+    function refreshToolbar() {
+      const bar = document.querySelector('.md-bar');
+      if (!bar) return;
+      bar.querySelectorAll('button[data-cmd]').forEach((button) => {
+        const command = button.dataset.cmd;
+        if (!['bold', 'italic', 'underline', 'strikeThrough', 'insertUnorderedList', 'insertOrderedList'].includes(command)) return;
+        button.setAttribute('aria-pressed', document.queryCommandState(command) ? 'true' : 'false');
+      });
+      const styleSelect = document.querySelector('#md-style');
+      const selection = getSelection();
+      if (!styleSelect || !selection || !selection.anchorNode || !mdSurface.contains(selection.anchorNode)) return;
+      const node = selection.anchorNode.nodeType === 1 ? selection.anchorNode : selection.anchorNode.parentElement;
+      const block = node && node.closest('h2, h3, h4, p');
+      const value = block ? block.tagName : 'P';
+      if ([...styleSelect.options].some((option) => option.value === value)) styleSelect.value = value;
+    }
+
+    function markEditor() {
+      editorDirty = true;
+      if (contentField) contentField.value = currentMarkdown();
+      updateEditorCount();
+      refreshToolbar();
+    }
+
+    function initEditor() {
+      const editor = document.querySelector('#md-editor');
+      contentField = document.querySelector('[name="content"]');
+      mdSurface = document.querySelector('#md-surface');
+      if (!editor || !contentField || !mdSurface || !window.markdownit || !window.TurndownService || !window.turndownPluginGfm) {
+        if (contentField) contentField.classList.add('is-open');
+        if (editor) editor.hidden = true;
+        return;
+      }
+      mdEditor = window.markdownit({ html: true, linkify: true });
+      mdEditor.validateLink = (url) => /^(https?:|mailto:|\/|#)/.test(url);
+      turndownService = new window.TurndownService({
+        headingStyle: 'atx',
+        codeBlockStyle: 'fenced',
+        bulletListMarker: '-',
+        emDelimiter: '*',
+        strongDelimiter: '**',
+      });
+      turndownService.use(window.turndownPluginGfm.gfm);
+      turndownService.addRule('div', {
+        filter: 'div',
+        replacement: (content) => '\n\n' + content + '\n\n',
+      });
+      turndownService.addRule('keepHtml', {
+        filter: ['u', 's', 'strike'],
+        replacement: (content, node) => {
+          const tag = node.nodeName.toLowerCase() === 'strike' ? 's' : node.nodeName.toLowerCase();
+          return '<' + tag + '>' + content + '</' + tag + '>';
+        },
+      });
+      document.execCommand('defaultParagraphSeparator', false, 'p');
+
+      const pop = document.querySelector('#md-pop');
+      const popInput = document.querySelector('#md-pop-input');
+      let popMode = 'link';
+
+      editor.querySelector('.md-bar').addEventListener('mousedown', (event) => {
+        if (event.target.closest('button')) {
+          saveSelection();
+          event.preventDefault();
+        }
+      });
+      document.querySelector('#md-style').addEventListener('mousedown', saveSelection);
+      document.querySelector('#md-style').addEventListener('change', (event) => {
+        restoreSelection();
+        formatBlock(event.target.value);
+        markEditor();
+      });
+      editor.querySelector('.md-bar').addEventListener('click', (event) => {
+        const button = event.target.closest('button[data-cmd]');
+        if (!button) return;
+        const command = button.dataset.cmd;
+        restoreSelection();
+        if (command === 'link' || command === 'image') {
+          popMode = command;
+          pop.hidden = false;
+          popInput.value = '';
+          popInput.placeholder = command === 'image' ? '图片地址' : '链接地址';
+          popInput.focus();
+          return;
+        }
+        if (command === 'quote') formatBlock('blockquote');
+        else if (command === 'code') insertCode();
+        else if (command === 'hr') document.execCommand('insertHorizontalRule');
+        else document.execCommand(command);
+        markEditor();
+      });
+      document.querySelector('#md-pop-ok').addEventListener('click', () => {
+        const url = safeUrl(popInput.value);
+        if (!url) {
+          say('请填一个 http 开头的地址。');
+          return;
+        }
+        restoreSelection();
+        if (popMode === 'image') {
+          document.execCommand('insertImage', false, url);
+        } else {
+          const selection = getSelection();
+          if (!selection || selection.isCollapsed) {
+            document.execCommand('insertHTML', false, '<a href="' + escapeHtml(url) + '">' + escapeHtml(url) + '</a>');
+          } else {
+            document.execCommand('createLink', false, url);
+          }
+        }
+        pop.hidden = true;
+        markEditor();
+      });
+      popInput.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          event.preventDefault();
+          document.querySelector('#md-pop-ok').click();
+        }
+      });
+      mdSurface.addEventListener('input', markEditor);
+      mdSurface.addEventListener('keyup', refreshToolbar);
+      mdSurface.addEventListener('mouseup', refreshToolbar);
+      document.addEventListener('selectionchange', () => {
+        if (document.activeElement === mdSurface) refreshToolbar();
+      });
+      updateEditorCount();
+    }
+
+    initEditor();
   </script>
 </Base>
 
@@ -611,12 +848,188 @@ import Base from '../../layouts/Base.astro';
     padding: 0.35rem 0;
   }
 
-  .composer textarea {
+  .composer textarea.md-source.is-open {
+    display: block !important;
     min-height: 16rem;
     border: 1px solid var(--line);
     border-radius: 6px;
     padding: 0.7rem 0.8rem;
     resize: vertical;
+  }
+
+  textarea.md-source {
+    display: none !important;
+  }
+
+  .editor-field {
+    margin-top: 1.15rem;
+  }
+
+  .field-name {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.92rem;
+  }
+
+  .md-editor {
+    margin-top: 0.35rem;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: color-mix(in srgb, var(--code-bg) 65%, transparent);
+  }
+
+  .md-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.1rem;
+    padding: 0.3rem 0.35rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .md-bar button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.9rem;
+    height: 1.9rem;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 4px;
+    background: transparent;
+    color: var(--ink);
+    font: inherit;
+    font-size: 0.92rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .md-bar button[aria-pressed='true'] {
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+  }
+
+  .md-bar svg {
+    width: 1.05rem;
+    height: 1.05rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .md-bar svg circle {
+    fill: currentColor;
+    stroke: none;
+  }
+
+  .md-gap {
+    width: 1px;
+    align-self: stretch;
+    margin: 0.35rem 0.2rem;
+    background: var(--line);
+  }
+
+  .composer .md-bar select {
+    width: auto;
+    height: 1.9rem;
+    margin: 0;
+    padding: 0 0.2rem;
+    border: 0;
+    border-radius: 4px;
+    background: transparent;
+    color: var(--ink);
+    font-size: 0.88rem;
+  }
+
+  .md-pop[hidden] {
+    display: none !important;
+  }
+
+  .md-pop {
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+    padding: 0.45rem 0.6rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .composer .md-pop input {
+    flex: 1;
+    width: auto;
+    margin: 0;
+  }
+
+  .md-pop button {
+    margin: 0;
+    border: 0;
+    background: transparent;
+    color: var(--accent);
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .md-surface {
+    min-height: 16rem;
+    padding: 0.75rem 0.85rem 0.4rem;
+    outline: none;
+    line-height: 1.75;
+  }
+
+  .md-surface:focus {
+    outline: none;
+  }
+
+  .md-surface:empty::before {
+    content: attr(data-placeholder);
+    color: var(--muted);
+  }
+
+  .md-surface h2,
+  .md-surface h3,
+  .md-surface h4 {
+    font-family: var(--serif);
+    line-height: 1.35;
+  }
+
+  .md-surface h2 { margin: 1rem 0 0.4rem; font-size: 1.35rem; }
+  .md-surface h3 { margin: 0.9rem 0 0.35rem; font-size: 1.16rem; }
+  .md-surface h4 { margin: 0.8rem 0 0.3rem; font-size: 1.02rem; }
+  .md-surface p { margin: 0.55rem 0; }
+  .md-surface ul,
+  .md-surface ol { margin: 0.55rem 0; padding-left: 1.25rem; }
+  .md-surface a { color: var(--accent); }
+  .md-surface blockquote {
+    margin: 0.8rem 0;
+    padding-left: 0.8rem;
+    border-left: 2px solid var(--accent);
+    color: var(--muted);
+  }
+  .md-surface pre {
+    overflow-x: auto;
+    margin: 0.8rem 0;
+    padding: 0.7rem 0.8rem;
+    border-radius: 6px;
+    background: var(--code-bg);
+  }
+  .md-surface code {
+    font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    font-size: 0.9em;
+  }
+  .md-surface :not(pre) > code {
+    padding: 0.1em 0.3em;
+    border-radius: 4px;
+    background: var(--code-bg);
+  }
+  .md-surface img { max-width: 100%; }
+
+  .md-foot {
+    padding: 0.15rem 0.7rem 0.45rem;
+    color: var(--muted);
+    font-size: 0.78rem;
+    text-align: right;
   }
 
   .composer select {
