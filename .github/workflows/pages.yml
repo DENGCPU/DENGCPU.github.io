@@ -23,6 +23,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Install and build
+        timeout-minutes: 6
+        run: |
+          npm ci --no-audit --no-fund --registry https://registry.npmjs.org
+          npm run build
       - name: Upload site
         uses: actions/upload-pages-artifact@v3
         with:

@@ -46,12 +46,18 @@ featured: true
 
 首页的介绍、关于页的句子在 `src/data/site.ts`。
 
+## 从手机写文章
+
+用浏览器打开这个页面，登录 GitHub 后填写并提交。可以把它加到手机主屏幕：
+
+https://github.com/DENGCPU/DENGCPU.github.io/issues/new?template=new-post.yml
+
+只有这个仓库的主人提交才会写成文章。大约一分钟后出现在网站上，issue 里会留下文章地址。
+
+改已经发布的文章：在 GitHub 里打开 `src/content/posts/` 下对应的 Markdown，保存并提交。
+
 ## 部署
 
-改完内容后先在本地构建，再推送。GitHub Actions 会把 `dist` 发布到 GitHub Pages。
-
-```bash
-npm run build
-```
+提交到 `master` 之后，GitHub Actions 会安装依赖、构建并发布。不需要再提交 `dist`。
 
 仓库的 Pages 来源是 **GitHub Actions**。

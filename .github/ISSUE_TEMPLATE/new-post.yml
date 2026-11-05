@@ -1,0 +1,44 @@
+name: 新文章
+description: 写一篇文章，提交后网站会自动更新
+title: "新文章"
+labels: ["新文章"]
+body:
+  - type: markdown
+    attributes:
+      value: 提交后大约一分钟会出现在网站上。
+  - type: input
+    id: title
+    attributes:
+      label: 标题
+      placeholder: 文章标题
+    validations:
+      required: true
+  - type: dropdown
+    id: channel
+    attributes:
+      label: 大类
+      options:
+        - 生活
+        - AI
+        - 书籍
+        - 前端学习
+        - 其他
+    validations:
+      required: true
+  - type: input
+    id: series
+    attributes:
+      label: 系列
+      description: 只有前端学习需要，其他大类留空。
+      placeholder: 例如 React
+  - type: textarea
+    id: summary
+    attributes:
+      label: 摘要
+      description: 一句话，会出现在列表里。可以留空。
+  - type: textarea
+    id: content
+    attributes:
+      label: 正文
+    validations:
+      required: true
