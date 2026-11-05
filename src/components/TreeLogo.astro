@@ -1,0 +1,105 @@
+---
+import { DJ_PATH, DJ_DOT } from '../lib/tree';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<svg
+  class={className}
+  viewBox="0 0 100 100"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+  aria-hidden="true"
+>
+  <title>dj</title>
+  <path
+    class="tree-path"
+    d={DJ_PATH}
+    stroke="currentColor"
+    stroke-width="2.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <circle
+    class="tree-dot"
+    cx={DJ_DOT.cx}
+    cy={DJ_DOT.cy}
+    r={DJ_DOT.r}
+    fill="currentColor"
+  />
+</svg>
+
+<style>
+  .tree-path {
+    stroke-dashoffset: 1px;
+    stroke-dasharray: 350 0;
+    transform-origin: 50%;
+    animation: 10s infinite forwards tree-grow;
+  }
+
+  .tree-dot {
+    opacity: 0;
+    animation: 10s infinite forwards tree-dot-in;
+  }
+
+  @keyframes tree-grow {
+    0% {
+      stroke-dashoffset: 1px;
+      stroke-dasharray: 0 350;
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    40% {
+      stroke-dasharray: 350 0;
+    }
+    85% {
+      stroke-dasharray: 350 0;
+    }
+    95%,
+    100% {
+      stroke-dasharray: 0 350;
+      opacity: 0;
+    }
+  }
+
+  @keyframes tree-dot-in {
+    0%,
+    20% {
+      opacity: 0;
+    }
+    30%,
+    90% {
+      opacity: 1;
+    }
+    95%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tree-path,
+    .tree-dot {
+      animation: none;
+    }
+    .tree-dot {
+      opacity: 1;
+    }
+  }
+
+  @media print {
+    .tree-path,
+    .tree-dot {
+      animation: none;
+    }
+    .tree-dot {
+      opacity: 1;
+    }
+  }
+</style>

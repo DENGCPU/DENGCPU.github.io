@@ -1,0 +1,149 @@
+---
+import { DJ_PATH, DJ_DOT } from '../lib/tree';
+---
+
+<div class="side-trees" aria-hidden="true">
+  <svg
+    class="side-tree side-tree--left"
+    viewBox="0 0 100 100"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      class="side-tree-path"
+      d={DJ_PATH}
+      stroke="currentColor"
+      stroke-width="2.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <circle
+      class="side-tree-dot"
+      cx={DJ_DOT.cx}
+      cy={DJ_DOT.cy}
+      r={DJ_DOT.r}
+      fill="currentColor"
+    />
+  </svg>
+
+  <svg
+    class="side-tree side-tree--right"
+    viewBox="0 0 100 100"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      class="side-tree-path"
+      d={DJ_PATH}
+      stroke="currentColor"
+      stroke-width="2.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <circle
+      class="side-tree-dot"
+      cx={DJ_DOT.cx}
+      cy={DJ_DOT.cy}
+      r={DJ_DOT.r}
+      fill="currentColor"
+    />
+  </svg>
+</div>
+
+<style>
+  .side-trees {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .side-tree {
+    position: absolute;
+    width: min(320px, calc((100vw - var(--page)) / 2));
+    height: auto;
+    color: var(--ink);
+    opacity: 0.3;
+  }
+
+  .side-tree--left {
+    left: -2%;
+    bottom: -2%;
+  }
+
+  .side-tree--right {
+    right: -2%;
+    top: -2%;
+    transform: rotate(180deg);
+  }
+
+  .side-tree-path {
+    stroke-dashoffset: 1px;
+    stroke-dasharray: 350 0;
+    transform-origin: 50%;
+    animation: 14s infinite forwards side-tree-grow;
+  }
+
+  .side-tree-dot {
+    opacity: 0;
+    animation: 14s infinite forwards side-tree-dot-in;
+  }
+
+  @keyframes side-tree-grow {
+    0% {
+      stroke-dashoffset: 1px;
+      stroke-dasharray: 0 350;
+    }
+    40% {
+      stroke-dasharray: 350 0;
+    }
+    85% {
+      stroke-dasharray: 350 0;
+    }
+    95%,
+    100% {
+      stroke-dasharray: 0 350;
+    }
+  }
+
+  @keyframes side-tree-dot-in {
+    0%,
+    20% {
+      opacity: 0;
+    }
+    30%,
+    90% {
+      opacity: 1;
+    }
+    95%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @media (max-width: 1080px) {
+    .side-trees {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .side-tree-path,
+    .side-tree-dot {
+      animation: none;
+    }
+    .side-tree-dot {
+      opacity: 1;
+    }
+  }
+
+  @media print {
+    .side-tree-path,
+    .side-tree-dot {
+      animation: none;
+    }
+    .side-tree-dot {
+      opacity: 1;
+    }
+  }
+</style>

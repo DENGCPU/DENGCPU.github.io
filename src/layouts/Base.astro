@@ -1,6 +1,8 @@
 ---
 import '../styles/global.css';
 import { site } from '../data/site';
+import TreeLogo from '../components/TreeLogo.astro';
+import SideTrees from '../components/SideTrees.astro';
 
 interface Props {
   title?: string;
@@ -57,10 +59,10 @@ function isCurrent(href: string) {
     </script>
   </head>
   <body class={wide ? 'wide' : undefined}>
-    {path === '/' && <canvas id="side-trees" class="side-trees" aria-hidden="true"></canvas>}
+    {path === '/' && <SideTrees />}
     <header class="site-header">
       <div class="bar">
-        <a class="brand" href="/">{site.name}</a>
+        <a class="brand" href="/"><TreeLogo class="brand-logo" /><span>{site.name}</span></a>
         <div class="nav-group">
           <nav class="site-nav" aria-label="主导航">
             {
@@ -109,117 +111,6 @@ function isCurrent(href: string) {
         localStorage.setItem('theme', next);
         syncLabel();
       });
-
-      const canvas = document.getElementById('side-trees');
-      if (canvas instanceof HTMLCanvasElement) {
-          const spread = Math.PI / 7;
-        const segments: number[][] = [];
-        let generation = 0;
-        let ctx: CanvasRenderingContext2D | null = null;
-        let width = 0;
-        let height = 0;
-        let dpr = 1;
-
-        const ink = () =>
-          document.documentElement.dataset.theme === 'dark'
-            ? 'rgba(244, 234, 220, 0.34)'
-            : 'rgba(74, 52, 36, 0.38)';
-
-        const paint = () => {
-          if (!ctx) return;
-          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-          ctx.clearRect(0, 0, width, height);
-          ctx.lineWidth = 1.15;
-          ctx.lineCap = 'round';
-          ctx.strokeStyle = ink();
-          ctx.beginPath();
-          for (const [x1, y1, x2, y2] of segments) {
-            ctx.moveTo(x1, y1);
-            ctx.lineTo(x2, y2);
-          }
-          ctx.stroke();
-        };
-
-        const grow = () => {
-          if (matchMedia('(max-width: 760px)').matches) {
-            generation += 1;
-            segments.length = 0;
-            canvas.width = 0;
-            canvas.height = 0;
-            return;
-          }
-          const gen = ++generation;
-          segments.length = 0;
-          width = window.innerWidth;
-          height = window.innerHeight;
-          dpr = Math.min(window.devicePixelRatio || 1, 2);
-          canvas.width = Math.floor(width * dpr);
-          canvas.height = Math.floor(height * dpr);
-          ctx = canvas.getContext('2d');
-          if (!ctx) return;
-
-          const gutter = Math.max(96, (width - 46 * 16) / 2 - 8);
-          const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-          const sprouts = [
-            { x: -8, y: height * 0.86, rad: -0.62, life: 0 },
-            { x: width - 28, y: -12, rad: Math.PI / 2 + 0.22, life: 0 },
-          ];
-
-          const step = (branch: { x: number; y: number; rad: number; life: number }) => {
-            const length = 10 + Math.random() * 18;
-            const nx = branch.x + Math.cos(branch.rad) * length;
-            const ny = branch.y + Math.sin(branch.rad) * length;
-            segments.push([branch.x, branch.y, nx, ny]);
-            const life = branch.life + 1;
-            if (life > 18) return;
-            if (nx < -40 || nx > width + 40 || ny < -40 || ny > height + 40) return;
-            const fromLeft = branch.x < width / 2;
-            if (fromLeft && nx > gutter) return;
-            if (!fromLeft && nx < width - gutter) return;
-            sprouts.push({
-              x: nx,
-              y: ny,
-              rad: branch.rad + (Math.random() - 0.5) * 0.18,
-              life,
-            });
-            if (Math.random() < (life < 6 ? 0.72 : 0.34)) {
-              const fork = (Math.random() < 0.5 ? -1 : 1) * (0.35 + Math.random() * spread);
-              sprouts.push({ x: nx, y: ny, rad: branch.rad + fork, life });
-            }
-          };
-
-          const frame = () => {
-            if (gen !== generation) return;
-            let budget = reduce ? sprouts.length : 3;
-            let guard = 0;
-            while (sprouts.length && budget > 0 && guard < 80) {
-              guard += 1;
-              const branch = sprouts.shift();
-              if (!branch) break;
-              if (!reduce && Math.random() < 0.45) {
-                sprouts.push(branch);
-                continue;
-              }
-              step(branch);
-              budget -= 1;
-            }
-            paint();
-            if (sprouts.length) requestAnimationFrame(frame);
-          };
-          requestAnimationFrame(frame);
-        };
-
-        grow();
-        let resizeTimer = 0;
-        window.addEventListener('resize', () => {
-          window.clearTimeout(resizeTimer);
-          resizeTimer = window.setTimeout(grow, 180);
-        });
-        new MutationObserver(paint).observe(document.documentElement, {
-          attributes: true,
-          attributeFilter: ['data-theme'],
-        });
-      }
     </script>
   </body>
 </html>

@@ -133,9 +133,18 @@ body.wide {
 }
 
 .brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
   font-size: 1.15rem;
   font-weight: 700;
   text-decoration: none;
+}
+
+.brand-logo {
+  width: 1.6rem;
+  height: 1.6rem;
+  color: var(--ink);
 }
 
 .nav-group {
@@ -182,15 +191,6 @@ body.wide {
 }
 
 .theme-toggle:hover { color: var(--ink); }
-
-.side-trees {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
 
 [data-theme='dark'] .when-light,
 [data-theme='light'] .when-dark { display: none; }
@@ -540,7 +540,6 @@ main { padding: 3.25rem 0 4.5rem; }
     justify-content: flex-start;
   }
   .site-nav a { font-size: 0.92rem; }
-  .side-trees { display: none; }
   main { padding-top: 2.2rem; }
   .home-name { font-size: 2rem; }
   .post-row,
