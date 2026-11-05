@@ -89,7 +89,7 @@ const cipher = locked ? (post.body ?? '').trim().replaceAll('<', '\\u003c') : ''
                 series: payload.series,
               });
               document.querySelector('#private-title').textContent = openedTitle;
-              document.title = openedTitle + ' · DorothyJay';
+              document.title = openedTitle + ' · DorothyJane';
               const date = document.querySelector('#private-date');
               date.hidden = false;
               date.textContent = String(payload.date || '').slice(0, 10);
