@@ -48,4 +48,10 @@ featured: true
 
 ## 部署
 
-推送到 `master` 后，GitHub Actions 会构建并发布到 GitHub Pages。仓库的 Pages 来源需要选 **GitHub Actions**。
+改完内容后先在本地构建，再推送。GitHub Actions 会把 `dist` 发布到 GitHub Pages。
+
+```bash
+npm run build
+```
+
+仓库的 Pages 来源是 **GitHub Actions**。

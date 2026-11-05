@@ -1,0 +1,60 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>面试01-你真的了解React吗？ · DorothyJay</title><meta name="description" content="针对这种概念题，一般采用四字口诀：“讲说理列”"><link rel="icon" href="/favicon.ico"><link rel="icon" type="image/png" href="/favicon.png"><link rel="canonical" href="https://dengcpu.github.io/2020/11/30/%E9%9D%A2%E8%AF%9501-%E4%BD%A0%E7%9C%9F%E7%9A%84%E4%BA%86%E8%A7%A3React%E5%90%97%EF%BC%9F/"><script>
+      const stored = localStorage.getItem('theme');
+      const theme =
+        stored === 'light' || stored === 'dark'
+          ? stored
+          : matchMedia('(prefers-color-scheme: dark)').matches
+            ? 'dark'
+            : 'light';
+      document.documentElement.dataset.theme = theme;
+    </script><link rel="stylesheet" href="/_astro/_channel_.BPNf9UN_.css"></head> <body class="wide"> <header class="site-header"> <div class="bar"> <a class="brand" href="/">DorothyJay</a> <div class="nav-group"> <nav class="site-nav" aria-label="主导航"> <a href="/"> 首页 </a><a href="/writing/"> 文章 </a><a href="/work/"> 作品 </a><a href="/about/"> 关于 </a> </nav> <button class="theme-toggle" type="button" id="theme-toggle"> <span class="when-light">深色</span> <span class="when-dark">浅色</span> </button> </div> </div> </header> <main>  <div class="post-layout"> <article> <nav class="crumb" aria-label="面包屑"> <a href="/writing/frontend/">前端学习</a>  / <a href="/writing/frontend/#React-面试"> React 面试 </a>  </nav> <h1 class="page-title">面试01-你真的了解React吗？</h1> <p class="post-date">2020-12-01</p> <details class="toc-mobile"> <summary>目录</summary> <nav class="toc" aria-label="目录"> <ol> <li class="depth-4"> <a href="#面试场景1谈谈你对react的理解概念题">面试场景1：谈谈你对React的理解？（概念题）</a> </li> </ol> </nav> </details> <div class="prose"> <h4 id="面试场景1谈谈你对react的理解概念题">面试场景1：谈谈你对React的理解？（概念题）</h4>
+<p>针对这种概念题，一般采用四字口诀：“讲说理列”</p>
+<ul>
+<li>讲概念: 一句话讲清楚该技术是什么。</li>
+<li>说用途：描述该技术的用途（结合具体场景，拓展性的描述)</li>
+<li>理思路：梳理该技术的核心思路或运作流程。</li>
+<li>列优缺：对该技术的优点缺点进行列举（与其他技术方案进行横向对比，但切忌踩一捧一！）</li>
+</ul>
+<h5 id="1讲react概念">1、讲React概念</h5>
+<p><strong>React是通过组件化的方式解决视图层开发复用的问题，本质是一个组件化框架。</strong></p>
+<p>简单概括为： View = fn(props)， 给定相同的输入状态，函数总会生成一致的组件。如果变量多一些，也可以扩展为 View = fn(props,state,context)</p>
+<h5 id="2说react用途">2、说React用途</h5>
+<p><strong>React的用途就是：构建视图。</strong> React的生态丰富了它的使用场景：</p>
+<ul>
+<li>首先，PC网页和移动端网页，React都支持</li>
+<li>其次，React Native 可用于开发ios与Android应用</li>
+<li>React 360可以开发VR应用</li>
+<li>冷门的ink,可以使用React开发命令行应用。</li>
+</ul>
+<h5 id="3理react思路">3、理React思路</h5>
+<p><strong>React的核心思路：声明式、组件化、通用性</strong>（官方称，一次学习，随处编写）</p>
+<ul>
+<li><strong>声明式</strong>：优势在于直观，可以做到一目了然，也便于组合。</li>
+</ul>
+<p>命令式编程：</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">//HTML</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">&#x3C;</span><span style="color:#22863A;--shiki-dark:#85E89D">div</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> class</span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#032F62;--shiki-dark:#9ECBFF">'block'</span><span style="color:#24292E;--shiki-dark:#E1E4E8">>&#x3C;/</span><span style="color:#22863A;--shiki-dark:#85E89D">div</span><span style="color:#24292E;--shiki-dark:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">//JS</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">const</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> block</span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#6F42C1;--shiki-dark:#B392F0">$</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#032F62;--shiki-dark:#9ECBFF">'.block'</span><span style="color:#24292E;--shiki-dark:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">block.</span><span style="color:#6F42C1;--shiki-dark:#B392F0">css</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#032F62;--shiki-dark:#9ECBFF">'color'</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span><span style="color:#032F62;--shiki-dark:#9ECBFF">'red'</span><span style="color:#24292E;--shiki-dark:#E1E4E8">)</span></span></code></pre>
+<p>声明式编程：</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">const</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> Block</span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#E36209;--shiki-dark:#FFAB70">props</span><span style="color:#24292E;--shiki-dark:#E1E4E8">)</span><span style="color:#D73A49;--shiki-dark:#F97583">=></span><span style="color:#24292E;--shiki-dark:#E1E4E8"> &#x3C;</span><span style="color:#22863A;--shiki-dark:#85E89D">div</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> style</span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#24292E;--shiki-dark:#E1E4E8">{{color:</span><span style="color:#032F62;--shiki-dark:#9ECBFF">'red'</span><span style="color:#24292E;--shiki-dark:#E1E4E8">}}>&#x3C;/</span><span style="color:#22863A;--shiki-dark:#85E89D">div</span><span style="color:#24292E;--shiki-dark:#E1E4E8">></span></span></code></pre>
+<p>可以发现，声明式编程更容易阅读，而且更容易与其他组件代码组合。</p>
+<ul>
+<li>
+<p><strong>组件化</strong>：组件化优势在于可以降低系统间功能的耦合性，提高功能内部的聚合性。这样便于代码复用。</p>
+</li>
+<li>
+<p><strong>通用性</strong>：React将DOM抽象为虚拟DOM，开发者并不是直接操作DOM。正因为这一层封装的存在，使得React不再局限于web开发，而是出现更繁荣的生态。不论VR，Native,还是shell命令，只有兼容虚拟DOM层，都可以直接运行React。</p>
+</li>
+</ul>
+<h5 id="4列react优缺">4、列React优缺</h5>
+<ul>
+<li>
+<p>优点：其实就是React的核心设计思路：声明式，组件化，通用性。</p>
+</li>
+<li>
+<p>缺点：React不是一个一揽子框架，比如路由一类的功能，React团队希望交给社区解决。导致技术选型和学习使用上有较高的成本，在开发大型前端应用时需要向社区寻找并整合解决方案。（非官方的一揽子解决方案是有的，比如DvaJS、React-coat等）</p>
+</li>
+</ul> </div> <nav class="post-pager" aria-label="系列内的前后篇"> <div>  </div> <div class="next"> <a href="/2020/12/02/面试02-为什么React要用JSX？/"> <small>下一篇</small> 面试02-为什么React要用JSX？ </a> </div> </nav> </article> <nav class="toc toc-desktop" aria-label="目录"> <p>目录</p> <ol> <li class="depth-4"> <a href="#面试场景1谈谈你对react的理解概念题">面试场景1：谈谈你对React的理解？（概念题）</a> </li> </ol> </nav> </div>  </main> <footer class="site-footer"> <div class="site-footer-inner"> <a href="https://github.com/DENGCPU">DorothyJay</a> </div> </footer> <script type="module">const t=document.getElementById("theme-toggle");t?.addEventListener("click",()=>{const e=document.documentElement.dataset.theme==="dark"?"light":"dark";document.documentElement.dataset.theme=e,localStorage.setItem("theme",e)});</script> </body> </html>

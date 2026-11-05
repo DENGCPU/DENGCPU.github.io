@@ -1,0 +1,33 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>20-使用Rekit开发可扩展的React应用 · DorothyJay</title><meta name="description" content="20-使用Rekit开发可扩展的React应用"><link rel="icon" href="/favicon.ico"><link rel="icon" type="image/png" href="/favicon.png"><link rel="canonical" href="https://dengcpu.github.io/2020/11/20/20-%E4%BD%BF%E7%94%A8Rekit%E5%BC%80%E5%8F%91%E5%8F%AF%E6%89%A9%E5%B1%95%E7%9A%84React%E5%BA%94%E7%94%A8/"><script>
+      const stored = localStorage.getItem('theme');
+      const theme =
+        stored === 'light' || stored === 'dark'
+          ? stored
+          : matchMedia('(prefers-color-scheme: dark)').matches
+            ? 'dark'
+            : 'light';
+      document.documentElement.dataset.theme = theme;
+    </script><link rel="stylesheet" href="/_astro/_channel_.BPNf9UN_.css"></head> <body class="wide"> <header class="site-header"> <div class="bar"> <a class="brand" href="/">DorothyJay</a> <div class="nav-group"> <nav class="site-nav" aria-label="主导航"> <a href="/"> 首页 </a><a href="/writing/"> 文章 </a><a href="/work/"> 作品 </a><a href="/about/"> 关于 </a> </nav> <button class="theme-toggle" type="button" id="theme-toggle"> <span class="when-light">深色</span> <span class="when-dark">浅色</span> </button> </div> </div> </header> <main>  <div class="post-layout"> <article> <nav class="crumb" aria-label="面包屑"> <a href="/writing/frontend/">前端学习</a>  / <a href="/writing/frontend/#极客时间-React"> 极客时间 React </a>  </nav> <h1 class="page-title">20-使用Rekit开发可扩展的React应用</h1> <p class="post-date">2020-11-20</p> <details class="toc-mobile"> <summary>目录</summary> <nav class="toc" aria-label="目录"> <ol> <li class="depth-3"> <a href="#rekit-react专属ide和工具集">Rekit: React专属IDE和工具集</a> </li><li class="depth-4"> <a href="#一使用rekit创建项目代码生成和重构">一、使用Rekit创建项目，代码生成和重构</a> </li><li class="depth-4"> <a href="#二使用rekit遵循最佳实践和保持代码一致性">二、使用Rekit遵循最佳实践和保持代码一致性</a> </li> </ol> </nav> </details> <div class="prose"> <h3 id="rekit-react专属ide和工具集">Rekit: React专属IDE和工具集</h3>
+<p><img src="https://pic.downk.cc/item/5fb7295cb18d627113dc80e8.jpg" alt=""></p>
+<h4 id="一使用rekit创建项目代码生成和重构">一、使用Rekit创建项目，代码生成和重构</h4>
+<p>只需要写功能部分的代码，不用再自己构建骨架。</p>
+<p><img src="https://pic.downk.cc/item/5fb729deb18d627113dca15a.jpg" alt=""></p>
+<p><img src="https://pic.downk.cc/item/5fb72aa5b18d627113dccff5.jpg" alt=""></p>
+<p><img src="https://pic.downk.cc/item/5fb72b4cb18d627113dcfc0c.jpg" alt=""></p>
+<p><img src="https://pic.downk.cc/item/5fb72c21b18d627113dd4456.jpg" alt=""></p>
+<p><img src="https://pic.downk.cc/item/5fb72c51b18d627113dd4ee6.jpg" alt=""></p>
+<p><img src="https://pic.downk.cc/item/5fb72ceeb18d627113dd7003.jpg" alt=""></p>
+<h4 id="二使用rekit遵循最佳实践和保持代码一致性">二、使用Rekit遵循最佳实践和保持代码一致性</h4>
+<p>==最佳实践:==</p>
+<ul>
+<li>1.以feature方式组织代码</li>
+<li>2.拆分组件component，action和reducer</li>
+<li>3.拆分路由配置</li>
+</ul>
+<p>==通过代码自动生成保持一致性：==</p>
+<ul>
+<li>1.文件夹结构一致性</li>
+<li>2.文件名一致性</li>
+<li>3.变量名一致性</li>
+<li>4.代码逻辑一致性</li>
+</ul> </div> <nav class="post-pager" aria-label="系列内的前后篇"> <div> <a href="/2020/11/20/19-拆分大型项目的复杂度/"> <small>上一篇</small> 19-拆分大型项目的复杂度 </a> </div> <div class="next"> <a href="/2020/11/20/21-ReactRouter管理登录和授权/"> <small>下一篇</small> 21-ReactRouter管理登录和授权 </a> </div> </nav> </article> <nav class="toc toc-desktop" aria-label="目录"> <p>目录</p> <ol> <li class="depth-3"> <a href="#rekit-react专属ide和工具集">Rekit: React专属IDE和工具集</a> </li><li class="depth-4"> <a href="#一使用rekit创建项目代码生成和重构">一、使用Rekit创建项目，代码生成和重构</a> </li><li class="depth-4"> <a href="#二使用rekit遵循最佳实践和保持代码一致性">二、使用Rekit遵循最佳实践和保持代码一致性</a> </li> </ol> </nav> </div>  </main> <footer class="site-footer"> <div class="site-footer-inner"> <a href="https://github.com/DENGCPU">DorothyJay</a> </div> </footer> <script type="module">const t=document.getElementById("theme-toggle");t?.addEventListener("click",()=>{const e=document.documentElement.dataset.theme==="dark"?"light":"dark";document.documentElement.dataset.theme=e,localStorage.setItem("theme",e)});</script> </body> </html>

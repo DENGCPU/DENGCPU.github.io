@@ -1,0 +1,26 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>06-两种组件设计模式 · DorothyJay</title><meta name="description" content="（除了常规的组件复用之外）"><link rel="icon" href="/favicon.ico"><link rel="icon" type="image/png" href="/favicon.png"><link rel="canonical" href="https://dengcpu.github.io/2020/11/11/06-%E4%B8%A4%E7%A7%8D%E7%BB%84%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"><script>
+      const stored = localStorage.getItem('theme');
+      const theme =
+        stored === 'light' || stored === 'dark'
+          ? stored
+          : matchMedia('(prefers-color-scheme: dark)').matches
+            ? 'dark'
+            : 'light';
+      document.documentElement.dataset.theme = theme;
+    </script><link rel="stylesheet" href="/_astro/_channel_.BPNf9UN_.css"></head> <body class="wide"> <header class="site-header"> <div class="bar"> <a class="brand" href="/">DorothyJay</a> <div class="nav-group"> <nav class="site-nav" aria-label="主导航"> <a href="/"> 首页 </a><a href="/writing/"> 文章 </a><a href="/work/"> 作品 </a><a href="/about/"> 关于 </a> </nav> <button class="theme-toggle" type="button" id="theme-toggle"> <span class="when-light">深色</span> <span class="when-dark">浅色</span> </button> </div> </div> </header> <main>  <div class="post-layout"> <article> <nav class="crumb" aria-label="面包屑"> <a href="/writing/frontend/">前端学习</a>  / <a href="/writing/frontend/#极客时间-React"> 极客时间 React </a>  </nav> <h1 class="page-title">06-两种组件设计模式</h1> <p class="post-date">2020-11-11</p> <details class="toc-mobile"> <summary>目录</summary> <nav class="toc" aria-label="目录"> <ol> <li class="depth-4"> <a href="#组件复用的另外两种形式">组件复用的另外两种形式：</a> </li><li class="depth-4"> <a href="#一高阶组件">一.高阶组件</a> </li><li class="depth-4"> <a href="#二函数作为子组件">二.函数作为子组件</a> </li> </ol> </nav> </details> <div class="prose"> <h4 id="组件复用的另外两种形式">组件复用的另外两种形式：</h4>
+<p>（除了常规的组件复用之外）</p>
+<ul>
+<li><strong>高阶组件</strong></li>
+<li><strong>函数作为子组件</strong></li>
+</ul>
+<h4 id="一高阶组件">一.高阶组件</h4>
+<p><img src="https://i.bmp.ovh/imgs/2020/11/f50691752374e779.png" alt=""></p>
+<p><strong>高阶组件(HOC)</strong> 是React中复用组件逻辑的一种高级技巧，它本身不是React API的一部分，而是基于React的组合特性形成的一种设计模式。高阶组件以组件为参数，并返回一个新组件。</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">const</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> EnhancedComponent</span><span style="color:#D73A49;--shiki-dark:#F97583"> =</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> higherOrderComponent</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(WrappedComponenent)</span></span></code></pre>
+<p>==区分:==  组件是将props转换为UI，高阶组件是将组件转换为另一个组件。</p>
+<p>具体参见：<a href="https://zh-hans.reactjs.org/docs/higher-order-components.html">React官方文档–高阶组件</a></p>
+<h4 id="二函数作为子组件">二.函数作为子组件</h4>
+<p><img src="https://i.bmp.ovh/imgs/2020/11/17246cbcf6e05f4d.png" alt=""></p>
+<p><strong>总结：</strong></p>
+<p>1、高阶组件和函数作为子组件都是设计模式（并不是新的组件类型）</p>
+<p>2、可以实现更多场景的组件复用</p> </div> <nav class="post-pager" aria-label="系列内的前后篇"> <div> <a href="/2020/11/11/05-理解VirtualDOM及key属性的作用/"> <small>上一篇</small> 05-理解VirtualDOM及key属性的作用 </a> </div> <div class="next"> <a href="/2020/11/11/07-理解新的ContextAPI及其使用场景/"> <small>下一篇</small> 07-理解新的ContextAPI及其使用场景 </a> </div> </nav> </article> <nav class="toc toc-desktop" aria-label="目录"> <p>目录</p> <ol> <li class="depth-4"> <a href="#组件复用的另外两种形式">组件复用的另外两种形式：</a> </li><li class="depth-4"> <a href="#一高阶组件">一.高阶组件</a> </li><li class="depth-4"> <a href="#二函数作为子组件">二.函数作为子组件</a> </li> </ol> </nav> </div>  </main> <footer class="site-footer"> <div class="site-footer-inner"> <a href="https://github.com/DENGCPU">DorothyJay</a> </div> </footer> <script type="module">const t=document.getElementById("theme-toggle");t?.addEventListener("click",()=>{const e=document.documentElement.dataset.theme==="dark"?"light":"dark";document.documentElement.dataset.theme=e,localStorage.setItem("theme",e)});</script> </body> </html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>010-状态管理库Redux · DorothyJay</title><meta name="description" content="010-状态管理库Redux"><link rel="icon" href="/favicon.ico"><link rel="icon" type="image/png" href="/favicon.png"><link rel="canonical" href="https://dengcpu.github.io/2020/11/16/010-%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E5%BA%93Redux/"><script>
+      const stored = localStorage.getItem('theme');
+      const theme =
+        stored === 'light' || stored === 'dark'
+          ? stored
+          : matchMedia('(prefers-color-scheme: dark)').matches
+            ? 'dark'
+            : 'light';
+      document.documentElement.dataset.theme = theme;
+    </script><link rel="stylesheet" href="/_astro/_channel_.BPNf9UN_.css"></head> <body class="wide"> <header class="site-header"> <div class="bar"> <a class="brand" href="/">DorothyJay</a> <div class="nav-group"> <nav class="site-nav" aria-label="主导航"> <a href="/"> 首页 </a><a href="/writing/"> 文章 </a><a href="/work/"> 作品 </a><a href="/about/"> 关于 </a> </nav> <button class="theme-toggle" type="button" id="theme-toggle"> <span class="when-light">深色</span> <span class="when-dark">浅色</span> </button> </div> </div> </header> <main>  <div class="post-layout"> <article> <nav class="crumb" aria-label="面包屑"> <a href="/writing/frontend/">前端学习</a>  / <a href="/writing/frontend/#极客时间-React"> 极客时间 React </a>  </nav> <h1 class="page-title">010-状态管理库Redux</h1> <p class="post-date">2020-11-16</p> <details class="toc-mobile"> <summary>目录</summary> <nav class="toc" aria-label="目录"> <ol> <li class="depth-3"> <a href="#一react为何需要状态管理库">一、React为何需要状态管理库</a> </li><li class="depth-3"> <a href="#二理解redux的核心概念store-actionreducer">二、理解Redux的核心概念：Store, Action,Reducer</a> </li><li class="depth-3"> <a href="#三redux的几个工具函数">三、redux的几个工具函数</a> </li><li class="depth-3"> <a href="#四在react中使用redux">四、在React中使用Redux</a> </li><li class="depth-3"> <a href="#五理解redux的异步action以及中间件">五、理解Redux的异步action以及中间件</a> </li><li class="depth-3"> <a href="#六如何在redux中组织action和reducer">六、如何在redux中组织Action和Reducer</a> </li><li class="depth-3"> <a href="#七-redux的运行基础不可变数据immutability">七、 Redux的运行基础:不可变数据(immutability)</a> </li><li class="depth-3"> <a href="#八梳理redux的工作流程">八、梳理Redux的工作流程</a> </li> </ol> </nav> </details> <div class="prose"> <h3 id="一react为何需要状态管理库">一、React为何需要状态管理库</h3>
+<p><img src="https://i.bmp.ovh/imgs/2020/11/26a4726bd6216f11.png" alt=""></p>
+<p><img src="https://i.bmp.ovh/imgs/2020/11/8ed5fe88ed497e9c.png" alt=""><br>
+组件之间通信非常麻烦，有了redux把状态单独拧出来，组件通信就变得简单了。</p>
+<p>Redux的特性：</p>
+<ul>
+<li><strong>1、Single Source of Truth</strong></li>
+</ul>
+<p> 传统的MVC架构：一个view可能对应多个model,一个model也可能对应多个view,关系错综复杂，这样一旦出现错误很难追踪。<br>
+<img src="https://i.bmp.ovh/imgs/2020/11/5a9cb384b94cc272.png" alt=""></p>
+<p> Redux的结构：只有一个Store,出现错误容易追踪。</p>
+<p><img src="https://i.bmp.ovh/imgs/2020/11/fbb96f01a9c20437.png" alt=""></p>
+<ul>
+<li>
+<p><strong>2、可预测性</strong> （不可变性immutable）</p>
+<p><img src="https://i.bmp.ovh/imgs/2020/11/4753506caf528c03.png" alt=""></p>
+</li>
+<li>
+<p><strong>3、纯函数更新State</strong></p>
+</li>
+</ul>
+<p>  redux没有副作用.<br>
+<img src="https://i.bmp.ovh/imgs/2020/11/17c05a6f634a7eaf.png" alt=""></p>
+<h3 id="二理解redux的核心概念store-actionreducer">二、理解Redux的核心概念：Store, Action,Reducer</h3>
+<p><strong>1.理解Store:</strong><br>
+<img src="https://i.bmp.ovh/imgs/2020/11/bc6be7d1bc1deaf2.png" alt=""></p>
+<p>Store就是保存数据的地方，可以把它看作是一个容器。整个应用只能有一个Store。<br>
+Redux提供<strong>createStore</strong>这个函数，用来生成Store。</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">import</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> {createStore} </span><span style="color:#D73A49;--shiki-dark:#F97583">from</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> 'redux'</span><span style="color:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">//createStore接受一个函数，返回新生成的store对象。</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">const</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> store</span><span style="color:#D73A49;--shiki-dark:#F97583"> =</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> createStore</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(fn);</span></span></code></pre>
+<p><strong>==State:==</strong>  Store对象包含所有数据，如果想得到某个时点的数据，就要对Store生成快照。这种时点的数据集合，就叫做State。<br>
+当前时刻的State,可以通过 store.getState() 拿到。</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">import</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> {createStore} </span><span style="color:#D73A49;--shiki-dark:#F97583">from</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> 'redux'</span><span style="color:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">const</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> store</span><span style="color:#D73A49;--shiki-dark:#F97583"> =</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> createStore</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(fn);</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">const</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> state</span><span style="color:#D73A49;--shiki-dark:#F97583"> =</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> store.</span><span style="color:#6F42C1;--shiki-dark:#B392F0">getState</span><span style="color:#24292E;--shiki-dark:#E1E4E8">();</span></span></code></pre>
+<p>redux规定，<strong>一个state对应一个view</strong>。只要state相同，view就相同。知道了State,就知道了View是什么样，反之亦然。</p>
+<p><strong>2.理解Action:</strong></p>
+<p> State的变化，会导致view的变化。但是，用户接触不到State,只能接触到view。所以，State的变化必须是view导致的。Action就是view发出的通知，标识State应该要变化了。</p>
+<p> Action是一个对象，其中的type属性是必须的，标识Action的名称。其他属性可以自由设置。</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">const</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> action</span><span style="color:#D73A49;--shiki-dark:#F97583"> =</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  type:</span><span style="color:#032F62;--shiki-dark:#9ECBFF">'ADD_TODO'</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  payload:</span><span style="color:#032F62;--shiki-dark:#9ECBFF">'learn redux'</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre>
+<p>上述代码中，Action的名称是ADD_TODO，它携带的信息是字符串 learn redux.</p>
+<p>可以这么理解，Action描述当前发生的事情。改变State的唯一方法，就是使用Action。它会运送数据给Store。</p>
+<p><strong>Action Creator:</strong><br>
+View要发生多少种消息，就会有多少种Action.如果都手写，会很麻烦。所以，可以定义一个函数用来生成Action,这个函数就叫 Action Creator</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">const</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> ADD_TODO</span><span style="color:#D73A49;--shiki-dark:#F97583"> =</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> '添加TODO'</span><span style="color:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">function</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> addTodo</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#E36209;--shiki-dark:#FFAB70">text</span><span style="color:#24292E;--shiki-dark:#E1E4E8">){</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">  return</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    type:</span><span style="color:#005CC5;--shiki-dark:#79B8FF">ADD_TODO</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    text</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">const</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> action</span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#6F42C1;--shiki-dark:#B392F0">addTodo</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#032F62;--shiki-dark:#9ECBFF">'learn redux'</span><span style="color:#24292E;--shiki-dark:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#032F62;--shiki-dark:#9ECBFF">``` </span></span>
+<span class="line"><span style="color:#032F62;--shiki-dark:#9ECBFF">上面代码中，addTodo函数就是一个Action Creator</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#032F62;--shiki-dark:#9ECBFF">**store.dispatch():**</span></span>
+<span class="line"><span style="color:#032F62;--shiki-dark:#9ECBFF">store.dispatch()是View发出Action的唯一方法。</span></span>
+<span class="line"><span style="color:#032F62;--shiki-dark:#9ECBFF">```</span><span style="color:#24292E;--shiki-dark:#E1E4E8">js</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">import</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> {createStore} </span><span style="color:#D73A49;--shiki-dark:#F97583">from</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> 'redux'</span><span style="color:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">const</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> store</span><span style="color:#D73A49;--shiki-dark:#F97583"> =</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> createStore</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(fn);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">store.</span><span style="color:#6F42C1;--shiki-dark:#B392F0">dispatch</span><span style="color:#24292E;--shiki-dark:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  type:</span><span style="color:#032F62;--shiki-dark:#9ECBFF">'ADD_TODO'</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  payload:</span><span style="color:#032F62;--shiki-dark:#9ECBFF">'learn redux'</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">})</span></span></code></pre>
+<p>结合 Action Crreator,这段代码可以改写如下：</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">store.</span><span style="color:#6F42C1;--shiki-dark:#B392F0">dispatch</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#6F42C1;--shiki-dark:#B392F0">addTodo</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#032F62;--shiki-dark:#9ECBFF">'learn redux'</span><span style="color:#24292E;--shiki-dark:#E1E4E8">));</span></span></code></pre>
+<p><strong>3.理解Reducer：</strong></p>
+<p>Store在收到Action之后，必须给出一个新的State,这样View才会发生变化。这种State的计算过程，就叫做 Reducer。</p>
+<p>Reducer是一个函数，它接受Action和当前的State,返回一个新的State。</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">const</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> reducer</span><span style="color:#D73A49;--shiki-dark:#F97583"> =</span><span style="color:#D73A49;--shiki-dark:#F97583"> function</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#E36209;--shiki-dark:#FFAB70">state</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span><span style="color:#E36209;--shiki-dark:#FFAB70">action</span><span style="color:#24292E;--shiki-dark:#E1E4E8">){</span></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">  //...</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">  return</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> new_state;</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre>
+<p>整个应用的初始状态，可以作为State的默认值，下面就是一个实际的例子。</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">const</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> defaultState</span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#005CC5;--shiki-dark:#79B8FF">0</span><span style="color:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">const</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> reducer</span><span style="color:#D73A49;--shiki-dark:#F97583"> =</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> (</span><span style="color:#E36209;--shiki-dark:#FFAB70">state</span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#24292E;--shiki-dark:#E1E4E8">defaultState,</span><span style="color:#E36209;--shiki-dark:#FFAB70">action</span><span style="color:#24292E;--shiki-dark:#E1E4E8">)</span><span style="color:#D73A49;--shiki-dark:#F97583">=></span><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">  switch</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(action.type){</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">    case</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> 'ADD'</span><span style="color:#24292E;--shiki-dark:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">      return</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> state </span><span style="color:#D73A49;--shiki-dark:#F97583">+</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> action.payload;</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">    default</span><span style="color:#24292E;--shiki-dark:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">      return</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> state;</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">};</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">const</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> state</span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#6F42C1;--shiki-dark:#B392F0">reducer</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#005CC5;--shiki-dark:#79B8FF">1</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,{</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  type:</span><span style="color:#032F62;--shiki-dark:#9ECBFF">'ADD'</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  payload:</span><span style="color:#005CC5;--shiki-dark:#79B8FF">2</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">})</span></span></code></pre>
+<p>上面代码中，reducer函数接收到一个名为ADD的action以后，就返回一个新的State。<br>
+实际应用中，Reducer不需要像上面这样手动调用，store.dispatch方法会触发reducer的自动执行。为此，Store需要知道reducer函数，做法就是在生成Store的时候，就将reducer传入给createStore方法。</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">import</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> {createStore} </span><span style="color:#D73A49;--shiki-dark:#F97583">from</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> 'redux'</span><span style="color:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">const</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> store</span><span style="color:#D73A49;--shiki-dark:#F97583"> =</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> createStore</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(reducer);</span></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">//以后每当store.dispatch发送过来一个新的Action,</span></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">//就会自动调用Reducer，得到新的State</span></span></code></pre>
+<p>🐖为什么这个函数被叫做Reducer呢？<br>
+✨因为它可以作为数组的reduce方法的参数，下面是一个例子，一系列的Action对象按照顺序作为一个数组。</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">const</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> actions</span><span style="color:#D73A49;--shiki-dark:#F97583"> =</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> [</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  {type:</span><span style="color:#032F62;--shiki-dark:#9ECBFF">'ADD'</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,payload:</span><span style="color:#005CC5;--shiki-dark:#79B8FF">0</span><span style="color:#24292E;--shiki-dark:#E1E4E8">},</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  {type:</span><span style="color:#032F62;--shiki-dark:#9ECBFF">'ADD'</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,payload:</span><span style="color:#005CC5;--shiki-dark:#79B8FF">1</span><span style="color:#24292E;--shiki-dark:#E1E4E8">},</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  {type:</span><span style="color:#032F62;--shiki-dark:#9ECBFF">'ADD'</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,payload:</span><span style="color:#005CC5;--shiki-dark:#79B8FF">2</span><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">];</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">const</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> total</span><span style="color:#D73A49;--shiki-dark:#F97583"> =</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> actions.</span><span style="color:#6F42C1;--shiki-dark:#B392F0">reduce</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(reducer,</span><span style="color:#005CC5;--shiki-dark:#79B8FF">0</span><span style="color:#24292E;--shiki-dark:#E1E4E8">)</span><span style="color:#6A737D;--shiki-dark:#6A737D">//3</span></span></code></pre>
+<p>上面代码中，数组actions表示依次有三个 Action，分别是加0、加1和加2。数组的reduce方法接受 Reducer 函数作为参数，就可以直接得到最终的状态3。</p>
+<p><img src="https://i.bmp.ovh/imgs/2020/11/43ed9499a953d590.png" alt=""></p>
+<p><strong>Reducer函数最重要的特征是:它是一个纯函数。</strong><br>
+==纯函数==： 纯函数是函数式编程的概念，必须遵守以下一些约束。</p>
+<ul>
+<li>不得改写参数</li>
+<li>不能调用系统 I/O的API</li>
+<li>不能调用Date.now()或者Math.random等不纯的方法，因为每次都会得到不一样的结果。</li>
+</ul>
+<p>由于Reducer是纯函数，就可以保证同样的State必定得到同样的View。但也正因为这一点，Reducer函数里面不能改变State，必须返回一个全新的对象。所以，一般常采用 拓展运算符…和Object.assign()对state进行更新。(最好把State对象设为只读)</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">//1.state是一个对象</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">function</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> reducer</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#E36209;--shiki-dark:#FFAB70">state</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span><span style="color:#E36209;--shiki-dark:#FFAB70">action</span><span style="color:#24292E;--shiki-dark:#E1E4E8">){</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">  return</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> Object.</span><span style="color:#6F42C1;--shiki-dark:#B392F0">assign</span><span style="color:#24292E;--shiki-dark:#E1E4E8">({},state,{thingTochange});</span></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">  //或者</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">  return</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> {</span><span style="color:#D73A49;--shiki-dark:#F97583">...</span><span style="color:#24292E;--shiki-dark:#E1E4E8">state,</span><span style="color:#D73A49;--shiki-dark:#F97583">...</span><span style="color:#24292E;--shiki-dark:#E1E4E8">newState};</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">//2.state是一个数组</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">function</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> reducer</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#E36209;--shiki-dark:#FFAB70">state</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span><span style="color:#E36209;--shiki-dark:#FFAB70">action</span><span style="color:#24292E;--shiki-dark:#E1E4E8">){</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">  return</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> [</span><span style="color:#D73A49;--shiki-dark:#F97583">...</span><span style="color:#24292E;--shiki-dark:#E1E4E8">state,newItem]</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre>
+<p>下图综合理解这三个概念，可以看出redux的单向数据流动。<br>
+<img src="https://i.bmp.ovh/imgs/2020/11/9fceb4adcb97b639.png" alt=""></p>
+<h3 id="三redux的几个工具函数">三、redux的几个工具函数</h3>
+<p><strong>1.combineReducers:</strong></p>
+<p>将多个reducer结合起来形成新的reducer。</p>
+<p><img src="https://pic.downk.cc/item/5fb1ddf2b18d627113a841a0.jpg" alt=""></p>
+<p><strong>2.bindActionCreators:</strong></p>
+<p><img src="https://pic.downk.cc/item/5fb1de1eb18d627113a848fb.jpg" alt=""></p>
+<p><img src="https://pic.downk.cc/item/5fb1de6fb18d627113a8563c.jpg" alt=""></p>
+<h3 id="四在react中使用redux">四、在React中使用Redux</h3>
+<p>redux提供了一个<strong>react-redux</strong>的package，用connect把一个已有的组件连接到store上。</p>
+<p><img src="https://pic.downk.cc/item/5fb1e29cb18d627113a9146f.jpg" alt=""></p>
+<p><img src="https://pic.downk.cc/item/5fb1e356b18d627113a93618.jpg" alt=""></p>
+<h3 id="五理解redux的异步action以及中间件">五、理解Redux的异步action以及中间件</h3>
+<p>中间件截获后去访问一个API，根据访问的结果再dispatch.</p>
+<p><img src="https://pic.downk.cc/item/5fb1eab2b18d627113aabab1.jpg" alt=""></p>
+<p>异步的action并不是一个新的action类型, 而是几个同步action的组合使用.</p>
+<p><img src="https://pic.downk.cc/item/5fb1eb4eb18d627113aae915.jpg" alt=""></p>
+<p><img src="https://pic.downk.cc/item/5fb1ecf0b18d627113ab5f8a.jpg" alt=""></p>
+<h3 id="六如何在redux中组织action和reducer">六、如何在redux中组织Action和Reducer</h3>
+<p><img src="https://pic.downk.cc/item/5fb1ede4b18d627113ab90f7.jpg" alt=""></p>
+<p><img src="https://pic.downk.cc/item/5fb1ee82b18d627113abad69.jpg" alt=""></p>
+<p><img src="https://pic.downk.cc/item/5fb1eec1b18d627113abb8da.jpg" alt=""></p>
+<h3 id="七-redux的运行基础不可变数据immutability">七、 Redux的运行基础:不可变数据(immutability)</h3>
+<p><img src="https://pic.downk.cc/item/5fb1efbcb18d627113abe8a3.jpg" alt=""></p>
+<h5 id="1为什么需要不可变数据">1.为什么需要不可变数据?</h5>
+<ul>
+<li>
+<p><strong>1.性能优化:</strong><br>
+ store变化时会通知组件更新==> store的变化都是由action触发==>action触发在旧的state上形成新的state。不需要比较新旧state值是否变了,只需要判断<strong>前后状态的引用</strong>有没有变化</p>
+</li>
+<li>
+<p><strong>2.易于调试和跟踪:</strong><br>
+任何时候，store变化时可以记录之前和之后的状态值。</p>
+</li>
+<li>
+<p><strong>3.易于推测:</strong><br>
+任何时候，都可以找到是什么引起store的变化</p>
+<h5 id="2如何操作不可变数据">2.如何操作不可变数据?</h5>
+</li>
+</ul>
+<p>==三种方式:==<br>
+<img src="https://pic.downk.cc/item/5fb1f0f2b18d627113ac3540.jpg" alt=""></p>
+<p>简单场景：使用原生写法就可以了。</p>
+<p><img src="https://pic.downk.cc/item/5fb1f37cb18d627113acb0d5.jpg" alt=""></p>
+<p>复杂场景：需要借助一些类库。</p>
+<p><img src="https://pic.downk.cc/item/5fb1f414b18d627113accfd2.jpg" alt=""></p>
+<p>immer: 性能差一点，适用应用程序小，场景简单的情况。<br>
+<img src="https://pic.downk.cc/item/5fb1f44fb18d627113acdf4d.jpg" alt=""></p>
+<h3 id="八梳理redux的工作流程">八、梳理Redux的工作流程</h3>
+<p><img src="https://pic.downk.cc/item/5fb26119b18d627113c52bcf.jpg" alt=""></p>
+<p>1.首先，用户发出Action。</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">store.</span><span style="color:#6F42C1;--shiki-dark:#B392F0">dispatch</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(action)</span></span></code></pre>
+<p>2.然后，Store自动调用Reducer,并且传入两个参数：当前State和收到的Action。Reducer会返回新的State</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">let</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> nextState </span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> todoApp</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(previousState,action);</span></span></code></pre>
+<p>State一旦有变化，Store就会调用监听函数</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">//设置监听函数</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">store.</span><span style="color:#6F42C1;--shiki-dark:#B392F0">subscribe</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(listener);</span></span></code></pre>
+<p>listener可以通过store.getState()得到当前状态，如果使用的是React,这时可以触发重新渲染View。</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">function</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> listener</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(){</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">  let</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> newState </span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> store.</span><span style="color:#6F42C1;--shiki-dark:#B392F0">getState</span><span style="color:#24292E;--shiki-dark:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  component.</span><span style="color:#6F42C1;--shiki-dark:#B392F0">setState</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(newState);</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre> </div> <nav class="post-pager" aria-label="系列内的前后篇"> <div> <a href="/2020/11/12/09-打包和部署/"> <small>上一篇</small> 09-打包和部署 </a> </div> <div class="next"> <a href="/2020/11/16/11-redux之中间件与异步操作/"> <small>下一篇</small> 11-redux之中间件与异步操作 </a> </div> </nav> </article> <nav class="toc toc-desktop" aria-label="目录"> <p>目录</p> <ol> <li class="depth-3"> <a href="#一react为何需要状态管理库">一、React为何需要状态管理库</a> </li><li class="depth-3"> <a href="#二理解redux的核心概念store-actionreducer">二、理解Redux的核心概念：Store, Action,Reducer</a> </li><li class="depth-3"> <a href="#三redux的几个工具函数">三、redux的几个工具函数</a> </li><li class="depth-3"> <a href="#四在react中使用redux">四、在React中使用Redux</a> </li><li class="depth-3"> <a href="#五理解redux的异步action以及中间件">五、理解Redux的异步action以及中间件</a> </li><li class="depth-3"> <a href="#六如何在redux中组织action和reducer">六、如何在redux中组织Action和Reducer</a> </li><li class="depth-3"> <a href="#七-redux的运行基础不可变数据immutability">七、 Redux的运行基础:不可变数据(immutability)</a> </li><li class="depth-3"> <a href="#八梳理redux的工作流程">八、梳理Redux的工作流程</a> </li> </ol> </nav> </div>  </main> <footer class="site-footer"> <div class="site-footer-inner"> <a href="https://github.com/DENGCPU">DorothyJay</a> </div> </footer> <script type="module">const t=document.getElementById("theme-toggle");t?.addEventListener("click",()=>{const e=document.documentElement.dataset.theme==="dark"?"light":"dark";document.documentElement.dataset.theme=e,localStorage.setItem("theme",e)});</script> </body> </html>

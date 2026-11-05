@@ -1,0 +1,23 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>14-UI组件库的对比 · DorothyJay</title><meta name="description" content="服务于企业级产品的设计体系，有完善的文档"><link rel="icon" href="/favicon.ico"><link rel="icon" type="image/png" href="/favicon.png"><link rel="canonical" href="https://dengcpu.github.io/2020/11/18/14-UI%E7%BB%84%E4%BB%B6%E5%BA%93%E7%9A%84%E5%AF%B9%E6%AF%94/"><script>
+      const stored = localStorage.getItem('theme');
+      const theme =
+        stored === 'light' || stored === 'dark'
+          ? stored
+          : matchMedia('(prefers-color-scheme: dark)').matches
+            ? 'dark'
+            : 'light';
+      document.documentElement.dataset.theme = theme;
+    </script><link rel="stylesheet" href="/_astro/_channel_.BPNf9UN_.css"></head> <body class="wide"> <header class="site-header"> <div class="bar"> <a class="brand" href="/">DorothyJay</a> <div class="nav-group"> <nav class="site-nav" aria-label="主导航"> <a href="/"> 首页 </a><a href="/writing/"> 文章 </a><a href="/work/"> 作品 </a><a href="/about/"> 关于 </a> </nav> <button class="theme-toggle" type="button" id="theme-toggle"> <span class="when-light">深色</span> <span class="when-dark">浅色</span> </button> </div> </div> </header> <main>  <div class="post-layout"> <article> <nav class="crumb" aria-label="面包屑"> <a href="/writing/frontend/">前端学习</a>  / <a href="/writing/frontend/#极客时间-React"> 极客时间 React </a>  </nav> <h1 class="page-title">14-UI组件库的对比</h1> <p class="post-date">2020-11-18</p> <details class="toc-mobile"> <summary>目录</summary> <nav class="toc" aria-label="目录"> <ol> <li class="depth-3"> <a href="#一ant-design">一、Ant Design</a> </li><li class="depth-3"> <a href="#二marterial-ui">二、Marterial-UI</a> </li><li class="depth-3"> <a href="#三semantic-ui">三、Semantic UI</a> </li> </ol> </nav> </details> <div class="prose"> <h3 id="一ant-design">一、Ant Design</h3>
+<p>服务于企业级产品的设计体系，有完善的文档</p>
+<h3 id="二marterial-ui">二、Marterial-UI</h3>
+<p>风格更时尚，更花哨，面向消费者</p>
+<h3 id="三semantic-ui">三、Semantic UI</h3>
+<p>把UI作为language描述，提供了不同library的实现。</p>
+<p><strong>选择UI库的考虑因素：</strong></p>
+<ul>
+<li>1、组件库是否齐全</li>
+<li>2、样式风格是否符合业务需求</li>
+<li>3、API的设计是否便捷灵活</li>
+<li>4、技术支持是否完善（文档，issue）</li>
+<li>5、开发是否活跃（维护，迭代）</li>
+</ul> </div> <nav class="post-pager" aria-label="系列内的前后篇"> <div> <a href="/2020/11/17/13-React-Router-路由不只是页面切换，更是代码组织方式/"> <small>上一篇</small> 13-React-Router:路由不只是页面切换，更是代码组织方式 </a> </div> <div class="next"> <a href="/2020/11/18/15-使用Next-js/"> <small>下一篇</small> 15-使用Next.js </a> </div> </nav> </article> <nav class="toc toc-desktop" aria-label="目录"> <p>目录</p> <ol> <li class="depth-3"> <a href="#一ant-design">一、Ant Design</a> </li><li class="depth-3"> <a href="#二marterial-ui">二、Marterial-UI</a> </li><li class="depth-3"> <a href="#三semantic-ui">三、Semantic UI</a> </li> </ol> </nav> </div>  </main> <footer class="site-footer"> <div class="site-footer-inner"> <a href="https://github.com/DENGCPU">DorothyJay</a> </div> </footer> <script type="module">const t=document.getElementById("theme-toggle");t?.addEventListener("click",()=>{const e=document.documentElement.dataset.theme==="dark"?"light":"dark";document.documentElement.dataset.theme=e,localStorage.setItem("theme",e)});</script> </body> </html>

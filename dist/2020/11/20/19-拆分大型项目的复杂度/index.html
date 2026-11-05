@@ -1,0 +1,44 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>19-拆分大型项目的复杂度 · DorothyJay</title><meta name="description" content="19-拆分大型项目的复杂度"><link rel="icon" href="/favicon.ico"><link rel="icon" type="image/png" href="/favicon.png"><link rel="canonical" href="https://dengcpu.github.io/2020/11/20/19-%E6%8B%86%E5%88%86%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%A4%8D%E6%9D%82%E5%BA%A6/"><script>
+      const stored = localStorage.getItem('theme');
+      const theme =
+        stored === 'light' || stored === 'dark'
+          ? stored
+          : matchMedia('(prefers-color-scheme: dark)').matches
+            ? 'dark'
+            : 'light';
+      document.documentElement.dataset.theme = theme;
+    </script><link rel="stylesheet" href="/_astro/_channel_.BPNf9UN_.css"></head> <body class="wide"> <header class="site-header"> <div class="bar"> <a class="brand" href="/">DorothyJay</a> <div class="nav-group"> <nav class="site-nav" aria-label="主导航"> <a href="/"> 首页 </a><a href="/writing/"> 文章 </a><a href="/work/"> 作品 </a><a href="/about/"> 关于 </a> </nav> <button class="theme-toggle" type="button" id="theme-toggle"> <span class="when-light">深色</span> <span class="when-dark">浅色</span> </button> </div> </div> </header> <main>  <div class="post-layout"> <article> <nav class="crumb" aria-label="面包屑"> <a href="/writing/frontend/">前端学习</a>  / <a href="/writing/frontend/#极客时间-React"> 极客时间 React </a>  </nav> <h1 class="page-title">19-拆分大型项目的复杂度</h1> <p class="post-date">2020-11-20</p> <details class="toc-mobile"> <summary>目录</summary> <nav class="toc" aria-label="目录"> <ol> <li class="depth-3"> <a href="#拆分复杂度">拆分复杂度</a> </li><li class="depth-4"> <a href="#一按领域模型feature组织代码降低耦合度">一、按领域模型（feature）组织代码，降低耦合度</a> </li><li class="depth-4"> <a href="#二如何组织componentaction-和-reducer">二、如何组织component，action 和 reducer</a> </li><li class="depth-4"> <a href="#三如何组织react-route的路由配置">三、如何组织React Route的路由配置</a> </li> </ol> </nav> </details> <div class="prose"> <h3 id="拆分复杂度">拆分复杂度</h3>
+<h4 id="一按领域模型feature组织代码降低耦合度">一、按领域模型（feature）组织代码，降低耦合度</h4>
+<p><img src="https://pic.downk.cc/item/5fb71ee0b18d627113d9dabc.jpg" alt=""></p>
+<p><img src="https://pic.downk.cc/item/5fb71f0ab18d627113d9e304.jpg" alt=""></p>
+<p><img src="https://pic.downk.cc/item/5fb71f24b18d627113d9e849.jpg" alt=""></p>
+<p><strong>解决：先以业务逻辑,以功能进行划分，然后每个功能(feature)内部有自己的reducer，component，action</strong></p>
+<p><img src="https://pic.downk.cc/item/5fb71f7db18d627113d9fdb5.jpg" alt=""></p>
+<p>使用React技术栈如何实现这种架构？</p>
+<p><img src="https://pic.downk.cc/item/5fb71fe1b18d627113da1548.jpg" alt=""></p>
+<p>以功能区分，路由配置也可以分散在每个feature中，这样可扩展性和可维护性更好！</p>
+<h4 id="二如何组织componentaction-和-reducer">二、如何组织component，action 和 reducer</h4>
+<p><img src="https://pic.downk.cc/item/5fb720bab18d627113da4750.jpg" alt=""></p>
+<p>单元测试文件夹tests是单独维护的，单独放在一个地方。</p>
+<p>常量：通常在每个feature下面有个constant.js文件</p>
+<p><img src="https://pic.downk.cc/item/5fb72191b18d627113da77a0.jpg" alt=""></p>
+<p>rootReducer的写法：<br>
+<img src="https://pic.downk.cc/item/5fb721e2b18d627113da87fe.jpg" alt=""></p>
+<p><strong>总结</strong>：</p>
+<ul>
+<li>按照feature组织组件component，action和reducer</li>
+<li>使用root loader加载feature下的各个资源</li>
+<li>做到高内聚、松耦合</li>
+</ul>
+<h4 id="三如何组织react-route的路由配置">三、如何组织React Route的路由配置</h4>
+<p><img src="https://pic.downk.cc/item/5fb72294b18d627113dabdf7.jpg" alt=""></p>
+<p>推荐JSON方式的路由：</p>
+<p><img src="https://pic.downk.cc/item/5fb722f6b18d627113dae650.jpg" alt=""></p>
+<p>解析JSON路由：<br>
+<img src="https://pic.downk.cc/item/5fb72375b18d627113db0340.jpg" alt=""></p>
+<p><strong>总结</strong>：</p>
+<ul>
+<li>每个feature都有自己的专属路由配置</li>
+<li>顶层路由使用JSON配置更容易维护</li>
+<li>如何解析JSON配置到React Router语法。</li>
+</ul> </div> <nav class="post-pager" aria-label="系列内的前后篇"> <div> <a href="/2020/11/20/18-前端项目的理想架构/"> <small>上一篇</small> 18-前端项目的理想架构 </a> </div> <div class="next"> <a href="/2020/11/20/20-使用Rekit开发可扩展的React应用/"> <small>下一篇</small> 20-使用Rekit开发可扩展的React应用 </a> </div> </nav> </article> <nav class="toc toc-desktop" aria-label="目录"> <p>目录</p> <ol> <li class="depth-3"> <a href="#拆分复杂度">拆分复杂度</a> </li><li class="depth-4"> <a href="#一按领域模型feature组织代码降低耦合度">一、按领域模型（feature）组织代码，降低耦合度</a> </li><li class="depth-4"> <a href="#二如何组织componentaction-和-reducer">二、如何组织component，action 和 reducer</a> </li><li class="depth-4"> <a href="#三如何组织react-route的路由配置">三、如何组织React Route的路由配置</a> </li> </ol> </nav> </div>  </main> <footer class="site-footer"> <div class="site-footer-inner"> <a href="https://github.com/DENGCPU">DorothyJay</a> </div> </footer> <script type="module">const t=document.getElementById("theme-toggle");t?.addEventListener("click",()=>{const e=document.documentElement.dataset.theme==="dark"?"light":"dark";document.documentElement.dataset.theme=e,localStorage.setItem("theme",e)});</script> </body> </html>

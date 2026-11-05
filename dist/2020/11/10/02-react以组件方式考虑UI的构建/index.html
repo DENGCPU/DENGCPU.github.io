@@ -1,0 +1,21 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>02-react以组件方式考虑UI的构建 · DorothyJay</title><meta name="description" content="02-react以组件方式考虑UI的构建"><link rel="icon" href="/favicon.ico"><link rel="icon" type="image/png" href="/favicon.png"><link rel="canonical" href="https://dengcpu.github.io/2020/11/10/02-react%E4%BB%A5%E7%BB%84%E4%BB%B6%E6%96%B9%E5%BC%8F%E8%80%83%E8%99%91UI%E7%9A%84%E6%9E%84%E5%BB%BA/"><script>
+      const stored = localStorage.getItem('theme');
+      const theme =
+        stored === 'light' || stored === 'dark'
+          ? stored
+          : matchMedia('(prefers-color-scheme: dark)').matches
+            ? 'dark'
+            : 'light';
+      document.documentElement.dataset.theme = theme;
+    </script><link rel="stylesheet" href="/_astro/_channel_.BPNf9UN_.css"></head> <body class="wide"> <header class="site-header"> <div class="bar"> <a class="brand" href="/">DorothyJay</a> <div class="nav-group"> <nav class="site-nav" aria-label="主导航"> <a href="/"> 首页 </a><a href="/writing/"> 文章 </a><a href="/work/"> 作品 </a><a href="/about/"> 关于 </a> </nav> <button class="theme-toggle" type="button" id="theme-toggle"> <span class="when-light">深色</span> <span class="when-dark">浅色</span> </button> </div> </div> </header> <main>  <div class="post-layout"> <article> <nav class="crumb" aria-label="面包屑"> <a href="/writing/frontend/">前端学习</a>  / <a href="/writing/frontend/#极客时间-React"> 极客时间 React </a>  </nav> <h1 class="page-title">02-react以组件方式考虑UI的构建</h1> <p class="post-date">2020-11-10</p>  <div class="prose"> <p><img src="https://i.bmp.ovh/imgs/2020/11/b28d10e0a2054aec.png" alt=""></p>
+<p><strong>一、构建一个组件需要考虑的三件事情：</strong></p>
+<p>1、组件的UI( 一些外在的表现形式 )<br>
+2、组件的状态管理（放在哪？）<br>
+3、组件的交互</p>
+<p><img src="https://i.bmp.ovh/imgs/2020/11/f878479d2f41ffb4.png" alt=""></p>
+<p><strong>二、何时创建组件：单一职责原则</strong></p>
+<p>1、一个组件只负责一个功能<br>
+2、复杂的组件应该进行拆分</p>
+<p><strong>三、数据状态管理原则：DRY原则</strong></p>
+<p>1.能计算得到的状态不应该单独存储<br>
+2.组件尽量无状态，尽量通过props获取.</p> </div> <nav class="post-pager" aria-label="系列内的前后篇"> <div> <a href="/2020/11/10/01-React的历史背景/"> <small>上一篇</small> 01-React的历史背景及特点 </a> </div> <div class="next"> <a href="/2020/11/10/03-JSX的本质是语法糖/"> <small>下一篇</small> 03-JSX的本质是语法糖 </a> </div> </nav> </article>  </div>  </main> <footer class="site-footer"> <div class="site-footer-inner"> <a href="https://github.com/DENGCPU">DorothyJay</a> </div> </footer> <script type="module">const t=document.getElementById("theme-toggle");t?.addEventListener("click",()=>{const e=document.documentElement.dataset.theme==="dark"?"light":"dark";document.documentElement.dataset.theme=e,localStorage.setItem("theme",e)});</script> </body> </html>

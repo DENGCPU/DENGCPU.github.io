@@ -1,0 +1,14 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>26-React集成第三方JS库（d3.js为例） · DorothyJay</title><meta name="description" content="1、使用ref获取原生DOM节点引用2、手动将组件状态更新到DOM节点3、组件销毁时移除原生节点DOM事件"><link rel="icon" href="/favicon.ico"><link rel="icon" type="image/png" href="/favicon.png"><link rel="canonical" href="https://dengcpu.github.io/2020/11/21/26-React%E9%9B%86%E6%88%90%E7%AC%AC%E4%B8%89%E6%96%B9JS%E5%BA%93%EF%BC%88d3-js%E4%B8%BA%E4%BE%8B%EF%BC%89/"><script>
+      const stored = localStorage.getItem('theme');
+      const theme =
+        stored === 'light' || stored === 'dark'
+          ? stored
+          : matchMedia('(prefers-color-scheme: dark)').matches
+            ? 'dark'
+            : 'light';
+      document.documentElement.dataset.theme = theme;
+    </script><link rel="stylesheet" href="/_astro/_channel_.BPNf9UN_.css"></head> <body class="wide"> <header class="site-header"> <div class="bar"> <a class="brand" href="/">DorothyJay</a> <div class="nav-group"> <nav class="site-nav" aria-label="主导航"> <a href="/"> 首页 </a><a href="/writing/"> 文章 </a><a href="/work/"> 作品 </a><a href="/about/"> 关于 </a> </nav> <button class="theme-toggle" type="button" id="theme-toggle"> <span class="when-light">深色</span> <span class="when-dark">浅色</span> </button> </div> </div> </header> <main>  <div class="post-layout"> <article> <nav class="crumb" aria-label="面包屑"> <a href="/writing/frontend/">前端学习</a>  / <a href="/writing/frontend/#极客时间-React"> 极客时间 React </a>  </nav> <h1 class="page-title">26-React集成第三方JS库（d3.js为例）</h1> <p class="post-date">2020-11-22</p> <details class="toc-mobile"> <summary>目录</summary> <nav class="toc" aria-label="目录"> <ol> <li class="depth-4"> <a href="#集成第三方js库的技术要点">集成第三方JS库的技术要点：</a> </li> </ol> </nav> </details> <div class="prose"> <h4 id="集成第三方js库的技术要点">集成第三方JS库的技术要点：</h4>
+<p>1、使用ref获取原生DOM节点引用<br>
+2、手动将组件状态更新到DOM节点<br>
+3、组件销毁时移除原生节点DOM事件</p>
+<p>d3.js用来画图形的第三方库，操作原生DOM节点，也是以数据驱动（与React非常吻合）。</p> </div> <nav class="post-pager" aria-label="系列内的前后篇"> <div> <a href="/2020/11/21/25-使用React-Router实现分布操作/"> <small>上一篇</small> 25-使用React-Router实现分布操作 </a> </div> <div class="next"> <a href="/2020/11/21/27-React中拖放的实现/"> <small>下一篇</small> 27-React中拖放的实现 </a> </div> </nav> </article> <nav class="toc toc-desktop" aria-label="目录"> <p>目录</p> <ol> <li class="depth-4"> <a href="#集成第三方js库的技术要点">集成第三方JS库的技术要点：</a> </li> </ol> </nav> </div>  </main> <footer class="site-footer"> <div class="site-footer-inner"> <a href="https://github.com/DENGCPU">DorothyJay</a> </div> </footer> <script type="module">const t=document.getElementById("theme-toggle");t?.addEventListener("click",()=>{const e=document.documentElement.dataset.theme==="dark"?"light":"dark";document.documentElement.dataset.theme=e,localStorage.setItem("theme",e)});</script> </body> </html>

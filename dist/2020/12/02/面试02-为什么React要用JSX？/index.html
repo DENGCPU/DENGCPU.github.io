@@ -1,0 +1,207 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>面试02-为什么React要用JSX？ · DorothyJay</title><meta name="description" content="针对”为什么采用改技术方案？”类型的题，其实主要在考察两个方面："><link rel="icon" href="/favicon.ico"><link rel="icon" type="image/png" href="/favicon.png"><link rel="canonical" href="https://dengcpu.github.io/2020/12/02/%E9%9D%A2%E8%AF%9502-%E4%B8%BA%E4%BB%80%E4%B9%88React%E8%A6%81%E7%94%A8JSX%EF%BC%9F/"><script>
+      const stored = localStorage.getItem('theme');
+      const theme =
+        stored === 'light' || stored === 'dark'
+          ? stored
+          : matchMedia('(prefers-color-scheme: dark)').matches
+            ? 'dark'
+            : 'light';
+      document.documentElement.dataset.theme = theme;
+    </script><link rel="stylesheet" href="/_astro/_channel_.BPNf9UN_.css"></head> <body class="wide"> <header class="site-header"> <div class="bar"> <a class="brand" href="/">DorothyJay</a> <div class="nav-group"> <nav class="site-nav" aria-label="主导航"> <a href="/"> 首页 </a><a href="/writing/"> 文章 </a><a href="/work/"> 作品 </a><a href="/about/"> 关于 </a> </nav> <button class="theme-toggle" type="button" id="theme-toggle"> <span class="when-light">深色</span> <span class="when-dark">浅色</span> </button> </div> </div> </header> <main>  <div class="post-layout"> <article> <nav class="crumb" aria-label="面包屑"> <a href="/writing/frontend/">前端学习</a>  / <a href="/writing/frontend/#React-面试"> React 面试 </a>  </nav> <h1 class="page-title">面试02-为什么React要用JSX？</h1> <p class="post-date">2020-12-02</p> <details class="toc-mobile"> <summary>目录</summary> <nav class="toc" aria-label="目录"> <ol> <li class="depth-4"> <a href="#面试场景2为什么react要用jsx论证题">面试场景2：为什么React要用JSX？（论证题）</a> </li> </ol> </nav> </details> <div class="prose"> <h4 id="面试场景2为什么react要用jsx论证题">面试场景2：为什么React要用JSX？（论证题）</h4>
+<p> 针对”为什么采用改技术方案？”类型的题，其实主要在考察两个方面：</p>
+<ul>
+<li>技术广度，深挖知识面涉猎广度，对流行框架的模板方案是否知悉了解。</li>
+<li>技术方案调研能力</li>
+</ul>
+<p>所以，针对这类问题，可以采用 “一句话解释，核心概念，方案对比” 三步走的技巧来作答：</p>
+<p>1、一句话解析JSX。用一句话说清楚JSX到底是什么。<br>
+2、核心概念。JSX用于解决什么问题？如何使用？<br>
+3、方案对比。与其他方案进行对比，说明React选用JSX的必要性。</p>
+<h5 id="一一句话解释">一、一句话解释</h5>
+<p> 按照React官方解释，<strong>JSX是一个JavaScript的语法扩展，或者说是一个类似于XML的ECMAScript语法扩展</strong>，它本身没有太多的语法定义，也不期望引入更多的标准。</p>
+<h5 id="二核心概念">二、核心概念</h5>
+<p> 其实React本身并不强制使用JSX，在没有JSX的时候，React实现一个组件依赖于使用React.createElement函数。代码如下：</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">class</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> Hello</span><span style="color:#D73A49;--shiki-dark:#F97583"> extends</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> React</span><span style="color:#24292E;--shiki-dark:#E1E4E8">.</span><span style="color:#6F42C1;--shiki-dark:#B392F0">Component</span><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">    render</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(){</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">        return</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> React.</span><span style="color:#6F42C1;--shiki-dark:#B392F0">createElment</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#032F62;--shiki-dark:#9ECBFF">            'div'</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">            null</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#032F62;--shiki-dark:#9ECBFF">            `Hello ${</span><span style="color:#005CC5;--shiki-dark:#79B8FF">this</span><span style="color:#032F62;--shiki-dark:#9ECBFF">.</span><span style="color:#24292E;--shiki-dark:#E1E4E8">props</span><span style="color:#032F62;--shiki-dark:#9ECBFF">.</span><span style="color:#24292E;--shiki-dark:#E1E4E8">toWhat</span><span style="color:#032F62;--shiki-dark:#9ECBFF">}`</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">        );</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">ReactDOM.</span><span style="color:#6F42C1;--shiki-dark:#B392F0">render</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    React.</span><span style="color:#6F42C1;--shiki-dark:#B392F0">createElement</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#032F62;--shiki-dark:#9ECBFF">'Hello,{toWhat:'</span><span style="color:#24292E;--shiki-dark:#E1E4E8">World</span><span style="color:#032F62;--shiki-dark:#9ECBFF">'})</span><span style="color:#B31D28;--shiki-light-font-style:italic;--shiki-dark:#FDAEB7;--shiki-dark-font-style:italic">,</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    document.</span><span style="color:#6F42C1;--shiki-dark:#B392F0">getElementById</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#032F62;--shiki-dark:#9ECBFF">'root'</span><span style="color:#24292E;--shiki-dark:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">)</span></span></code></pre>
+<p>而JSX更像是语法糖，通过类似XML的描述方式，描写函数对象。采用JSX之后，上述代码会变成如下：</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">class</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> Hello</span><span style="color:#D73A49;--shiki-dark:#F97583"> extends</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> React</span><span style="color:#24292E;--shiki-dark:#E1E4E8">.</span><span style="color:#6F42C1;--shiki-dark:#B392F0">Component</span><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">    render</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(){</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">        return</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> &#x3C;</span><span style="color:#22863A;--shiki-dark:#85E89D">div</span><span style="color:#24292E;--shiki-dark:#E1E4E8">>Hello,{</span><span style="color:#005CC5;--shiki-dark:#79B8FF">this</span><span style="color:#24292E;--shiki-dark:#E1E4E8">.props.toWhat}&#x3C;/</span><span style="color:#22863A;--shiki-dark:#85E89D">div</span><span style="color:#24292E;--shiki-dark:#E1E4E8">></span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">ReactDOM.</span><span style="color:#6F42C1;--shiki-dark:#B392F0">render</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(&#x3C;</span><span style="color:#005CC5;--shiki-dark:#79B8FF">Hello</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> toWhat</span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#032F62;--shiki-dark:#9ECBFF">'world'</span><span style="color:#24292E;--shiki-dark:#E1E4E8">/>,document.</span><span style="color:#6F42C1;--shiki-dark:#B392F0">getElementById</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#032F62;--shiki-dark:#9ECBFF">'root'</span><span style="color:#24292E;--shiki-dark:#E1E4E8">))</span></span></code></pre>
+<p>通过这样对比，显然可以看出，<strong>JSX使得代码变得更为简洁，而且代码结构层次更为清晰。</strong></p>
+<p>因为React需要将组件转化为虚拟DOM树，所以我们手写代码时，其实是在手写一颗结构树。而XML在树结构的描述上天然具有可读性强优势。<br>
+🐖：实际在运行的时候，会使用Babel插件将JSX语法的代码还原为React.createElement的代码。</p>
+<h5 id="三方案对比">三、方案对比</h5>
+<p><strong>1.React设计初衷</strong></p>
+<p>React的设计初衷是：关注点分离（Separation of concerns)。在React种，关注点的基本单位是组件。React单个组件时高内聚的，而组件与组件之间时低耦合的。</p>
+<blockquote>
+<p>关注点分离：是计算机科学里面的一个重要概念。主要思想是将代码分隔为不同部分，每一部分都有各自的关注点。优点： 当关注点分开时，各部分可以重复使用，独立开发和更新。具有特殊价值的部分能够稍后改进或修改一段代码，而无须知道其他部分的细节做出的相应更改。</p>
+</blockquote>
+<p><strong>2.React为什么不使用模板呢？</strong></p>
+<p>React团队认为引入模板是一种不佳的实现。因为模板分离了技术栈，而非关注点的模板同时又引入了很多的概念，比如新的模板语法、模板指令等。以AngularJS为例，可以看下有多少新概念：</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">&#x3C;!</span><span style="color:#24292E;--shiki-dark:#E1E4E8">doctype html</span><span style="color:#D73A49;--shiki-dark:#F97583">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">&#x3C;</span><span style="color:#22863A;--shiki-dark:#85E89D">html</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> ng-app</span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"docsBindExample"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  &#x3C;</span><span style="color:#22863A;--shiki-dark:#85E89D">head</span><span style="color:#24292E;--shiki-dark:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    &#x3C;</span><span style="color:#22863A;--shiki-dark:#85E89D">script</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> src</span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"http://code.angularjs.org/1.2.25/angular.min.js"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">>&#x3C;/</span><span style="color:#22863A;--shiki-dark:#85E89D">script</span><span style="color:#24292E;--shiki-dark:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    &#x3C;</span><span style="color:#22863A;--shiki-dark:#85E89D">script</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> src</span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"script.js"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">>&#x3C;/</span><span style="color:#22863A;--shiki-dark:#85E89D">script</span><span style="color:#24292E;--shiki-dark:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  &#x3C;/</span><span style="color:#22863A;--shiki-dark:#85E89D">head</span><span style="color:#24292E;--shiki-dark:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  &#x3C;</span><span style="color:#22863A;--shiki-dark:#85E89D">body</span><span style="color:#24292E;--shiki-dark:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    &#x3C;</span><span style="color:#22863A;--shiki-dark:#85E89D">div</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> ng-controller</span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"Ctrl1"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">      Hello &#x3C;</span><span style="color:#22863A;--shiki-dark:#85E89D">input</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> ng-model</span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#032F62;--shiki-dark:#9ECBFF">'name'</span><span style="color:#24292E;--shiki-dark:#E1E4E8">> &#x3C;</span><span style="color:#22863A;--shiki-dark:#85E89D">hr</span><span style="color:#24292E;--shiki-dark:#E1E4E8">/></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">      &#x3C;</span><span style="color:#22863A;--shiki-dark:#85E89D">span</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> ng-bind</span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"name"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">>&#x3C;/</span><span style="color:#22863A;--shiki-dark:#85E89D">span</span><span style="color:#24292E;--shiki-dark:#E1E4E8">> &#x3C;</span><span style="color:#22863A;--shiki-dark:#85E89D">br</span><span style="color:#24292E;--shiki-dark:#E1E4E8">/></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">      &#x3C;</span><span style="color:#22863A;--shiki-dark:#85E89D">span</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> ng</span><span style="color:#24292E;--shiki-dark:#E1E4E8">:</span><span style="color:#6F42C1;--shiki-dark:#B392F0">bind</span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"name"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">>&#x3C;/</span><span style="color:#22863A;--shiki-dark:#85E89D">span</span><span style="color:#24292E;--shiki-dark:#E1E4E8">> &#x3C;</span><span style="color:#22863A;--shiki-dark:#85E89D">br</span><span style="color:#24292E;--shiki-dark:#E1E4E8">/></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">      &#x3C;</span><span style="color:#22863A;--shiki-dark:#85E89D">span</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> ng_bind</span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"name"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">>&#x3C;/</span><span style="color:#22863A;--shiki-dark:#85E89D">span</span><span style="color:#24292E;--shiki-dark:#E1E4E8">> &#x3C;</span><span style="color:#22863A;--shiki-dark:#85E89D">br</span><span style="color:#24292E;--shiki-dark:#E1E4E8">/></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">      &#x3C;</span><span style="color:#22863A;--shiki-dark:#85E89D">span</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> data-ng-bind</span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"name"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">>&#x3C;/</span><span style="color:#22863A;--shiki-dark:#85E89D">span</span><span style="color:#24292E;--shiki-dark:#E1E4E8">> &#x3C;</span><span style="color:#22863A;--shiki-dark:#85E89D">br</span><span style="color:#24292E;--shiki-dark:#E1E4E8">/></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">      &#x3C;</span><span style="color:#22863A;--shiki-dark:#85E89D">span</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> x-ng-bind</span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"name"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">>&#x3C;/</span><span style="color:#22863A;--shiki-dark:#85E89D">span</span><span style="color:#24292E;--shiki-dark:#E1E4E8">> &#x3C;</span><span style="color:#22863A;--shiki-dark:#85E89D">br</span><span style="color:#24292E;--shiki-dark:#E1E4E8">/></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    &#x3C;/</span><span style="color:#22863A;--shiki-dark:#85E89D">div</span><span style="color:#24292E;--shiki-dark:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  &#x3C;/</span><span style="color:#22863A;--shiki-dark:#85E89D">body</span><span style="color:#24292E;--shiki-dark:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">&#x3C;/</span><span style="color:#22863A;--shiki-dark:#85E89D">html</span><span style="color:#24292E;--shiki-dark:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">angular.module('docsBindExample', [])</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  .controller('Ctrl1', function Ctrl1($scope) {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    $scope.name </span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> 'Max Karl Ernst Ludwig Planck (April 23, 1858 – October 4, 1947)'</span><span style="color:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  });</span></span></code></pre>
+<p>看完会发现这段代码很难懂，因为它引入了非常多的AngularJS独有的概念，但是JSX却不会有很多新概念，它依然是JavaScript，就连条件表达式和循环都仍然是JavaScript的方式。</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">const</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> App</span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#E36209;--shiki-dark:#FFAB70">props</span><span style="color:#24292E;--shiki-dark:#E1E4E8">)</span><span style="color:#D73A49;--shiki-dark:#F97583">=></span><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">    return</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">        &#x3C;</span><span style="color:#22863A;--shiki-dark:#85E89D">div</span><span style="color:#24292E;--shiki-dark:#E1E4E8">></span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">            {props.isShow</span><span style="color:#D73A49;--shiki-dark:#F97583">?</span><span style="color:#24292E;--shiki-dark:#E1E4E8">&#x3C;</span><span style="color:#22863A;--shiki-dark:#85E89D">a</span><span style="color:#24292E;--shiki-dark:#E1E4E8">>show&#x3C;/</span><span style="color:#22863A;--shiki-dark:#85E89D">a</span><span style="color:#24292E;--shiki-dark:#E1E4E8">></span><span style="color:#D73A49;--shiki-dark:#F97583">:</span><span style="color:#24292E;--shiki-dark:#E1E4E8">&#x3C;</span><span style="color:#22863A;--shiki-dark:#85E89D">a</span><span style="color:#24292E;--shiki-dark:#E1E4E8">>hidden&#x3C;/</span><span style="color:#22863A;--shiki-dark:#85E89D">a</span><span style="color:#24292E;--shiki-dark:#E1E4E8">>}</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">            {props.names.</span><span style="color:#6F42C1;--shiki-dark:#B392F0">map</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#E36209;--shiki-dark:#FFAB70">name</span><span style="color:#D73A49;--shiki-dark:#F97583">=></span><span style="color:#24292E;--shiki-dark:#E1E4E8">&#x3C;</span><span style="color:#22863A;--shiki-dark:#85E89D">a</span><span style="color:#24292E;--shiki-dark:#E1E4E8">>{name}&#x3C;/</span><span style="color:#22863A;--shiki-dark:#85E89D">a</span><span style="color:#24292E;--shiki-dark:#E1E4E8">>)}</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">        &#x3C;/</span><span style="color:#22863A;--shiki-dark:#85E89D">div</span><span style="color:#24292E;--shiki-dark:#E1E4E8">></span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    )</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre>
+<p>这样比较下来，可以看出React代码更简洁，更具有可读性，更贴近HTML。</p>
+<p>那模板字符串也可以套用HTML，为什么不用模板字符串呢？</p>
+<p><strong>3.React为什么不使用模板字符串呢？</strong></p>
+<p>来看一个模板字符串的例子：</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">var</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> box </span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> jsx</span><span style="color:#032F62;--shiki-dark:#9ECBFF">`</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#032F62;--shiki-dark:#9ECBFF">  &#x3C;${</span><span style="color:#24292E;--shiki-dark:#E1E4E8">Box</span><span style="color:#032F62;--shiki-dark:#9ECBFF">}></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#032F62;--shiki-dark:#9ECBFF">    ${</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">      shouldShowAnswer</span><span style="color:#032F62;--shiki-dark:#9ECBFF">(</span><span style="color:#24292E;--shiki-dark:#E1E4E8">user</span><span style="color:#032F62;--shiki-dark:#9ECBFF">) </span><span style="color:#D73A49;--shiki-dark:#F97583">?</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">      jsx</span><span style="color:#032F62;--shiki-dark:#9ECBFF">`&#x3C;${</span><span style="color:#24292E;--shiki-dark:#E1E4E8">Answer</span><span style="color:#032F62;--shiki-dark:#9ECBFF">} value=${</span><span style="color:#005CC5;--shiki-dark:#79B8FF">false</span><span style="color:#032F62;--shiki-dark:#9ECBFF">}>no&#x3C;/${</span><span style="color:#24292E;--shiki-dark:#E1E4E8">Answer</span><span style="color:#032F62;--shiki-dark:#9ECBFF">}>`</span><span style="color:#D73A49;--shiki-dark:#F97583"> :</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">      jsx</span><span style="color:#032F62;--shiki-dark:#9ECBFF">`</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#032F62;--shiki-dark:#9ECBFF">        &#x3C;${</span><span style="color:#24292E;--shiki-dark:#E1E4E8">Box</span><span style="color:#032F62;--shiki-dark:#9ECBFF">.</span><span style="color:#24292E;--shiki-dark:#E1E4E8">Comment</span><span style="color:#032F62;--shiki-dark:#9ECBFF">}></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#032F62;--shiki-dark:#9ECBFF">         Text Content</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#032F62;--shiki-dark:#9ECBFF">        &#x3C;/${</span><span style="color:#24292E;--shiki-dark:#E1E4E8">Box</span><span style="color:#032F62;--shiki-dark:#9ECBFF">.</span><span style="color:#24292E;--shiki-dark:#E1E4E8">Comment</span><span style="color:#032F62;--shiki-dark:#9ECBFF">}></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#032F62;--shiki-dark:#9ECBFF">      `</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#032F62;--shiki-dark:#9ECBFF">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#032F62;--shiki-dark:#9ECBFF">  &#x3C;/${</span><span style="color:#24292E;--shiki-dark:#E1E4E8">Box</span><span style="color:#032F62;--shiki-dark:#9ECBFF">}></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#032F62;--shiki-dark:#9ECBFF">`</span><span style="color:#24292E;--shiki-dark:#E1E4E8">;</span></span></code></pre>
+<p>显然代码结构还是非常复杂（存在多次内部嵌套），也不利于开发工具的代码提示。</p>
+<p><strong>4.React为什么不使用JXON呢？</strong></p>
+<p>JXON很像目前使用的JSX，它的结构如下：</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">&#x3C;</span><span style="color:#22863A;--shiki-dark:#85E89D">catalog</span><span style="color:#24292E;--shiki-dark:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  &#x3C;</span><span style="color:#22863A;--shiki-dark:#85E89D">product</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> description</span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"Cardigan Sweater"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">   &#x3C;</span><span style="color:#005CC5;--shiki-dark:#79B8FF">catalog_item</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> gender</span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"Men's"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">     &#x3C;</span><span style="color:#005CC5;--shiki-dark:#79B8FF">item_number</span><span style="color:#24292E;--shiki-dark:#E1E4E8">>QWZ5671&#x3C;/</span><span style="color:#005CC5;--shiki-dark:#79B8FF">item_number</span><span style="color:#24292E;--shiki-dark:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">     &#x3C;</span><span style="color:#22863A;--shiki-dark:#85E89D">price</span><span style="color:#24292E;--shiki-dark:#E1E4E8">>39.95&#x3C;/</span><span style="color:#22863A;--shiki-dark:#85E89D">price</span><span style="color:#24292E;--shiki-dark:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">     &#x3C;</span><span style="color:#22863A;--shiki-dark:#85E89D">size</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> description</span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"Medium"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">       &#x3C;</span><span style="color:#005CC5;--shiki-dark:#79B8FF">color_swatch</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> image</span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"red_cardigan.jpg"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">>Red&#x3C;/</span><span style="color:#005CC5;--shiki-dark:#79B8FF">color_swatch</span><span style="color:#24292E;--shiki-dark:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">       &#x3C;</span><span style="color:#005CC5;--shiki-dark:#79B8FF">color_swatch</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> image</span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"burgundy_cardigan.jpg"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">>Burgundy&#x3C;/</span><span style="color:#005CC5;--shiki-dark:#79B8FF">color_swatch</span><span style="color:#24292E;--shiki-dark:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">     &#x3C;/</span><span style="color:#22863A;--shiki-dark:#85E89D">size</span><span style="color:#24292E;--shiki-dark:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">     &#x3C;</span><span style="color:#22863A;--shiki-dark:#85E89D">size</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> description</span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"Large"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">       &#x3C;</span><span style="color:#005CC5;--shiki-dark:#79B8FF">color_swatch</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> image</span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"red_cardigan.jpg"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">>Red&#x3C;/</span><span style="color:#005CC5;--shiki-dark:#79B8FF">color_swatch</span><span style="color:#24292E;--shiki-dark:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">       &#x3C;</span><span style="color:#005CC5;--shiki-dark:#79B8FF">color_swatch</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> image</span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"burgundy_cardigan.jpg"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">>Burgundy&#x3C;/</span><span style="color:#005CC5;--shiki-dark:#79B8FF">color_swatch</span><span style="color:#24292E;--shiki-dark:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">     &#x3C;/</span><span style="color:#22863A;--shiki-dark:#85E89D">size</span><span style="color:#24292E;--shiki-dark:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">   &#x3C;/</span><span style="color:#005CC5;--shiki-dark:#79B8FF">catalog_item</span><span style="color:#24292E;--shiki-dark:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">   &#x3C;</span><span style="color:#005CC5;--shiki-dark:#79B8FF">catalog_item</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> gender</span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"Women's"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">     &#x3C;</span><span style="color:#005CC5;--shiki-dark:#79B8FF">item_number</span><span style="color:#24292E;--shiki-dark:#E1E4E8">>RRX9856&#x3C;/</span><span style="color:#005CC5;--shiki-dark:#79B8FF">item_number</span><span style="color:#24292E;--shiki-dark:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">     &#x3C;</span><span style="color:#005CC5;--shiki-dark:#79B8FF">discount_until</span><span style="color:#24292E;--shiki-dark:#E1E4E8">>Dec 25, 1995&#x3C;/</span><span style="color:#005CC5;--shiki-dark:#79B8FF">discount_until</span><span style="color:#24292E;--shiki-dark:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">     &#x3C;</span><span style="color:#22863A;--shiki-dark:#85E89D">price</span><span style="color:#24292E;--shiki-dark:#E1E4E8">>42.50&#x3C;/</span><span style="color:#22863A;--shiki-dark:#85E89D">price</span><span style="color:#24292E;--shiki-dark:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">     &#x3C;</span><span style="color:#22863A;--shiki-dark:#85E89D">size</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> description</span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"Medium"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">       &#x3C;</span><span style="color:#005CC5;--shiki-dark:#79B8FF">color_swatch</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> image</span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"black_cardigan.jpg"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">>Black&#x3C;/</span><span style="color:#005CC5;--shiki-dark:#79B8FF">color_swatch</span><span style="color:#24292E;--shiki-dark:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">     &#x3C;/</span><span style="color:#22863A;--shiki-dark:#85E89D">size</span><span style="color:#24292E;--shiki-dark:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">   &#x3C;/</span><span style="color:#005CC5;--shiki-dark:#79B8FF">catalog_item</span><span style="color:#24292E;--shiki-dark:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  &#x3C;/</span><span style="color:#22863A;--shiki-dark:#85E89D">product</span><span style="color:#24292E;--shiki-dark:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  &#x3C;</span><span style="color:#22863A;--shiki-dark:#85E89D">script</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> type</span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"text/javascript"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">>&#x3C;![CDATA[function matchwo(a,b) {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">    if</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> (a </span><span style="color:#D73A49;--shiki-dark:#F97583">&#x3C;</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> b </span><span style="color:#D73A49;--shiki-dark:#F97583">&#x26;&#x26;</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> a </span><span style="color:#D73A49;--shiki-dark:#F97583">&#x3C;</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> 0</span><span style="color:#24292E;--shiki-dark:#E1E4E8">) { return </span><span style="color:#005CC5;--shiki-dark:#79B8FF">1</span><span style="color:#24292E;--shiki-dark:#E1E4E8">; }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    else { return </span><span style="color:#005CC5;--shiki-dark:#79B8FF">0</span><span style="color:#24292E;--shiki-dark:#E1E4E8">; }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}]]>&#x3C;/</span><span style="color:#22863A;--shiki-dark:#85E89D">script</span><span style="color:#24292E;--shiki-dark:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">&#x3C;/</span><span style="color:#22863A;--shiki-dark:#85E89D">catalog</span><span style="color:#24292E;--shiki-dark:#E1E4E8">></span></span></code></pre>
+<p>最后放弃JXON这一方案的原因是，大括号不能作为元素在树种开始和结束的位置，无法提供很好的语法提示。</p>
+<p>最后总结下，React为什么使用JSX?</p>
+<p><img src="https://pic.downk.cc/item/5fc752d5394ac523789ece3c.jpg" alt="react使用JSX原因"></p>
+<p>==答题==：</p>
+<blockquote>
+<p>首先，JSX 是一个 JavaScript 的语法扩展，结构类似 XML。<br>
+（JSX 主要用于声明 React 元素，但 React 中并不强制使用 JSX。即使使用了 JSX，也会在构建过程中，通过 Babel 插件编译为 React.createElement。所以 JSX 更像是 React.createElement 的一种语法糖。<br>
+React团队并不想引入JavaScript本身以外的开发体系，而是希望通过合理的关注点分离保持组件开发的纯粹性。）</p>
+</blockquote>
+<blockquote>
+<p>然后，是JSX与其他三种技术方案的对比：<br>
+1.模板。 React 团队认为模板不应该是开发过程中的关注点，因为引入了模板语法、模板指令等概念，是一种不佳的实现方案。<br>
+2.模板字符串。 模板字符串编写的结构会造成多次内部嵌套，使整个结构变得复杂，并且优化代码提示也会变得困难重重。<br>
+3.JXON。 同样因为代码提示困难的原因而被放弃</p>
+</blockquote>
+<p>✨所以，React选择了JSX，因为JSX与其设计思想最为吻合，不需要引入过多的新概念，对编辑器代码提示也很友好。</p> </div> <nav class="post-pager" aria-label="系列内的前后篇"> <div> <a href="/2020/11/30/面试01-你真的了解React吗？/"> <small>上一篇</small> 面试01-你真的了解React吗？ </a> </div> <div class="next"> <a href="/2020/12/07/面试03-如何避免生命周期中的坑？/"> <small>下一篇</small> 面试03-如何避免生命周期中的坑？ </a> </div> </nav> </article> <nav class="toc toc-desktop" aria-label="目录"> <p>目录</p> <ol> <li class="depth-4"> <a href="#面试场景2为什么react要用jsx论证题">面试场景2：为什么React要用JSX？（论证题）</a> </li> </ol> </nav> </div>  </main> <footer class="site-footer"> <div class="site-footer-inner"> <a href="https://github.com/DENGCPU">DorothyJay</a> </div> </footer> <script type="module">const t=document.getElementById("theme-toggle");t?.addEventListener("click",()=>{const e=document.documentElement.dataset.theme==="dark"?"light":"dark";document.documentElement.dataset.theme=e,localStorage.setItem("theme",e)});</script> </body> </html>

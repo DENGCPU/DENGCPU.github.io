@@ -1,0 +1,35 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>17-常用开发调试工具 · DorothyJay</title><meta name="description" content="17-常用开发调试工具"><link rel="icon" href="/favicon.ico"><link rel="icon" type="image/png" href="/favicon.png"><link rel="canonical" href="https://dengcpu.github.io/2020/11/20/17-%E5%B8%B8%E7%94%A8%E5%BC%80%E5%8F%91%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7/"><script>
+      const stored = localStorage.getItem('theme');
+      const theme =
+        stored === 'light' || stored === 'dark'
+          ? stored
+          : matchMedia('(prefers-color-scheme: dark)').matches
+            ? 'dark'
+            : 'light';
+      document.documentElement.dataset.theme = theme;
+    </script><link rel="stylesheet" href="/_astro/_channel_.BPNf9UN_.css"></head> <body class="wide"> <header class="site-header"> <div class="bar"> <a class="brand" href="/">DorothyJay</a> <div class="nav-group"> <nav class="site-nav" aria-label="主导航"> <a href="/"> 首页 </a><a href="/writing/"> 文章 </a><a href="/work/"> 作品 </a><a href="/about/"> 关于 </a> </nav> <button class="theme-toggle" type="button" id="theme-toggle"> <span class="when-light">深色</span> <span class="when-dark">浅色</span> </button> </div> </div> </header> <main>  <div class="post-layout"> <article> <nav class="crumb" aria-label="面包屑"> <a href="/writing/frontend/">前端学习</a>  / <a href="/writing/frontend/#极客时间-React"> 极客时间 React </a>  </nav> <h1 class="page-title">17-常用开发调试工具</h1> <p class="post-date">2020-11-20</p> <details class="toc-mobile"> <summary>目录</summary> <nav class="toc" aria-label="目录"> <ol> <li class="depth-3"> <a href="#常用开发调试工具">常用开发调试工具：</a> </li><li class="depth-4"> <a href="#1eslint">1.ESLint</a> </li><li class="depth-4"> <a href="#2prettier">2.Prettier</a> </li><li class="depth-4"> <a href="#3react-dev-tools">3.React Dev Tools</a> </li><li class="depth-4"> <a href="#4redux-dev-tools">4.Redux Dev Tools</a> </li> </ol> </nav> </details> <div class="prose"> <h3 id="常用开发调试工具">常用开发调试工具：</h3>
+<h4 id="1eslint">1.ESLint</h4>
+<ul>
+<li>使用.eslintrc进行规则的配置</li>
+<li>告诉你哪里不符合规则</li>
+<li>可以使用airbnb的JavaScript代码风格</li>
+</ul>
+<h4 id="2prettier">2.Prettier</h4>
+<ul>
+<li>代码格式化的神器（可以自动修改不符合规则的）</li>
+<li>包装更容易写出风格一致的代码</li>
+</ul>
+<h4 id="3react-dev-tools">3.React Dev Tools</h4>
+<p><img src="https://pic.downk.cc/item/5fb71930b18d627113d88a26.jpg" alt=""></p>
+<ul>
+<li>可以观察React组件树的DOM结构</li>
+<li>可以看到哪些组件render</li>
+</ul>
+<h4 id="4redux-dev-tools">4.Redux Dev Tools</h4>
+<p><img src="https://pic.downk.cc/item/5fb7197bb18d627113d898dd.jpg" alt=""></p>
+<ul>
+<li>可以观察当前Store的状态</li>
+<li>用户发出动作后，会看到action</li>
+<li>时间线：可以恢复到action变化之前的时间线</li>
+<li>可以自动生成一些测试的代码，直接copy到单元测试文件中</li>
+</ul> </div> <nav class="post-pager" aria-label="系列内的前后篇"> <div> <a href="/2020/11/18/16-使用Jest和Enzyme等工具进行单元测试/"> <small>上一篇</small> 16-使用Jest和Enzyme等工具进行单元测试 </a> </div> <div class="next"> <a href="/2020/11/20/18-前端项目的理想架构/"> <small>下一篇</small> 18-前端项目的理想架构 </a> </div> </nav> </article> <nav class="toc toc-desktop" aria-label="目录"> <p>目录</p> <ol> <li class="depth-3"> <a href="#常用开发调试工具">常用开发调试工具：</a> </li><li class="depth-4"> <a href="#1eslint">1.ESLint</a> </li><li class="depth-4"> <a href="#2prettier">2.Prettier</a> </li><li class="depth-4"> <a href="#3react-dev-tools">3.React Dev Tools</a> </li><li class="depth-4"> <a href="#4redux-dev-tools">4.Redux Dev Tools</a> </li> </ol> </nav> </div>  </main> <footer class="site-footer"> <div class="site-footer-inner"> <a href="https://github.com/DENGCPU">DorothyJay</a> </div> </footer> <script type="module">const t=document.getElementById("theme-toggle");t?.addEventListener("click",()=>{const e=document.documentElement.dataset.theme==="dark"?"light":"dark";document.documentElement.dataset.theme=e,localStorage.setItem("theme",e)});</script> </body> </html>

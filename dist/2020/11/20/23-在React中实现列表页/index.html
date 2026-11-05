@@ -1,0 +1,22 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>23-在React中实现列表页 · DorothyJay</title><meta name="description" content="开发列表页需要考虑的技术要点："><link rel="icon" href="/favicon.ico"><link rel="icon" type="image/png" href="/favicon.png"><link rel="canonical" href="https://dengcpu.github.io/2020/11/20/23-%E5%9C%A8React%E4%B8%AD%E5%AE%9E%E7%8E%B0%E5%88%97%E8%A1%A8%E9%A1%B5/"><script>
+      const stored = localStorage.getItem('theme');
+      const theme =
+        stored === 'light' || stored === 'dark'
+          ? stored
+          : matchMedia('(prefers-color-scheme: dark)').matches
+            ? 'dark'
+            : 'light';
+      document.documentElement.dataset.theme = theme;
+    </script><link rel="stylesheet" href="/_astro/_channel_.BPNf9UN_.css"></head> <body class="wide"> <header class="site-header"> <div class="bar"> <a class="brand" href="/">DorothyJay</a> <div class="nav-group"> <nav class="site-nav" aria-label="主导航"> <a href="/"> 首页 </a><a href="/writing/"> 文章 </a><a href="/work/"> 作品 </a><a href="/about/"> 关于 </a> </nav> <button class="theme-toggle" type="button" id="theme-toggle"> <span class="when-light">深色</span> <span class="when-dark">浅色</span> </button> </div> </div> </header> <main>  <div class="post-layout"> <article> <nav class="crumb" aria-label="面包屑"> <a href="/writing/frontend/">前端学习</a>  / <a href="/writing/frontend/#极客时间-React"> 极客时间 React </a>  </nav> <h1 class="page-title">23-在React中实现列表页</h1> <p class="post-date">2020-11-20</p> <details class="toc-mobile"> <summary>目录</summary> <nav class="toc" aria-label="目录"> <ol> <li class="depth-4"> <a href="#一列表页搜索数据缓存和分页">一、列表页：搜索、数据缓存和分页</a> </li><li class="depth-4"> <a href="#二列表页缓存更新加载状态以及错误处理">二、列表页：缓存更新、加载状态以及错误处理</a> </li> </ol> </nav> </details> <div class="prose"> <h4 id="一列表页搜索数据缓存和分页">一、列表页：搜索、数据缓存和分页</h4>
+<p>开发列表页需要考虑的技术要点：</p>
+<ul>
+<li>如何翻页</li>
+<li>如何进行内容搜索</li>
+<li>如何缓存数据</li>
+<li>何时进行页面刷新</li>
+</ul>
+<p><img src="https://pic.downk.cc/item/5fb76b52b18d627113ee2145.jpg" alt="列表页的数据模型"></p>
+<p><img src="https://pic.downk.cc/item/5fb76b8eb18d627113ee2fe8.jpg" alt="Store的设计"></p>
+<p><img src="https://pic.downk.cc/item/5fb76ccbb18d627113ee8a4b.jpg" alt="URL设计和Store同步"></p>
+<h4 id="二列表页缓存更新加载状态以及错误处理">二、列表页：缓存更新、加载状态以及错误处理</h4>
+<p><img src="https://pic.downk.cc/item/5fb76f47b18d627113ef65f6.jpg" alt=""></p> </div> <nav class="post-pager" aria-label="系列内的前后篇"> <div> <a href="/2020/11/20/22-在React中实现表单/"> <small>上一篇</small> 22-在React中实现表单 </a> </div> <div class="next"> <a href="/2020/11/21/24-页面数据来源于多个请求/"> <small>下一篇</small> 24-页面数据来源于多个请求 </a> </div> </nav> </article> <nav class="toc toc-desktop" aria-label="目录"> <p>目录</p> <ol> <li class="depth-4"> <a href="#一列表页搜索数据缓存和分页">一、列表页：搜索、数据缓存和分页</a> </li><li class="depth-4"> <a href="#二列表页缓存更新加载状态以及错误处理">二、列表页：缓存更新、加载状态以及错误处理</a> </li> </ol> </nav> </div>  </main> <footer class="site-footer"> <div class="site-footer-inner"> <a href="https://github.com/DENGCPU">DorothyJay</a> </div> </footer> <script type="module">const t=document.getElementById("theme-toggle");t?.addEventListener("click",()=>{const e=document.documentElement.dataset.theme==="dark"?"light":"dark";document.documentElement.dataset.theme=e,localStorage.setItem("theme",e)});</script> </body> </html>

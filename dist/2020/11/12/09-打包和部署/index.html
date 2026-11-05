@@ -1,0 +1,21 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>09-打包和部署 · DorothyJay</title><meta name="description" content="09-打包和部署"><link rel="icon" href="/favicon.ico"><link rel="icon" type="image/png" href="/favicon.png"><link rel="canonical" href="https://dengcpu.github.io/2020/11/12/09-%E6%89%93%E5%8C%85%E5%92%8C%E9%83%A8%E7%BD%B2/"><script>
+      const stored = localStorage.getItem('theme');
+      const theme =
+        stored === 'light' || stored === 'dark'
+          ? stored
+          : matchMedia('(prefers-color-scheme: dark)').matches
+            ? 'dark'
+            : 'light';
+      document.documentElement.dataset.theme = theme;
+    </script><link rel="stylesheet" href="/_astro/_channel_.BPNf9UN_.css"></head> <body class="wide"> <header class="site-header"> <div class="bar"> <a class="brand" href="/">DorothyJay</a> <div class="nav-group"> <nav class="site-nav" aria-label="主导航"> <a href="/"> 首页 </a><a href="/writing/"> 文章 </a><a href="/work/"> 作品 </a><a href="/about/"> 关于 </a> </nav> <button class="theme-toggle" type="button" id="theme-toggle"> <span class="when-light">深色</span> <span class="when-dark">浅色</span> </button> </div> </div> </header> <main>  <div class="post-layout"> <article> <nav class="crumb" aria-label="面包屑"> <a href="/writing/frontend/">前端学习</a>  / <a href="/writing/frontend/#极客时间-React"> 极客时间 React </a>  </nav> <h1 class="page-title">09-打包和部署</h1> <p class="post-date">2020-11-13</p> <details class="toc-mobile"> <summary>目录</summary> <nav class="toc" aria-label="目录"> <ol> <li class="depth-4"> <a href="#一为什么需要打包">一.为什么需要打包?</a> </li><li class="depth-4"> <a href="#二打包注意事项">二.打包注意事项:</a> </li> </ol> </nav> </details> <div class="prose"> <h4 id="一为什么需要打包">一.为什么需要打包?</h4>
+<ul>
+<li>1.编译ES6语法特性，编译JSX</li>
+<li>2.整合资源，例如图片svg,Less/Sass</li>
+<li>3.优化代码体积</li>
+</ul>
+<p><img src="https://i.bmp.ovh/imgs/2020/11/ef5409f73d9ca563.png" alt=""></p>
+<h4 id="二打包注意事项">二.打包注意事项:</h4>
+<p>1.设置node.js环境为production<br>
+2.禁止开发时专用代码，比如logger<br>
+3.设置应用根路径</p>
+<p>npm run build 执行的就是打包过程。</p> </div> <nav class="post-pager" aria-label="系列内的前后篇"> <div> <a href="/2020/11/12/08-使用脚手架工具创建React项目/"> <small>上一篇</small> 08-使用脚手架工具创建React项目 </a> </div> <div class="next"> <a href="/2020/11/16/010-状态管理库Redux/"> <small>下一篇</small> 010-状态管理库Redux </a> </div> </nav> </article> <nav class="toc toc-desktop" aria-label="目录"> <p>目录</p> <ol> <li class="depth-4"> <a href="#一为什么需要打包">一.为什么需要打包?</a> </li><li class="depth-4"> <a href="#二打包注意事项">二.打包注意事项:</a> </li> </ol> </nav> </div>  </main> <footer class="site-footer"> <div class="site-footer-inner"> <a href="https://github.com/DENGCPU">DorothyJay</a> </div> </footer> <script type="module">const t=document.getElementById("theme-toggle");t?.addEventListener("click",()=>{const e=document.documentElement.dataset.theme==="dark"?"light":"dark";document.documentElement.dataset.theme=e,localStorage.setItem("theme",e)});</script> </body> </html>
