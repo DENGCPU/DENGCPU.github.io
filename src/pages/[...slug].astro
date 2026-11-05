@@ -1,10 +1,10 @@
 ---
 import { render } from 'astro:content';
-import { channelById, formatDate, getPosts, postHref, seriesAnchor, seriesNeighbors } from '../lib/posts';
+import { channelById, formatDate, getAllPosts, postHref, seriesAnchor, seriesNeighbors } from '../lib/posts';
 import Base from '../layouts/Base.astro';
 
 export async function getStaticPaths() {
-  const posts = await getPosts();
+  const posts = await getAllPosts();
   return posts.map((post) => ({
     params: { slug: post.id },
     props: { id: post.id },
@@ -16,44 +16,162 @@ interface Props {
 }
 
 const { id } = Astro.props;
-const posts = await getPosts();
-const post = posts.find((item) => item.id === id);
+const allPosts = await getAllPosts();
+const post = allPosts.find((item) => item.id === id);
 if (!post) {
   throw new Error(`Missing post ${id}`);
 }
 
+const locked = post.data.private === true;
+const publicPosts = allPosts.filter((item) => !item.data.private);
 const channel = channelById(post.data.channel);
-const { previous, next } = seriesNeighbors(posts, post);
-const { Content, headings } = await render(post);
+const { previous, next } = locked
+  ? { previous: undefined, next: undefined }
+  : seriesNeighbors(publicPosts, post);
+const rendered = locked ? undefined : await render(post);
+const Content = rendered?.Content;
+const headings = rendered?.headings ?? [];
 const toc = headings.filter((heading) => heading.depth >= 2 && heading.depth <= 4);
+const cipher = locked ? (post.body ?? '').trim().replaceAll('<', '\\u003c') : '';
 ---
 
-<Base title={post.data.title} description={post.data.summary ?? post.data.title} wide>
-  <div class="post-layout">
-    <article>
-      <nav class="crumb" aria-label="面包屑">
-        <a href={`/writing/${post.data.channel}/`}>{channel?.title}</a>
+<Base
+  title={locked ? '加密文章' : post.data.title}
+  description={locked ? '这篇文章上了锁。' : (post.data.summary ?? post.data.title)}
+  wide={!locked}
+  noindex={locked}
+>
+  {
+    locked ? (
+      <article class="lock">
+        <h1 class="page-title" id="private-title">加密文章</h1>
+        <p class="lede" id="private-lede">输入密码后才能阅读。这篇文章不在首页和文章列表里。</p>
+        <div id="lock-box">
+          <label>
+            密码
+            <input id="lock-password" type="password" autocomplete="current-password" />
+          </label>
+          <p id="lock-status" role="status"></p>
+          <button type="button" id="lock-open">打开</button>
+        </div>
+        <p class="post-date" id="private-date" hidden></p>
+        <div class="prose" id="private-body" hidden></div>
+        <p id="private-meta" data-id={post.id} hidden></p>
+        <textarea id="cipher" hidden>{cipher}</textarea>
+        <script is:inline src="/vendor/markdown-it.js"></script>
+        <script is:inline src="/lock.js"></script>
+        <script is:inline>
+          const cipherField = document.querySelector('#cipher');
+          const openButton = document.querySelector('#lock-open');
+          const passwordInput = document.querySelector('#lock-password');
+          const lockStatus = document.querySelector('#lock-status');
+          const markdown = window.markdownit({ html: false, linkify: true });
+          markdown.validateLink = (url) => /^(https?:|mailto:|\/|#)/.test(url);
+
+          async function openPost() {
+            const password = passwordInput.value;
+            if (!password) {
+              lockStatus.textContent = '先输入密码。';
+              return;
+            }
+            lockStatus.textContent = '正在打开…';
+            openButton.disabled = true;
+            try {
+              const payload = await window.dorothyLock.decryptPayload(password, cipherField.value.trim());
+              document.querySelector('#private-title').textContent = payload.title || '加密文章';
+              document.title = (payload.title || '加密文章') + ' · DorothyJay';
+              const date = document.querySelector('#private-date');
+              date.hidden = false;
+              date.textContent = String(payload.date || '').slice(0, 10);
+              const edit = document.createElement('a');
+              edit.href = '/write/?post=' + encodeURIComponent(document.querySelector('#private-meta').dataset.id || '');
+              edit.textContent = '修改';
+              date.append(document.createTextNode(' '), edit);
+              const body = document.querySelector('#private-body');
+              body.innerHTML = markdown.render(payload.content || '');
+              body.hidden = false;
+              document.querySelector('#lock-box').hidden = true;
+              document.querySelector('#private-lede').hidden = true;
+            } catch (error) {
+              lockStatus.textContent = error instanceof Error ? error.message : '密码不对。';
+              openButton.disabled = false;
+            }
+          }
+
+          openButton.addEventListener('click', openPost);
+          passwordInput.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+              event.preventDefault();
+              openPost();
+            }
+          });
+        </script>
+      </article>
+    ) : (
+      <div class="post-layout">
+        <article>
+          <nav class="crumb" aria-label="面包屑">
+            <a href={`/writing/${post.data.channel}/`}>{channel?.title}</a>
+            {
+              post.data.series && (
+                <>
+                  {' / '}
+                  <a href={`/writing/${post.data.channel}/#${seriesAnchor(post.data.series)}`}>
+                    {post.data.series}
+                  </a>
+                </>
+              )
+            }
+          </nav>
+          <h1 class="page-title">{post.data.title}</h1>
+          <p class="post-date">
+            {formatDate(post.data.date)}
+            <a href={`/write/?post=${encodeURIComponent(id)}`}>修改</a>
+          </p>
+          {
+            toc.length > 0 && (
+              <details class="toc-mobile">
+                <summary>目录</summary>
+                <nav class="toc" aria-label="目录">
+                  <ol>
+                    {toc.map((heading) => (
+                      <li class={`depth-${heading.depth}`}>
+                        <a href={`#${heading.slug}`}>{heading.text}</a>
+                      </li>
+                    ))}
+                  </ol>
+                </nav>
+              </details>
+            )
+          }
+          <div class="prose">{Content && <Content />}</div>
+          {
+            (previous || next) && (
+              <nav class="post-pager" aria-label="系列内的前后篇">
+                <div>
+                  {previous && (
+                    <a href={postHref(previous)}>
+                      <small>上一篇</small>
+                      {previous.data.title}
+                    </a>
+                  )}
+                </div>
+                <div class="next">
+                  {next && (
+                    <a href={postHref(next)}>
+                      <small>下一篇</small>
+                      {next.data.title}
+                    </a>
+                  )}
+                </div>
+              </nav>
+            )
+          }
+        </article>
         {
-          post.data.series && (
-            <>
-              {' / '}
-              <a href={`/writing/${post.data.channel}/#${seriesAnchor(post.data.series)}`}>
-                {post.data.series}
-              </a>
-            </>
-          )
-        }
-      </nav>
-      <h1 class="page-title">{post.data.title}</h1>
-      <p class="post-date">
-        {formatDate(post.data.date)}
-        <a href={`/write/?post=${encodeURIComponent(id)}`}>修改</a>
-      </p>
-      {
-        toc.length > 0 && (
-          <details class="toc-mobile">
-            <summary>目录</summary>
-            <nav class="toc" aria-label="目录">
+          toc.length > 0 && (
+            <nav class="toc toc-desktop" aria-label="目录">
+              <p>目录</p>
               <ol>
                 {toc.map((heading) => (
                   <li class={`depth-${heading.depth}`}>
@@ -62,55 +180,65 @@ const toc = headings.filter((heading) => heading.depth >= 2 && heading.depth <= 
                 ))}
               </ol>
             </nav>
-          </details>
-        )
-      }
-      <div class="prose">
-        <Content />
+          )
+        }
       </div>
-      {
-        (previous || next) && (
-          <nav class="post-pager" aria-label="系列内的前后篇">
-            <div>
-              {previous && (
-                <a href={postHref(previous)}>
-                  <small>上一篇</small>
-                  {previous.data.title}
-                </a>
-              )}
-            </div>
-            <div class="next">
-              {next && (
-                <a href={postHref(next)}>
-                  <small>下一篇</small>
-                  {next.data.title}
-                </a>
-              )}
-            </div>
-          </nav>
-        )
-      }
-    </article>
-    {
-      toc.length > 0 && (
-        <nav class="toc toc-desktop" aria-label="目录">
-          <p>目录</p>
-          <ol>
-            {toc.map((heading) => (
-              <li class={`depth-${heading.depth}`}>
-                <a href={`#${heading.slug}`}>{heading.text}</a>
-              </li>
-            ))}
-          </ol>
-        </nav>
-      )
-    }
-  </div>
+    )
+  }
 </Base>
 
 <style>
   .post-date a {
     margin-left: 0.75rem;
     color: var(--accent);
+  }
+
+  .lock {
+    max-width: 42rem;
+  }
+
+  .lock label {
+    display: block;
+    margin-top: 1.4rem;
+    color: var(--muted);
+    font-size: 0.92rem;
+  }
+
+  .lock input {
+    display: block;
+    width: 100%;
+    margin-top: 0.35rem;
+    border: 0;
+    border-bottom: 1px solid var(--line);
+    background: transparent;
+    color: var(--ink);
+    font: inherit;
+    line-height: 1.6;
+    padding: 0.35rem 0;
+  }
+
+  .lock button {
+    margin-top: 1.1rem;
+    border: 0;
+    color: var(--bg);
+    background: var(--ink);
+    border-radius: 999px;
+    font: inherit;
+    cursor: pointer;
+    padding: 0.35rem 1rem;
+  }
+
+  .lock button:disabled {
+    opacity: 0.55;
+  }
+
+  #lock-status {
+    min-height: 1.6em;
+    margin: 1rem 0 0;
+    color: var(--muted);
+  }
+
+  #cipher {
+    display: none !important;
   }
 </style>

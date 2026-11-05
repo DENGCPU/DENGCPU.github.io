@@ -14,6 +14,7 @@ const posts = defineCollection({
     channel: z.enum(channelIds),
     series: z.string().optional(),
     summary: z.string().optional(),
+    private: z.boolean().optional(),
   }),
 });
 

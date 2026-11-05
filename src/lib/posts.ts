@@ -8,9 +8,18 @@ export function channelById(id: string) {
   return channels.find((channel) => channel.id === id);
 }
 
-export async function getPosts() {
+async function loadPosts() {
   const posts = await getCollection('posts');
   return posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+}
+
+export async function getAllPosts() {
+  return loadPosts();
+}
+
+export async function getPosts() {
+  const posts = await loadPosts();
+  return posts.filter((post) => !post.data.private);
 }
 
 export async function getWorks() {
