@@ -89,7 +89,7 @@ import Base from '../../layouts/Base.astro';
         加密正文
       </label>
       <div id="private-fields" hidden>
-        <p>标题会出现在这台浏览器的首页和文章列表里，并标成加密。正文要密码才能看，网站不保存密码。</p>
+        <p>标题和分类会出现在文章列表里，并标成加密。正文要密码才能看，网站不保存密码。改已经发出去的文章时，网址和分类不变。</p>
         <label>
           密码
           <input id="private-password" type="password" autocomplete="new-password" />
@@ -227,7 +227,6 @@ import Base from '../../layouts/Base.astro';
     const editId = new URLSearchParams(location.search).get('post') || '';
     const privateToggle = document.querySelector('#private-toggle');
     const privateFields = document.querySelector('#private-fields');
-    const privateBlock = document.querySelector('#private-block');
     let fileSha = '';
     let originalDate = '';
     let isPrivatePost = false;
@@ -250,7 +249,6 @@ import Base from '../../layouts/Base.astro';
       if (publishButton) publishButton.textContent = '保存';
       if (deleteButton) deleteButton.hidden = false;
       document.title = '修改文章 · DorothyJane';
-      if (datedPost.test(editId) && privateBlock) privateBlock.hidden = true;
     }
 
     privateToggle?.addEventListener('change', () => {
@@ -373,9 +371,10 @@ import Base from '../../layouts/Base.astro';
         say('标题和正文都要写。');
         return;
       }
-      const wantsPrivate = isPrivatePost || (!editId && Boolean(privateToggle?.checked));
+      const turningPrivate = !isPrivatePost && Boolean(privateToggle?.checked);
+      const wantsPrivate = isPrivatePost || turningPrivate;
       let password = privatePassword;
-      if (wantsPrivate && !editId) {
+      if (turningPrivate) {
         const first = document.querySelector('#private-password')?.value || '';
         const second = document.querySelector('#private-password2')?.value || '';
         if (first.length < 8) {
@@ -414,10 +413,18 @@ import Base from '../../layouts/Base.astro';
           rememberPrivate({ id, title, date: publishedDay || originalDate.slice(0, 10), channel, series });
           refreshPrivateList();
         }
+        if (editId && turningPrivate) {
+          isPrivatePost = true;
+          privatePassword = password;
+          if (privateToggle) {
+            privateToggle.checked = true;
+            privateToggle.disabled = true;
+          }
+        }
         status.textContent = '';
         status.append(
           (editId ? '已保存。大约一分钟后打开：' : '已发布。大约一分钟后打开：') +
-            (wantsPrivate ? '这台浏览器的首页和文章列表能看到标题，打开需要密码。' : ''),
+            (wantsPrivate ? (editId ? '网址和分类不变，打开需要密码。' : '它会出现在所选分类里，打开需要密码。') : ''),
           Object.assign(document.createElement('a'), { href: url, textContent: url }),
         );
         if (!editId) {
