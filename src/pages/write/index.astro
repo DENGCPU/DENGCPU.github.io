@@ -1141,6 +1141,7 @@ import Base from '../../layouts/Base.astro';
     padding: 0.75rem 0.85rem 0.4rem;
     outline: none;
     line-height: 1.75;
+    overflow-wrap: anywhere;
   }
 
   .md-surface:focus {
@@ -1172,23 +1173,28 @@ import Base from '../../layouts/Base.astro';
     border-left: 2px solid var(--accent);
     color: var(--muted);
   }
-  .md-surface pre {
+  .md-surface :global(pre) {
     overflow-x: auto;
+    max-width: 100%;
     margin: 0.8rem 0;
     padding: 0.7rem 0.8rem;
     border-radius: 6px;
     background: var(--code-bg);
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
   }
-  .md-surface code {
+  .md-surface :global(code) {
     font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
     font-size: 0.9em;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
   }
-  .md-surface :not(pre) > code {
+  .md-surface :global(:not(pre) > code) {
     padding: 0.1em 0.3em;
     border-radius: 4px;
     background: var(--code-bg);
   }
-  .md-surface img { max-width: 100%; }
+  .md-surface :global(img) { max-width: 100%; }
 
   .md-foot {
     padding: 0.15rem 0.7rem 0.45rem;
