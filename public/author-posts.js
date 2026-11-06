@@ -79,8 +79,6 @@
 
   async function list() {
     var token = (localStorage.getItem(tokenKey) || '').trim();
-    var saved = memory();
-    if (!token && localStorage.getItem(authorKey) !== '1') return saved.map(plainEntry);
     var headers = {
       Accept: 'application/vnd.github+json',
       'X-GitHub-Api-Version': '2022-11-28',
@@ -90,10 +88,13 @@
       'https://api.github.com/repos/' + repo + '/contents/src/content/posts/private?ref=master',
       { headers: headers },
     );
-    if (response.status === 404) return memory().map(plainEntry);
+    if (response.status === 404) {
+      localStorage.setItem(memoryKey, '[]');
+      return [];
+    }
     if (!response.ok) throw new Error('没有读到加密文章。');
     var data = await response.json();
-    if (!Array.isArray(data)) return memory().map(plainEntry);
+    if (!Array.isArray(data)) throw new Error('没有读到加密文章。');
     var posts = [];
     for (var index = 0; index < data.length; index += 1) {
       var file = data[index];
@@ -114,18 +115,6 @@
         series: (legacy && local && local.series) || parsed.series || '',
       });
     }
-    var remoteIds = {};
-    posts.forEach(function (item) { remoteIds[item.id] = true; });
-    memory().forEach(function (item) {
-      if (!item || !item.id || remoteIds[item.id]) return;
-      posts.push({
-        id: item.id,
-        title: visibleTitle(item),
-        date: String(item.date || '').slice(0, 10),
-        channel: item.channel || 'other',
-        series: item.series || '',
-      });
-    });
     posts.sort(function (a, b) { return String(b.date).localeCompare(String(a.date)); });
     localStorage.setItem(memoryKey, JSON.stringify(posts.slice(0, 40)));
     return posts;
@@ -289,14 +278,11 @@
     var writing = path === '/writing/' || path.indexOf('/writing/') === 0;
     if (!home && !writing) return;
     var saved = memory().map(plainEntry);
-    if (!isAuthor()) {
-      if (saved.length) place(saved);
-      return;
-    }
+    if (!isAuthor() && !saved.length) return;
     try {
       place(await list());
     } catch (error) {
-      place(saved);
+      if (saved.length) place(saved);
     }
   }
 
