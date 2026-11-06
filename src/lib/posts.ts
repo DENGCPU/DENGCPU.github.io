@@ -18,8 +18,7 @@ export async function getAllPosts() {
 }
 
 export async function getPosts() {
-  const posts = await loadPosts();
-  return posts.filter((post) => !post.data.private);
+  return loadPosts();
 }
 
 export function postTitle(post: Post) {
