@@ -124,6 +124,7 @@ import Base from '../../layouts/Base.astro';
     </div>
   </dialog>
   <script is:inline src="/vendor/markdown-it.js"></script>
+  <script is:inline src="/markdown-headings.js"></script>
   <script is:inline src="/lock.js"></script>
   <script is:inline>
     const repo = 'DENGCPU/DENGCPU.github.io';
@@ -373,7 +374,8 @@ import Base from '../../layouts/Base.astro';
       const channel = String(data.get('channel') || '');
       const series = String(data.get('series') || '').trim();
       const summary = String(data.get('summary') || '').trim();
-      const content = String(data.get('content') || '').trim();
+      let content = String(data.get('content') || '').trim();
+      content = normalizeHeadingsForRender(content);
       if (!title || !content) {
         say('标题和正文都要写。');
         return;
@@ -969,10 +971,18 @@ import Base from '../../layouts/Base.astro';
       updateEditorCount();
     }
 
+    function normalizeHeadingsForRender(source) {
+      if (window.dorothyMarkdownHeadings?.normalizeLooseAtxHeadings) {
+        return window.dorothyMarkdownHeadings.normalizeLooseAtxHeadings(source);
+      }
+      return source;
+    }
+
     function renderPreview() {
       if (!mdPreview || !mdEditor || !contentField) return;
-      mdPreview.innerHTML = contentField.value.trim()
-        ? mdEditor.render(contentField.value)
+      const raw = contentField.value.trim();
+      mdPreview.innerHTML = raw
+        ? mdEditor.render(normalizeHeadingsForRender(raw))
         : '<p class="md-preview-empty">还没有内容。</p>';
     }
 
