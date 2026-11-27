@@ -4,149 +4,22 @@ import Base from '../../layouts/Base.astro';
 
 <Base title="搜索" description="按标题、摘要和正文搜索站内文章。">
   <h1 class="page-title">搜索</h1>
-  <p class="lede">输入关键词，会在标题、摘要和正文里找。</p>
-  <label class="search-field">
-    关键词
-    <input id="search-input" type="search" name="q" autocomplete="off" enterkeyhint="search" placeholder="例如：React、百年孤独" />
-  </label>
+  <p class="lede">在顶栏输入关键词，会在标题、摘要和正文里找。</p>
   <p class="search-hint" id="search-hint" aria-live="polite">正在准备索引…</p>
   <div class="post-list" id="search-results"></div>
-  <script>
-    const input = document.querySelector('#search-input');
-    const hint = document.querySelector('#search-hint');
-    const results = document.querySelector('#search-results');
-    let searchIndex = [];
-    let indexReady = false;
-
-    function excerpt(text, query, radius) {
-      const size = radius || 48;
-      const index = text.indexOf(query);
-      if (index === -1) return '';
-      const start = Math.max(0, index - size);
-      const end = Math.min(text.length, index + query.length + size);
-      let slice = text.slice(start, end).replace(/\s+/g, ' ');
-      if (start > 0) slice = '…' + slice;
-      if (end < text.length) slice = slice + '…';
-      return slice;
-    }
-
-    function matchScore(item, query) {
-      const title = item.title || '';
-      const summary = item.summary || '';
-      const series = item.series || '';
-      const body = item.body || '';
-      if (title.includes(query)) return 5;
-      if (series.includes(query)) return 4;
-      if (summary.includes(query)) return 3;
-      if (body.includes(query)) return 2;
-      return 0;
-    }
-
-    function snippet(item, query) {
-      if (item.summary && (item.title.includes(query) || item.summary.includes(query))) return item.summary;
-      if (item.body && item.body.includes(query)) return excerpt(item.body, query);
-      if (item.summary) return item.summary;
-      return item.series ? item.channel + ' · ' + item.series : item.channel;
-    }
-
-    function render(list, query) {
-      if (!results || !hint) return;
-      results.replaceChildren();
-      if (!indexReady) {
-        hint.textContent = '正在准备索引…';
-        return;
-      }
-      if (!query) {
-        hint.textContent = '输入几个字开始搜索。';
-        return;
-      }
-      if (!list.length) {
-        hint.textContent = '没有匹配的文章。';
-        return;
-      }
-      hint.textContent = '找到 ' + list.length + ' 篇。';
-      list.forEach((item) => {
-        const link = document.createElement('a');
-        link.className = 'post-row search-hit';
-        link.href = item.href;
-        const title = document.createElement('span');
-        title.className = 'post-title';
-        title.textContent = item.title;
-        const meta = document.createElement('span');
-        meta.className = 'post-meta';
-        meta.textContent = item.date;
-        const desc = document.createElement('span');
-        desc.className = 'channel-desc';
-        desc.textContent = snippet(item, query);
-        link.append(title, meta, desc);
-        results.append(link);
-      });
-    }
-
-    function runSearch() {
-      const query = (input?.value || '').trim();
-      if (!query) {
-        render([], '');
-        return;
-      }
-      const ranked = searchIndex
-        .map((item) => ({ item, score: matchScore(item, query) }))
-        .filter((entry) => entry.score > 0)
-        .sort((a, b) => b.score - a.score || b.item.date.localeCompare(a.item.date));
-      render(
-        ranked.map((entry) => entry.item),
-        query,
-      );
-    }
-
-    async function loadIndex() {
-      if (!hint) return;
-      try {
-        const response = await fetch('/search-index.json');
-        if (!response.ok) throw new Error('索引没有加载');
-        searchIndex = await response.json();
-        indexReady = true;
-        hint.textContent = '共 ' + searchIndex.length + ' 篇可搜索。';
-        const initial = new URLSearchParams(location.search).get('q');
-        if (initial && input) {
-          input.value = initial;
-          runSearch();
-        }
-      } catch (error) {
-        hint.textContent = '索引没有加载，请稍后再试。';
-      }
-    }
-
-    input?.addEventListener('input', runSearch);
-    loadIndex();
+  <script is:inline>
+    window.dorothySearch?.initPage({
+      hintEl: '#search-hint',
+      resultsEl: '#search-results',
+      inputEl: '#site-search-input',
+      debounceMs: 300,
+    });
   </script>
 </Base>
 
 <style>
-  .search-field {
-    display: block;
-    margin-top: 1.5rem;
-    color: var(--muted);
-    font-size: 0.92rem;
-  }
-
-  .search-field input {
-    display: block;
-    width: 100%;
-    max-width: 26rem;
-    margin-top: 0.35rem;
-    border: 0;
-    border-bottom: 1px solid var(--line);
-    border-radius: 0;
-    background: transparent;
-    color: var(--ink);
-    font: inherit;
-    line-height: 1.6;
-    padding: 0.35rem 0;
-  }
-
   .search-hint {
-    margin: 0.85rem 0 0;
+    margin: 1.25rem 0 0;
     color: var(--muted);
     font-size: 0.92rem;
   }
@@ -155,9 +28,17 @@ import Base from '../../layouts/Base.astro';
     margin-top: 1.15rem;
   }
 
-  .search-hit .channel-desc {
+  #search-results :global(.search-hit) {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.2rem 0.75rem;
+  }
+
+  #search-results :global(.search-hit .search-suggest-desc) {
     grid-column: 1 / -1;
     margin-top: 0.15rem;
     line-height: 1.5;
+    color: var(--muted);
+    font-size: 0.92rem;
   }
 </style>

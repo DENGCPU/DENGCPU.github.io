@@ -17,7 +17,6 @@ const path = Astro.url.pathname;
 const nav = [
   { href: '/', label: '首页' },
   { href: '/writing/', label: '文章' },
-  { href: '/search/', label: '搜索' },
   { href: '/work/', label: '作品' },
   { href: '/about/', label: '关于' },
   { href: '/write/', label: '新文章' },
@@ -63,6 +62,21 @@ function isCurrent(href: string) {
       <div class="bar">
         <a class="brand" href="/"><TreeLogo class="brand-logo" /><span>{site.name}</span></a>
         <div class="nav-group">
+          <div class="site-search-wrap">
+            <button type="button" class="search-toggle" id="search-toggle" aria-label="打开搜索" aria-expanded="false" aria-controls="site-search-panel">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="11" cy="11" r="5.5" fill="none" stroke="currentColor" stroke-width="1.8"></circle>
+                <path d="M16 16l5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+              </svg>
+            </button>
+            <div class="site-search-panel" id="site-search-panel" hidden>
+              <form class="site-search" id="site-search-form" action="/search/" method="get" role="search">
+                <label class="visually-hidden" for="site-search-input">搜索文章</label>
+                <input id="site-search-input" type="search" name="q" autocomplete="off" enterkeyhint="search" placeholder="搜索文章" />
+              </form>
+              <div class="site-search-dropdown" id="site-search-dropdown" hidden></div>
+            </div>
+          </div>
           <nav class="site-nav" aria-label="主导航">
             {
               nav.map((item) => (
@@ -98,6 +112,18 @@ function isCurrent(href: string) {
       </div>
     </footer>
     <script is:inline src="/author-posts.js"></script>
+    <script is:inline src="/search-client.js"></script>
+    <script is:inline>
+      window.dorothySearch?.initHeader({
+        toggleEl: '#search-toggle',
+        panelEl: '#site-search-panel',
+        formEl: '#site-search-form',
+        inputEl: '#site-search-input',
+        dropdownEl: '#site-search-dropdown',
+        debounceMs: 300,
+        previewLimit: 6,
+      });
+    </script>
     <script>
       const button = document.getElementById('theme-toggle');
       const syncLabel = () => {
