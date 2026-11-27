@@ -374,6 +374,13 @@ main { padding: 3.25rem 0 4.5rem; }
 .prose h4,
 .prose h5 { margin: 1.45rem 0 0.5rem; font-size: 1.02rem; }
 
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5 {
+  scroll-margin-top: 4.25rem;
+}
+
 .prose p,
 .prose ul,
 .prose ol { margin: 0.75rem 0; }

@@ -1,0 +1,129 @@
+---
+import Base from '../../layouts/Base.astro';
+import { channelById, formatDate, getPosts, postHref, postTitle } from '../../lib/posts';
+
+const posts = await getPosts();
+const searchIndex = posts
+  .filter((post) => !post.data.private)
+  .map((post) => ({
+    title: postTitle(post),
+    summary: post.data.summary ?? '',
+    channel: channelById(post.data.channel)?.title ?? '',
+    series: post.data.series ?? '',
+    date: formatDate(post.data.date),
+    href: postHref(post),
+  }));
+---
+
+<Base title="搜索" description="按标题和摘要搜索站内文章。">
+  <h1 class="page-title">搜索</h1>
+  <p class="lede">输入关键词，匹配标题和摘要。</p>
+  <label class="search-field">
+    关键词
+    <input id="search-input" type="search" name="q" autocomplete="off" enterkeyhint="search" placeholder="例如：React、读书笔记" />
+  </label>
+  <p class="search-hint" id="search-hint" aria-live="polite">输入几个字开始搜索。</p>
+  <div class="post-list" id="search-results"></div>
+  <script define:vars={{ searchIndex }}>
+    const input = document.querySelector('#search-input');
+    const hint = document.querySelector('#search-hint');
+    const results = document.querySelector('#search-results');
+
+    function matchScore(item, query) {
+      const title = item.title || '';
+      const summary = item.summary || '';
+      const series = item.series || '';
+      if (title.includes(query)) return 3;
+      if (series.includes(query)) return 2;
+      if (summary.includes(query)) return 1;
+      return 0;
+    }
+
+    function render(list, query) {
+      if (!results || !hint) return;
+      results.replaceChildren();
+      if (!query) {
+        hint.textContent = '输入几个字开始搜索。';
+        return;
+      }
+      if (!list.length) {
+        hint.textContent = '没有匹配的文章。';
+        return;
+      }
+      hint.textContent = '找到 ' + list.length + ' 篇。';
+      list.forEach((item) => {
+        const link = document.createElement('a');
+        link.className = 'post-row';
+        link.href = item.href;
+        const title = document.createElement('span');
+        title.className = 'post-title';
+        title.textContent = item.title;
+        const meta = document.createElement('span');
+        meta.className = 'post-meta';
+        meta.textContent = item.date;
+        const desc = document.createElement('span');
+        desc.className = 'channel-desc';
+        desc.textContent = item.series ? item.channel + ' · ' + item.series : item.channel;
+        link.append(title, meta, desc);
+        results.append(link);
+      });
+    }
+
+    function runSearch() {
+      const query = (input?.value || '').trim();
+      if (!query) {
+        render([], '');
+        return;
+      }
+      const ranked = searchIndex
+        .map((item) => ({ item, score: matchScore(item, query) }))
+        .filter((entry) => entry.score > 0)
+        .sort((a, b) => b.score - a.score || b.item.date.localeCompare(a.item.date));
+      render(
+        ranked.map((entry) => entry.item),
+        query,
+      );
+    }
+
+    input?.addEventListener('input', runSearch);
+    const initial = new URLSearchParams(location.search).get('q');
+    if (initial && input) {
+      input.value = initial;
+      runSearch();
+    }
+  </script>
+</Base>
+
+<style>
+  .search-field {
+    display: block;
+    margin-top: 1.5rem;
+    color: var(--muted);
+    font-size: 0.92rem;
+  }
+
+  .search-field input {
+    display: block;
+    width: 100%;
+    max-width: 26rem;
+    margin-top: 0.35rem;
+    border: 0;
+    border-bottom: 1px solid var(--line);
+    border-radius: 0;
+    background: transparent;
+    color: var(--ink);
+    font: inherit;
+    line-height: 1.6;
+    padding: 0.35rem 0;
+  }
+
+  .search-hint {
+    margin: 0.85rem 0 0;
+    color: var(--muted);
+    font-size: 0.92rem;
+  }
+
+  #search-results {
+    margin-top: 1.15rem;
+  }
+</style>

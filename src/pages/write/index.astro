@@ -65,6 +65,7 @@ import Base from '../../layouts/Base.astro';
           <div class="md-tools" id="md-tools">
             <button type="button" data-md="h2" aria-label="二级标题">H2</button>
             <button type="button" data-md="h3" aria-label="三级标题">H3</button>
+            <button type="button" data-md="split" aria-label="在书名号后拆成标题和正文" title="在「》」后换行">拆</button>
             <button type="button" data-md="bold" aria-label="加粗"><b>B</b></button>
             <button type="button" data-md="italic" aria-label="斜体"><i>I</i></button>
             <button type="button" data-md="ul" aria-label="无序列表" title="无序列表">•</button>
@@ -83,7 +84,7 @@ import Base from '../../layouts/Base.astro';
           <button type="button" id="md-pop-cancel">取消</button>
         </div>
         <textarea class="md-source" name="content" id="md-content" rows="14" placeholder="开始写，支持 Markdown…" spellcheck="true"></textarea>
-        <div id="md-preview" class="md-preview" hidden tabindex="-1" aria-label="预览"></div>
+        <div id="md-preview" class="prose md-preview" hidden tabindex="-1" aria-label="预览"></div>
         <input id="md-file" type="file" accept="image/*" hidden />
         <div class="md-foot">
           <span id="md-draft-hint" class="md-draft-hint" hidden></span>
@@ -152,10 +153,12 @@ import Base from '../../layouts/Base.astro';
       return result;
     };
 
-    function say(message) {
+    function say(message, options) {
       if (!status) return;
       status.textContent = message;
-      status.scrollIntoView({ block: 'nearest' });
+      if (options && options.scroll && message) {
+        status.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      }
     }
 
     function savedToken() {
@@ -349,7 +352,7 @@ import Base from '../../layouts/Base.astro';
 
     if (editId && editable(editId)) {
       loadPost().catch((error) => {
-        say(error instanceof Error ? error.message : '没有读到这篇文章。');
+        say(error instanceof Error ? error.message : '没有读到这篇文章。', { scroll: true });
       });
     }
 
@@ -366,7 +369,7 @@ import Base from '../../layouts/Base.astro';
       const typed = (tokenInput?.value || '').trim();
       const token = typed || savedToken();
       if (!token) {
-        say('先把 GitHub 令牌粘贴到上面。');
+        say('先把 GitHub 令牌粘贴到上面。', { scroll: true });
         return;
       }
       const data = new FormData(form);
@@ -377,7 +380,7 @@ import Base from '../../layouts/Base.astro';
       let content = String(data.get('content') || '').trim();
       content = normalizeHeadingsForRender(content);
       if (!title || !content) {
-        say('标题和正文都要写。');
+        say('标题和正文都要写。', { scroll: true });
         return;
       }
       const turningPrivate = !isPrivatePost && Boolean(privateToggle?.checked);
@@ -387,11 +390,11 @@ import Base from '../../layouts/Base.astro';
         const first = document.querySelector('#private-password')?.value || '';
         const second = document.querySelector('#private-password2')?.value || '';
         if (first.length < 8) {
-          say('密码至少 8 位。');
+          say('密码至少 8 位。', { scroll: true });
           return;
         }
         if (first !== second) {
-          say('两次密码不一致。');
+          say('两次密码不一致。', { scroll: true });
           return;
         }
         password = first;
@@ -446,7 +449,7 @@ import Base from '../../layouts/Base.astro';
           clearDraft();
         }
       } catch (error) {
-        say(error instanceof Error ? error.message : '没有发布。');
+        say(error instanceof Error ? error.message : '没有发布。', { scroll: true });
       } finally {
         if (!removed) publishButton.disabled = isPrivatePost && !privatePassword;
       }
@@ -854,6 +857,7 @@ import Base from '../../layouts/Base.astro';
     let pendingDraft = null;
     let editingLink = null;
     let popMode = 'link';
+    let savedFieldSelection = { start: 0, end: 0 };
 
     function draftKey() {
       return draftPrefix + (editId || 'new');
@@ -998,13 +1002,13 @@ import Base from '../../layouts/Base.astro';
 
     function insertTextAtCursor(text) {
       if (!contentField) return;
-      const start = contentField.selectionStart;
-      const end = contentField.selectionEnd;
+      const { start, end } = getFieldSelection();
       const normalized = text.replace(/\r\n/g, '\n');
       contentField.value = contentField.value.slice(0, start) + normalized + contentField.value.slice(end);
       const caret = start + normalized.length;
-      contentField.focus();
+      focusContentField();
       contentField.setSelectionRange(caret, caret);
+      saveFieldSelection();
       markEditor();
     }
 
@@ -1054,20 +1058,42 @@ import Base from '../../layouts/Base.astro';
       return null;
     }
 
+    function saveFieldSelection() {
+      if (!contentField) return;
+      savedFieldSelection = {
+        start: contentField.selectionStart,
+        end: contentField.selectionEnd,
+      };
+    }
+
+    function getFieldSelection() {
+      if (document.activeElement === contentField) saveFieldSelection();
+      return savedFieldSelection;
+    }
+
+    function focusContentField() {
+      if (!contentField) return;
+      try {
+        contentField.focus({ preventScroll: true });
+      } catch (error) {
+        contentField.focus();
+      }
+    }
+
     function replaceRange(from, to, text) {
       if (!contentField) return;
       const value = contentField.value;
       contentField.value = value.slice(0, from) + text + value.slice(to);
       const caret = from + text.length;
-      contentField.focus();
+      focusContentField();
       contentField.setSelectionRange(caret, caret);
+      saveFieldSelection();
       markEditor();
     }
 
     function insertMarkdown(snippet, selectionOffset, selectionLength) {
       if (!contentField) return;
-      const start = contentField.selectionStart;
-      const end = contentField.selectionEnd;
+      const { start, end } = getFieldSelection();
       const before = contentField.value.slice(0, start);
       const selected = contentField.value.slice(start, end);
       const after = contentField.value.slice(end);
@@ -1075,14 +1101,15 @@ import Base from '../../layouts/Base.astro';
       contentField.value = before + text + after;
       const anchor = before.length + text.length + (selectionOffset || 0);
       const extent = anchor + (selectionLength || 0);
-      contentField.focus();
+      focusContentField();
       contentField.setSelectionRange(Math.max(0, anchor), Math.max(0, extent));
+      saveFieldSelection();
       markEditor();
     }
 
     function linePrefix(prefix) {
       if (!contentField) return;
-      const start = contentField.selectionStart;
+      const { start } = getFieldSelection();
       const value = contentField.value;
       const lineStart = value.lastIndexOf('\n', start - 1) + 1;
       const lineEnd = value.indexOf('\n', start);
@@ -1091,8 +1118,43 @@ import Base from '../../layouts/Base.astro';
       const next = prefix + line;
       contentField.value = value.slice(0, lineStart) + next + value.slice(end);
       const caret = lineStart + prefix.length;
-      contentField.focus();
+      focusContentField();
       contentField.setSelectionRange(caret, caret + line.length);
+      saveFieldSelection();
+      markEditor();
+    }
+
+    function splitHeadingBody() {
+      if (!contentField) return;
+      const { start } = getFieldSelection();
+      const value = contentField.value;
+      const lineStart = value.lastIndexOf('\n', start - 1) + 1;
+      const lineEnd = value.indexOf('\n', start);
+      const end = lineEnd === -1 ? value.length : lineEnd;
+      const line = value.slice(lineStart, end);
+      const m = line.match(/^(#{1,6})\s*(.+)$/);
+      if (!m) {
+        say('把光标放在带 # 的标题行，再点「拆」。');
+        return;
+      }
+      const rest = m[2];
+      const close = rest.indexOf('》');
+      if (close === -1) {
+        say('这一行没有「」，没法在书名后拆开。');
+        return;
+      }
+      const titlePart = rest.slice(0, close + 1).trim();
+      const bodyPart = rest.slice(close + 1).trim();
+      if (!bodyPart) {
+        say('「」后面还没有正文。');
+        return;
+      }
+      const next = m[1] + ' ' + titlePart + '\n\n' + bodyPart;
+      contentField.value = value.slice(0, lineStart) + next + value.slice(end);
+      const caret = lineStart + next.length;
+      focusContentField();
+      contentField.setSelectionRange(caret, caret);
+      saveFieldSelection();
       markEditor();
     }
 
@@ -1106,13 +1168,21 @@ import Base from '../../layouts/Base.astro';
       const bar = document.querySelector('#md-editor .md-bar');
       const editor = document.querySelector('#md-editor');
       if (!bar || !editor || !window.visualViewport) return;
-      const focused = document.activeElement === contentField && editorMode === 'write';
+      const focused =
+        (document.activeElement === contentField || editor.contains(document.activeElement)) &&
+        editorMode === 'write';
       if (!focused) {
         bar.classList.remove('md-bar-vv');
         bar.style.removeProperty('top');
         return;
       }
       const vv = window.visualViewport;
+      const keyboardLikelyOpen = window.innerHeight - vv.height > 80;
+      if (!keyboardLikelyOpen) {
+        bar.classList.remove('md-bar-vv');
+        bar.style.removeProperty('top');
+        return;
+      }
       const er = editor.getBoundingClientRect();
       const top = vv.offsetTop - er.top;
       const maxTop = Math.max(0, er.height - bar.offsetHeight - 4);
@@ -1210,16 +1280,23 @@ import Base from '../../layouts/Base.astro';
       document.querySelector('#md-mode-write')?.addEventListener('click', () => setEditorMode('write'));
       document.querySelector('#md-mode-preview')?.addEventListener('click', () => setEditorMode('preview'));
 
+      editor.querySelector('.md-bar')?.addEventListener('mousedown', (event) => {
+        if (event.target.closest('button, select')) {
+          saveFieldSelection();
+          event.preventDefault();
+        }
+      });
+
       document.querySelector('#md-tools')?.addEventListener('click', (event) => {
         const button = event.target.closest('button[data-md]');
         if (!button) return;
         event.preventDefault();
         const action = button.dataset.md;
-        const start = contentField.selectionStart;
-        const end = contentField.selectionEnd;
+        const { start, end } = getFieldSelection();
         const selected = contentField.value.slice(start, end);
         if (action === 'h2') linePrefix('## ');
         else if (action === 'h3') linePrefix('### ');
+        else if (action === 'split') splitHeadingBody();
         else if (action === 'bold') {
           insertMarkdown('**' + (selected || '文字') + '**', selected ? 0 : -2, selected ? 0 : 2);
         } else if (action === 'italic') {
@@ -1320,8 +1397,7 @@ import Base from '../../layouts/Base.astro';
           document.querySelector('#md-pop-ok').textContent = '插入';
           document.querySelector('#md-pop-unlink').hidden = true;
         } else {
-          const start = contentField.selectionStart;
-          const end = contentField.selectionEnd;
+          const { start, end } = getFieldSelection();
           const selected = contentField.value.slice(start, end) || url;
           insertMarkdown('[' + selected + '](' + url + ')', 0, 0);
         }
@@ -1337,6 +1413,10 @@ import Base from '../../layouts/Base.astro';
       });
 
       contentField.addEventListener('input', markEditor);
+      contentField.addEventListener('select', saveFieldSelection);
+      contentField.addEventListener('keyup', saveFieldSelection);
+      contentField.addEventListener('mouseup', saveFieldSelection);
+      saveFieldSelection();
       contentField.addEventListener('paste', (event) => {
         if (event.shiftKey) return;
         const data = event.clipboardData;
@@ -1642,8 +1722,9 @@ import Base from '../../layouts/Base.astro';
 
   .md-preview {
     min-height: 16rem;
-    padding: 0.75rem 0.85rem 0.4rem;
-    line-height: 1.75;
+    max-width: 42rem;
+    margin: 0;
+    padding: 0.35rem 0.15rem 0.6rem;
     overflow-wrap: anywhere;
   }
 
@@ -1651,53 +1732,10 @@ import Base from '../../layouts/Base.astro';
     display: none !important;
   }
 
-  .md-preview-empty {
+  :global(.md-preview .md-preview-empty) {
     margin: 0;
     color: var(--muted);
   }
-
-  .md-preview :global(h2),
-  .md-preview :global(h3),
-  .md-preview :global(h4) {
-    font-family: var(--serif);
-    line-height: 1.35;
-  }
-
-  .md-preview :global(h2) { margin: 1rem 0 0.4rem; font-size: 1.35rem; }
-  .md-preview :global(h3) { margin: 0.9rem 0 0.35rem; font-size: 1.16rem; }
-  .md-preview :global(h4) { margin: 0.8rem 0 0.3rem; font-size: 1.02rem; }
-  .md-preview :global(p) { margin: 0.55rem 0; }
-  .md-preview :global(ul),
-  .md-preview :global(ol) { margin: 0.55rem 0; padding-left: 1.25rem; }
-  .md-preview :global(a) { color: var(--accent); }
-  .md-preview :global(blockquote) {
-    margin: 0.8rem 0;
-    padding-left: 0.8rem;
-    border-left: 2px solid var(--accent);
-    color: var(--muted);
-  }
-  .md-preview :global(pre) {
-    overflow-x: auto;
-    max-width: 100%;
-    margin: 0.8rem 0;
-    padding: 0.7rem 0.8rem;
-    border-radius: 6px;
-    background: var(--code-bg);
-    white-space: pre-wrap;
-    overflow-wrap: anywhere;
-  }
-  .md-preview :global(code) {
-    font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
-    font-size: 0.9em;
-    white-space: pre-wrap;
-    overflow-wrap: anywhere;
-  }
-  .md-preview :global(:not(pre) > code) {
-    padding: 0.1em 0.3em;
-    border-radius: 4px;
-    background: var(--code-bg);
-  }
-  .md-preview :global(img) { max-width: 100%; }
 
   .md-foot {
     display: flex;
