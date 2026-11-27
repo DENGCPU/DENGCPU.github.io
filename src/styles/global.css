@@ -187,9 +187,9 @@ body.wide {
   height: 2.5rem;
   margin: 0;
   padding: 0;
-  border: 0;
-  border-radius: 8px;
-  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--line) 85%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--bg-deep) 40%, var(--bg));
   color: var(--muted);
   cursor: pointer;
 }
@@ -211,9 +211,9 @@ body.wide {
   right: 0;
   z-index: 20;
   width: min(20rem, calc(100vw - 2rem));
-  padding: 0.55rem 0.65rem 0.45rem;
+  padding: 0.55rem 0.6rem 0.5rem;
   border: 1px solid var(--line);
-  border-radius: 10px;
+  border-radius: 1.1rem;
   background: var(--bg);
   box-shadow: 0 14px 34px rgba(36, 28, 20, 0.14);
 }
@@ -229,15 +229,26 @@ body.wide {
 .site-search input {
   display: block;
   width: 100%;
-  border: 0;
-  border-bottom: 1px solid var(--line);
-  border-radius: 0;
-  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--line) 90%, var(--muted));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--bg-deep) 55%, var(--bg));
   color: var(--ink);
   font: inherit;
-  font-size: 0.95rem;
-  line-height: 1.5;
-  padding: 0.35rem 0;
+  font-size: 0.92rem;
+  line-height: 1.35;
+  padding: 0.48rem 0.95rem;
+  outline: none;
+}
+
+.site-search input::placeholder {
+  color: var(--muted);
+  opacity: 0.85;
+}
+
+.site-search input:focus-visible {
+  outline: none;
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 14%, transparent);
 }
 
 .site-search-dropdown {
@@ -312,7 +323,7 @@ body.wide {
   .site-search-panel {
     position: static;
     display: block !important;
-    width: 11.5rem;
+    width: 12.5rem;
     padding: 0;
     border: 0;
     border-radius: 0;
@@ -325,7 +336,8 @@ body.wide {
   }
 
   .site-search input {
-    font-size: 0.9rem;
+    font-size: 0.88rem;
+    padding: 0.42rem 0.85rem;
   }
 
   .site-search-dropdown {
@@ -335,7 +347,7 @@ body.wide {
     width: min(22rem, calc(100vw - 2rem));
     padding: 0.35rem 0.45rem;
     border: 1px solid var(--line);
-    border-radius: 10px;
+    border-radius: 1.1rem;
     background: var(--bg);
     box-shadow: 0 14px 34px rgba(36, 28, 20, 0.14);
   }
