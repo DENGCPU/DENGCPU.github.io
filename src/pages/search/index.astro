@@ -1,47 +1,61 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { channelById, formatDate, getPosts, postHref, postTitle } from '../../lib/posts';
-
-const posts = await getPosts();
-const searchIndex = posts
-  .filter((post) => !post.data.private)
-  .map((post) => ({
-    title: postTitle(post),
-    summary: post.data.summary ?? '',
-    channel: channelById(post.data.channel)?.title ?? '',
-    series: post.data.series ?? '',
-    date: formatDate(post.data.date),
-    href: postHref(post),
-  }));
 ---
 
-<Base title="搜索" description="按标题和摘要搜索站内文章。">
+<Base title="搜索" description="按标题、摘要和正文搜索站内文章。">
   <h1 class="page-title">搜索</h1>
-  <p class="lede">输入关键词，匹配标题和摘要。</p>
+  <p class="lede">输入关键词，会在标题、摘要和正文里找。</p>
   <label class="search-field">
     关键词
-    <input id="search-input" type="search" name="q" autocomplete="off" enterkeyhint="search" placeholder="例如：React、读书笔记" />
+    <input id="search-input" type="search" name="q" autocomplete="off" enterkeyhint="search" placeholder="例如：React、百年孤独" />
   </label>
-  <p class="search-hint" id="search-hint" aria-live="polite">输入几个字开始搜索。</p>
+  <p class="search-hint" id="search-hint" aria-live="polite">正在准备索引…</p>
   <div class="post-list" id="search-results"></div>
-  <script define:vars={{ searchIndex }}>
+  <script>
     const input = document.querySelector('#search-input');
     const hint = document.querySelector('#search-hint');
     const results = document.querySelector('#search-results');
+    let searchIndex = [];
+    let indexReady = false;
+
+    function excerpt(text, query, radius) {
+      const size = radius || 48;
+      const index = text.indexOf(query);
+      if (index === -1) return '';
+      const start = Math.max(0, index - size);
+      const end = Math.min(text.length, index + query.length + size);
+      let slice = text.slice(start, end).replace(/\s+/g, ' ');
+      if (start > 0) slice = '…' + slice;
+      if (end < text.length) slice = slice + '…';
+      return slice;
+    }
 
     function matchScore(item, query) {
       const title = item.title || '';
       const summary = item.summary || '';
       const series = item.series || '';
-      if (title.includes(query)) return 3;
-      if (series.includes(query)) return 2;
-      if (summary.includes(query)) return 1;
+      const body = item.body || '';
+      if (title.includes(query)) return 5;
+      if (series.includes(query)) return 4;
+      if (summary.includes(query)) return 3;
+      if (body.includes(query)) return 2;
       return 0;
+    }
+
+    function snippet(item, query) {
+      if (item.summary && (item.title.includes(query) || item.summary.includes(query))) return item.summary;
+      if (item.body && item.body.includes(query)) return excerpt(item.body, query);
+      if (item.summary) return item.summary;
+      return item.series ? item.channel + ' · ' + item.series : item.channel;
     }
 
     function render(list, query) {
       if (!results || !hint) return;
       results.replaceChildren();
+      if (!indexReady) {
+        hint.textContent = '正在准备索引…';
+        return;
+      }
       if (!query) {
         hint.textContent = '输入几个字开始搜索。';
         return;
@@ -53,7 +67,7 @@ const searchIndex = posts
       hint.textContent = '找到 ' + list.length + ' 篇。';
       list.forEach((item) => {
         const link = document.createElement('a');
-        link.className = 'post-row';
+        link.className = 'post-row search-hit';
         link.href = item.href;
         const title = document.createElement('span');
         title.className = 'post-title';
@@ -63,7 +77,7 @@ const searchIndex = posts
         meta.textContent = item.date;
         const desc = document.createElement('span');
         desc.className = 'channel-desc';
-        desc.textContent = item.series ? item.channel + ' · ' + item.series : item.channel;
+        desc.textContent = snippet(item, query);
         link.append(title, meta, desc);
         results.append(link);
       });
@@ -85,12 +99,26 @@ const searchIndex = posts
       );
     }
 
-    input?.addEventListener('input', runSearch);
-    const initial = new URLSearchParams(location.search).get('q');
-    if (initial && input) {
-      input.value = initial;
-      runSearch();
+    async function loadIndex() {
+      if (!hint) return;
+      try {
+        const response = await fetch('/search-index.json');
+        if (!response.ok) throw new Error('索引没有加载');
+        searchIndex = await response.json();
+        indexReady = true;
+        hint.textContent = '共 ' + searchIndex.length + ' 篇可搜索。';
+        const initial = new URLSearchParams(location.search).get('q');
+        if (initial && input) {
+          input.value = initial;
+          runSearch();
+        }
+      } catch (error) {
+        hint.textContent = '索引没有加载，请稍后再试。';
+      }
     }
+
+    input?.addEventListener('input', runSearch);
+    loadIndex();
   </script>
 </Base>
 
@@ -125,5 +153,11 @@ const searchIndex = posts
 
   #search-results {
     margin-top: 1.15rem;
+  }
+
+  .search-hit .channel-desc {
+    grid-column: 1 / -1;
+    margin-top: 0.15rem;
+    line-height: 1.5;
   }
 </style>
